@@ -1,5 +1,13 @@
 FROM python:3.12-slim-bookworm AS base_os
 
+RUN set -x \
+  && runtimeDeps=" \
+    libmagic1 \
+    libxml2 \
+  " \
+  && apt-get update && apt-get install -y --no-install-recommends ${runtimeDeps} \
+  && rm -rf /var/lib/apt/lists/*
+
 RUN groupadd --gid 1024 booking \
     && adduser --disabled-login --disabled-password --no-create-home --ingroup booking -q user
 
@@ -9,7 +17,6 @@ FROM base_os AS builder
 RUN set -x \
     && buildDeps="build-essential \
 cmake \
-
 " \
     && apt-get update \
     && apt-get install -y --no-install-recommends $buildDeps \
@@ -25,8 +32,6 @@ ARG BUILD_DATE
 ARG GIT_SHA
 
 LABEL distro="tests"
-LABEL org.opencontainers.image.created="$BUILD_DATE"
-LABEL org.opencontainers.image.version="$VERSION"
 
 ENV PATH=/app/.venv/bin:/usr/local/bin/:/usr/bin:/bin \
     DJANGO_SETTINGS_MODULE=booking.config.settings \
@@ -75,44 +80,33 @@ ARG GIT_SHA
 ARG BRANCH
 
 ENV PATH=/app/.venv/bin:/usr/local/bin/:/usr/bin:/bin \
-    BUILD_DATE=$BUILD_DATE \
-    GIT_SHA=$GIT_SHA \
-    VERSION=$VERSION \
-    BRANCH=$BRANCH \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    STATIC_URL="/static/" \
     PYTHONPATH=""\
-    PGSSLCERT="/tmp/postgresql.crt" \
-    UWSGI_PROCESSES=4
+    PGSSLCERT="/tmp/postgresql.crt"
 
-RUN <<EOF cat> /RELEASE
-{"version": "$VERSION",
- "commit": "$GIT_SHA",
- "date": "$BUILD_DATE",
-}
-EOF
+
 WORKDIR /app
 COPY docker/conf /conf/
 COPY docker/bin/* /usr/local/bin/
 COPY LICENSE.md README.md /
 COPY src /app/src/
-RUN rm -fr /app/src/
-
 
 COPY --chown=user:booking --from=production /app/.venv /app/.venv
 COPY --from=builder /usr/local/bin/uwsgi /usr/local/bin/uv /usr/local/bin/
+
 RUN --mount=type=cache,target=/root/.uv-cache \
     --mount=type=bind,source=uv.lock,target=/app/uv.lock \
     --mount=type=bind,source=pyproject.toml,target=/app/pyproject.toml \
     --mount=type=bind,source=MANIFEST.in,target=/app/MANIFEST.in \
     --mount=type=bind,source=README.md,target=/app/README.md \
     --mount=type=bind,source=./src/booking,target=/app/src/booking \
-    uv --cache-dir=/root/.uv-cache  pip install --link-mode=copy --no-deps .
+    uv --cache-dir=/root/.uv-cache  pip install --link-mode=copy --no-deps . \
+    && rm -fr /app/build
 
 
 EXPOSE 8000
-ENTRYPOINT exec docker-entrypoint.sh "$0" "$@"
+ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["run"]
 
 

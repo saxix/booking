@@ -1,0 +1,10 @@
+{% extends "layout.html" %}{% load i18n %}
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <table>
+            {{ form }}
+        </table>
+        <input class="button" type="submit" value="{% trans "Book" %}">
+    </form>
+{% endblock %}

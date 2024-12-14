@@ -8,6 +8,8 @@ if TYPE_CHECKING:
 CONFIG: "dict[str, ConfigItem]" = {
     "SUPERUSERS": (list, []),
     "DEBUG": (bool, False),
+    "SECRET_KEY": (str, None),
+    "STATIC_ROOT": (str, None),
 }
 
 env = Env(**CONFIG)

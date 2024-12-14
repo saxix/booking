@@ -1,12 +1,5 @@
 # envs to set before use this script
 .ONESHELL:
-
-#BASE?=$(shell echo "${VERSION}" | sed "s/\([0-9]*\)\.\([0-9]*\)\.\(.*\)/\1.\2/g" )
-VERSION := $(shell grep -m 1 version ../pyproject.toml | tr -s ' ' | tr -d '"' | tr -d "'" | cut -d' ' -f3)
-RELEASE = $(shell grep -m 1 version ../pyproject.toml | tr -s ' ' | tr -d '"' | tr -d "'" | cut -d' ' -f3)
-LOCK_CHECKSUM?=$(shell sha1sum ../uv.lock | awk '{print $$1}')
-LOCK_HASH?=$(shell echo ${LOCK_CHECKSUM} | cut -c 1-8)
-
 DOCKER_IMAGE_NAME?=saxix/booking
 
 CMD?=run
@@ -15,9 +8,6 @@ STAGE?=dist
 
 RUN_OPTIONS?=
 BUILD_OPTIONS?=
-
-BUILD_DATE:="$(shell date +"%Y-%m-%d %H:%M")"
-SOURCE_COMMIT=$(shell git rev-parse --short HEAD)
 
 .PHONY: help runlocal tests
 .DEFAULT_GOAL := help
@@ -46,15 +36,15 @@ help:
 			${BUILD_OPTIONS} \
 			-t ${DOCKER_IMAGE} \
 			-f docker/Dockerfile .
-	docker images | grep "${DOCKER_IMAGE_NAME}" | grep ${VERSION}-${STAGE}
+	docker images | grep "${DOCKER_IMAGE_NAME}"
 	docker inspect ${DOCKER_IMAGE} | jq -r '.[0].Config.Labels'
 
 build:
-	DOCKER_IMAGE=${DOCKER_IMAGE_NAME}:local \
+	DOCKER_IMAGE=${DOCKER_IMAGE_NAME}:latest \
 	$(MAKE) .build ## build image
 
 .build-stage:
-	DOCKER_IMAGE=${DOCKER_IMAGE_NAME}:${VERSION}-${STAGE} \
+	DOCKER_IMAGE=${DOCKER_IMAGE_NAME}:latest-${STAGE} \
 	$(MAKE) .build
 
 base_os:
@@ -88,26 +78,26 @@ build5: dist
 .run:
 	cd .. && docker run \
 	 		--rm \
-			-p 8000:8000 \
-			-e ALLOWED_HOSTS="*" \
+			-p 8001:8000 \
 			-e DATABASE_URL="${DATABASE_URL}" \
 			-e DEBUG="1" \
 			-e SECRET_KEY=liujhljhlkjhlkjhlkj \
 			-e SOCIAL_AUTH_REDIRECT_IS_HTTPS="False" \
-			-e SENTRY_DSN="${SENTRY_DSN}" \
-			-e SUPERUSERS="sax," \
+			-e GOOGLE_CLIENT_ID="${GOOGLE_CLIENT_ID}" \
+			-e GOOGLE_CLIENT_SECRET="${GOOGLE_CLIENT_SECRET}" \
+			-e SUPERUSERS="${SUPERUSERS}" \
 			${RUN_OPTIONS} \
 			-t ${DOCKER_IMAGE} \
 			${CMD}
 
 run:
-	DOCKER_IMAGE=${DOCKER_IMAGE_NAME}:${VERSION}-dist \
+	DOCKER_IMAGE=${DOCKER_IMAGE_NAME}:latest \
  	STAGE='dist' \
  	CMD='run' \
 	$(MAKE) .run
 
 .run-step:
-	DOCKER_IMAGE=${DOCKER_IMAGE_NAME}:${VERSION}-${STAGE} \
+	DOCKER_IMAGE=${DOCKER_IMAGE_NAME}:latest-${STAGE} \
 	RUN_OPTIONS="-it" \
  	CMD='/bin/bash' \
 	$(MAKE) .run
@@ -143,21 +133,21 @@ all: step1 step2 step3 step4 step5
 	$(MAKE) .run
 
 shell1:
-	DOCKER_IMAGE=${DOCKER_IMAGE_NAME}:${VERSION}-base_os \
+	DOCKER_IMAGE=${DOCKER_IMAGE_NAME}:latest-base_os \
 	$(MAKE) .shell
 
 shell2:
-	DOCKER_IMAGE=${DOCKER_IMAGE_NAME}:${VERSION}-builder \
+	DOCKER_IMAGE=${DOCKER_IMAGE_NAME}:latest-builder \
 	$(MAKE) .shell
 
 shell3:
-	DOCKER_IMAGE=${DOCKER_IMAGE_NAME}:${VERSION}-tests \
+	DOCKER_IMAGE=${DOCKER_IMAGE_NAME}:latest-tests \
 	$(MAKE) .shell
 
 shell4:
-	DOCKER_IMAGE=${DOCKER_IMAGE_NAME}:${VERSION}-production \
+	DOCKER_IMAGE=${DOCKER_IMAGE_NAME}:latest-production \
 	$(MAKE) .shell
 
 shell5:
-	DOCKER_IMAGE=${DOCKER_IMAGE_NAME}:${VERSION}-dist \
+	DOCKER_IMAGE=${DOCKER_IMAGE_NAME}:latest \
 	$(MAKE) .shell

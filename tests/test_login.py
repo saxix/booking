@@ -1,17 +1,13 @@
 from unittest import mock
 
-import pytest
 from django.conf import settings
 from django.test import override_settings
 from django.urls import reverse
-from factory.django import DjangoModelFactory
 
+import pytest
+
+from booking.utils.fixtures import UserFactory
 from booking.utils.pipeline import configure_user
-
-
-class UserFactory(DjangoModelFactory):
-    class Meta:
-        model = settings.AUTH_USER_MODEL
 
 
 @pytest.fixture
@@ -33,7 +29,7 @@ def test_login(db, client):
         url += "?code=2&state=1"
         mock_request.return_value.json.return_value = {"access_token": "123"}
         with mock.patch(
-                "django.contrib.sessions.backends.base.SessionBase" ".set_expiry", side_effect=[OverflowError, None]
+            "django.contrib.sessions.backends.base.SessionBase" ".set_expiry", side_effect=[OverflowError, None]
         ):
             response = client.get(url)
             assert response.status_code == 302

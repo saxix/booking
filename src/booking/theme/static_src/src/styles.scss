@@ -1,14 +1,36 @@
-.xxx{
-  @apply border border-red-700;
+header {
+  @apply w-full flex bg-amber-200 p-3;
 }
-aside{
-  div{
-  @apply p-3;
 
+aside {
+  div {
+    @apply p-3 w-full;
+  }
+
+  div:hover {
+    @apply bg-amber-400;
+  }
+
+  div.PropertyViewPropertyView, div.BookingViewBookingView, div.CreateBookViewCreateBookView {
+    @apply bg-amber-200;
+    &:hover {
+      @apply bg-amber-400
+    }
   }
 }
-.menu-item{
+
+form {
+
+  input[type=submit] {
+    @apply bg-amber-700 text-white py-2 px-4 rounded-md cursor-pointer;
+  }
+
+  input[type=text], input[type=number], {
+    @apply rounded-md;
+  }
+
 }
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

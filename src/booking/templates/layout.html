@@ -11,29 +11,42 @@
 
 <body class="bg-gray-50 font-serif leading-normal tracking-normal">
 {% block headeer %}
-    <div class="w-full flex bg-amber-100 p-3">
+    <header class="">
         <div class="text-2xl flex-grow">Booking</div>
-        <div class="text-2xl">{{ user }}</div>
-    </div>
+        <div class="text-xl">{{ user }}</div>
+    </header>
 {% endblock headeer %}
 
 {% block container %}
-    <div class="h-screen  mx-auto">
-        <div class="flex border-2 border-red">
-            <aside class="h-4/5 bg-amber-600">
-                <div class="menu-item">
-                    <a href="{% url "properties" %}">Properties</a>
-                </div>
-                <div class="menu-item">
-                    <a href="{% url "properties" %}">Booking</a>
-                </div>
-                <div>
-                    <a target="_admin" href="{% url "admin:index" %}">Admin</a>
-                </div>
-                <div>
-                    <a href="{% url "logout" %}">Logout</a>
-                </div>
+    <div class="h-screen mx-auto">
+        <div class="flex">
+            <aside class="h-4/5 w-36">
+                <a href="{% url "property-list" %}">
+                    <div class="PropertyView{{ active_view }}">
+                        Properties
+                    </div>
+                </a>
+                <a href="{% url "booking-list" %}">
+                    <div class="BookingView{{ active_view }} CreateBookView{{ active_view }}">
+                        Booking
+                    </div>
+                </a>
+                <a target="_admin" href="{% url "admin:index" %}">
+                    <div class="menu-item">
+                        Admin
+                    </div>
+                </a>
+                <a href="{% url "logout" %}">
+                    <div class="menu-item">
+                        Logout
+                    </div>
+                </a>
             </aside>
+            <div class="p-5">
+                {% block content %}
+                {% endblock %}
+            </div>
+
         </div>
 
     </div>

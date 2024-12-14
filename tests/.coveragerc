@@ -8,6 +8,7 @@ omit =
     **/asgi.py
     **/wsgi.py
     **/migrations/**
+    **/demo.py
 
 
 [report]

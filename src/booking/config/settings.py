@@ -9,13 +9,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-s^$6d@b(2s*d0vt!awz&ojg=(l_ony3&fvczt%hf8kq1dfi_y2"
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
 SUPERUSERS = env("SUPERUSERS")
 
-ALLOWED_HOSTS: list[str] = []
+ALLOWED_HOSTS: list[str] = ["*"]
 
 # Application definition
 
@@ -109,9 +109,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = env("STATIC_ROOT")
+
 LOGIN_REDIRECT_URL = "/"
-LOGIN_URL = "/"
-LOGOUT_URL = "/accounts/logout"
+LOGIN_URL = "/login/"
+LOGOUT_URL = "/logout/"
 LOGOUT_REDIRECT_URL = "/"
 
 # Default primary key field type

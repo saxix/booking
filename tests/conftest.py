@@ -1,27 +1,46 @@
-import os
 import sys
 from pathlib import Path
 from typing import TYPE_CHECKING
 
 import pytest
-from django.conf import settings
+from _pytest.fixtures import SubRequest
 
 if TYPE_CHECKING:
-    from django_webtest.pytest_plugin import MixinWithInstanceVariables
-    from booking.models import User
     from django_webtest import DjangoTestApp
+    from django_webtest.pytest_plugin import MixinWithInstanceVariables
+
+    from booking.models import User
 
 here = Path(__file__).parent
 sys.path.insert(0, str(here / "../src"))
 
 
-def pytest_configure():
-    pass
+@pytest.fixture
+def user(db):
+    from booking.utils.fixtures import UserFactory
+
+    return UserFactory()
+
+
+@pytest.fixture
+def place(db):
+    from booking.utils.fixtures import AccommodationFactory
+
+    return AccommodationFactory()
+
+
+@pytest.fixture
+def booking(request: SubRequest, place):
+    from booking.utils.fixtures import BookingFactory
+
+    app: "DjangoTestApp" = request.getfixturevalue("app")
+
+    return BookingFactory(property=place, customer=app._user)
 
 
 @pytest.fixture()
-def app(django_app_factory: "MixinWithInstanceVariables", admin_user: "User") -> "DjangoTestApp":
+def app(django_app_factory: "MixinWithInstanceVariables", user: "User") -> "DjangoTestApp":
     django_app = django_app_factory(csrf_checks=False)
-    django_app.set_user(admin_user)
-    django_app._user = admin_user
-    yield django_app
+    django_app.set_user(user)
+    django_app._user = user
+    return django_app
