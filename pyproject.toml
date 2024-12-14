@@ -1,0 +1,76 @@
+[project]
+name = "booking"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "django-concurrency>=2.5",
+    "django-environ>=0.11.2",
+    "django-social-auth>=0.7.28",
+    "django-tailwind>=3.6.0",
+    "django>=4.2.17",
+    "pip>=24.3.1",
+    "psycopg>=3.2.3",
+    "psycopg-binary>=3.2.3",
+    "social-auth-app-django>=5.4.2",
+    "django-constance>=4.1.3",
+    "django-stubs-ext>=5.1.1",
+    "mkdocs-material>=9.5.48",
+]
+
+[tool.uv]
+package = true
+
+dev-dependencies = [
+    "factory-boy>=3.3.1",
+    "pytest>=8.3.4",
+    "pytest-django>=4.9.0",
+    "pytest-echo>=1.7.3",
+    "black>=24.10.0",
+    "mypy>=1.13.0",
+    "isort>=5.13.2",
+    "flake8>=7.1.1",
+    "pre-commit>=4.0.1",
+    "pytest-coverage>=0.0",
+    "django-webtest>=1.9.12",
+]
+[project.optional-dependencies]
+docs = [
+    "mkdocs>=1.6.1",
+    "mkdocs-material>=9.5.36",
+    "mkdocs-awesome-pages-plugin>=2.9.3",
+    "mkdocstrings-python",
+    "mkdocs-gen-files>=0.5.0",
+]
+
+
+[tool.black]
+line-length = 120
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.pytest_cache
+  | \.tox
+  | \.venv
+  | ~build
+  | build
+  | ops
+  | migrations
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 120
+default_section = "THIRDPARTY"
+known_first_party = []
+known_django = "django"
+sections = ["FUTURE","STDLIB","DJANGO","THIRDPARTY","FIRSTPARTY","LOCALFOLDER"]
+include_trailing_comma = true
+skip = ["migrations", "snapshots", ".venv"]
+
+
+[tool.django-stubs]
+django_settings_module = "booking.config.settings"

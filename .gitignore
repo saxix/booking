@@ -1,0 +1,8 @@
+.*
+!.gitignore
+!.git
+!.github
+!.flake8
+dist
+*.egg-info
+!tests/.coveragerc

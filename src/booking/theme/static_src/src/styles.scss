@@ -1,0 +1,14 @@
+.xxx{
+  @apply border border-red-700;
+}
+aside{
+  div{
+  @apply p-3;
+
+  }
+}
+.menu-item{
+}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
