@@ -31,16 +31,18 @@
                         Booking
                     </div>
                 </a>
-                <a target="_admin" href="{% url "admin:index" %}">
-                    <div class="menu-item">
-                        Admin
-                    </div>
-                </a>
+                <span class="mt-72 p-0 block">
                 <a href="{% url "logout" %}">
                     <div class="menu-item">
                         Logout
                     </div>
                 </a>
+                <a target="_admin" href="{% url "admin:index" %}">
+                    <div class="menu-item">
+                        Admin
+                    </div>
+                </a>
+                    </span>
             </aside>
             <div class="p-5">
                 {% block content %}

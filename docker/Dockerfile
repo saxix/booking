@@ -102,7 +102,8 @@ RUN --mount=type=cache,target=/root/.uv-cache \
     --mount=type=bind,source=README.md,target=/app/README.md \
     --mount=type=bind,source=./src/booking,target=/app/src/booking \
     uv --cache-dir=/root/.uv-cache  pip install --link-mode=copy --no-deps . \
-    && rm -fr /app/build
+    && rm -fr /app/build \
+    && rm -fr /app/src \
 
 
 EXPOSE 8000

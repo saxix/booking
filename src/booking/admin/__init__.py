@@ -1,7 +1,12 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as _UserAdmin
 
-from booking.models import Accommodation, Booking, User
+from booking.models import Accommodation, Booking, User, Service
+
+
+@admin.register(User)
+class UserAdmin(_UserAdmin[User]):
+    search_fields = ("username",)
 
 
 @admin.register(Booking)
@@ -16,6 +21,6 @@ class AccommodationAdmin(admin.ModelAdmin[Accommodation]):
     list_display = ("name", "address", "price", "max_guests")
 
 
-@admin.register(User)
-class UserAdmin(_UserAdmin[User]):
-    search_fields = ("username",)
+@admin.register(Service)
+class ServiceAdmin(admin.ModelAdmin[Service]):
+    search_fields = ("name",)
