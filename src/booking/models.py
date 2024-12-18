@@ -25,22 +25,22 @@ class Service(BaseModel):
     def __str__(self):
         return self.name
 
-class Accommodation(BaseModel):
-    name = models.CharField(max_length=100)
+class Car(BaseModel):
     description = models.TextField()
-    address = models.CharField(max_length=255)
-    city = models.CharField(max_length=255)
+    model = models.CharField(max_length=255)
+    plate = models.CharField(max_length=10, default="")
+    image = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    max_guests = models.PositiveIntegerField()
-    is_available = models.BooleanField(default=True)
+    max_passenger = models.PositiveIntegerField()
+    in_service = models.BooleanField(default=True)
     services = models.ManyToManyField(Service)
 
     def __str__(self):
-        return self.name
+        return self.model
 
 
 class Booking(BaseModel):
-    property = models.ForeignKey(Accommodation, on_delete=models.CASCADE, related_name="bookings")
+    property = models.ForeignKey(Car, on_delete=models.CASCADE, related_name="bookings")
     customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bookings")
     start_date = models.DateField()
     end_date = models.DateField()
@@ -53,14 +53,14 @@ class Booking(BaseModel):
             ),
             models.CheckConstraint(
                 check=~(models.Q(start_date=models.F('end_date'))
-                        & models.Q(start_time_gt=models.F('end_time'))
+                        & models.Q(start_date__gt=models.F('end_date'))
                         ),
-                name='not_start_date_eq_end_date_and_start_time_gt_end_time'
+                name='not_start_date_eq_end_date_and_start_date_gt_end_date'
             ),
         ]
 
 class Feedback(BaseModel):
-    property = models.ForeignKey(Accommodation, on_delete=models.CASCADE, related_name="feedbacks")
+    property = models.ForeignKey(Car, on_delete=models.CASCADE, related_name="feedbacks")
     customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="feedbacks")
     rating = models.PositiveIntegerField()  # Ad esempio: da 1 a 5
     comment = models.TextField()

@@ -11,7 +11,7 @@ from django_webtest import DjangoTestApp
 from booking.exceptions import RecordChanged
 
 if TYPE_CHECKING:
-    from booking.models import Accommodation, Booking
+    from booking.models import Car, Booking
 
 
 def test_index(app: "DjangoTestApp"):
@@ -30,7 +30,7 @@ def test_book_list(app: "DjangoTestApp", booking: "Booking"):
     assert res.status_code == 200, res.location
 
 
-def test_book_create(app: "DjangoTestApp", place: "Accommodation"):
+def test_book_create(app: "DjangoTestApp", place: "Car"):
     url = reverse("booking-add", args=[place.pk])
     res = app.get(url)
     ver = place.version
@@ -77,7 +77,7 @@ def test_book_avoid_overlapping(app: "DjangoTestApp", booking: "Booking"):
     assert res.status_code == 200
     assert "Selected period is not available" in res.text
 
-def test_book_place_changed(app: "DjangoTestApp", place: "Accommodation"):
+def test_book_place_changed(app: "DjangoTestApp", place: "Car"):
     url = reverse("booking-add", args=[place.pk])
     res = app.get(url)
     place.price = 101.1

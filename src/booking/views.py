@@ -11,7 +11,7 @@ from django.views.generic import CreateView, DeleteView, ListView, TemplateView
 
 from booking.exceptions import PeriodNotAvailable, RecordChanged
 from booking.forms import CreateBookingForm
-from booking.models import Accommodation, Booking
+from booking.models import Car, Booking
 
 
 class CommonContextMixin:
@@ -24,9 +24,13 @@ class CommonContextMixin:
 class Index(CommonContextMixin, TemplateView):
     template_name = "index.html"
 
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        kwargs["models"] = list(Car.objects.values("model", "image", "pk", "price")[:4])
+        return super().get_context_data(**kwargs)
+
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseRedirect | HttpResponse:
-        if request.user.is_authenticated:
-            return HttpResponseRedirect(reverse("home"))
+        # if request.user.is_authenticated:
+        #     return HttpResponseRedirect(reverse("home"))
         return super().get(request, *args, **kwargs)
 
 
@@ -34,9 +38,10 @@ class Home(CommonContextMixin, LoginRequiredMixin, TemplateView):
     pass
 
 
-class AccommodationView(CommonContextMixin, LoginRequiredMixin, ListView):
-    template_name = "places.html"
-    queryset = Accommodation.objects.all()
+class FleetView(CommonContextMixin, ListView):
+    manager = False
+    template_name = "fleet.html"
+    queryset = Car.objects.all()
 
 
 class CancelBookView(CommonContextMixin, LoginRequiredMixin, DeleteView):
@@ -59,27 +64,27 @@ class CreateBookView(CommonContextMixin, LoginRequiredMixin, CreateView):
     success_url = reverse_lazy("booking-list")
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-        kwargs["property"] = self.selected_place
+        kwargs["car"] = self.selected_car
         return super().get_context_data(**kwargs)
 
     @cached_property
-    def selected_place(self) -> Accommodation:
-        return Accommodation.objects.get(pk=self.kwargs["property"])
+    def selected_car(self) -> Car:
+        return Car.objects.get(pk=self.kwargs["car"])
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs["place"] = self.selected_place
+        kwargs["car"] = self.selected_car
         return kwargs
 
     def get_initial(self) -> dict[str, Any]:
         return {
             "start_date": timezone.now(),
-            "place_version": self.selected_place.version,
+            "car_version": self.selected_car.version,
             "end_date": timezone.now(),
         }
 
     def form_valid(self, form: ModelForm) -> HttpResponseRedirect | HttpResponse:
-        form.instance.property = self.selected_place
+        form.instance.property = self.selected_car
         form.instance.customer = self.request.user
         return super().form_valid(form)
 
@@ -98,6 +103,7 @@ class CreateBookView(CommonContextMixin, LoginRequiredMixin, CreateView):
 
 class BookingView(CommonContextMixin, LoginRequiredMixin, ListView):
     template_name = "bookings.html"
+    manager = False
 
     def get_queryset(self) -> QuerySet[Booking]:
         return Booking.objects.filter(customer=self.request.user)

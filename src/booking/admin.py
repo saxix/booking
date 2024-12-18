@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as _UserAdmin
 
-from booking.models import Accommodation, Booking, User, Service
+from booking.models import Car, Booking, User, Service
 
 
 @admin.register(User)
@@ -15,10 +15,10 @@ class BookingAdmin(admin.ModelAdmin[Booking]):
     autocomplete_fields = ["customer", "property"]
 
 
-@admin.register(Accommodation)
-class AccommodationAdmin(admin.ModelAdmin[Accommodation]):
-    search_fields = ("name",)
-    list_display = ("name", "address", "price", "max_guests")
+@admin.register(Car)
+class CarAdmin(admin.ModelAdmin[Car]):
+    search_fields = ("model",)
+    list_display = ("model", "image", "price", "max_passenger", "in_service")
 
 
 @admin.register(Service)

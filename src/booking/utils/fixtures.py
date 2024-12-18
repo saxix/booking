@@ -5,9 +5,10 @@ from django.conf import settings
 
 import factory
 import factory.fuzzy
+from django.utils.text import slugify
 from factory.django import DjangoModelFactory
 
-from booking.models import Accommodation, Booking, Service
+from booking.models import Car, Booking, Service
 
 
 class UserFactory(DjangoModelFactory):
@@ -17,21 +18,20 @@ class UserFactory(DjangoModelFactory):
         model = settings.AUTH_USER_MODEL
 
 
-class AccommodationFactory(DjangoModelFactory):
-    name = factory.Faker("first_name")
-    address = factory.Faker("address")
-    city = factory.Faker("city")
-    description = factory.Faker("text")
+class CarFactory(DjangoModelFactory):
+    model = factory.Iterator(["Audi A5", "Mercedes Coupe SL", "Mercedes S450", "Tesla Model S", "Bmw Sedane"])
+    image = factory.LazyAttribute(lambda o: f"{slugify(o.model)}.png")
+    plate = factory.Faker("license_plate")
     price = factory.fuzzy.FuzzyDecimal(low=30.0, high=130.0, precision=2)
-    max_guests = factory.Faker("pyint", min_value=1, max_value=5)
+    max_passenger = factory.Faker("pyint", min_value=1, max_value=5)
 
     class Meta:
-        model = Accommodation
+        model = Car
 
 
 class BookingFactory(DjangoModelFactory):
     customer = factory.SubFactory(UserFactory)
-    property = factory.SubFactory(AccommodationFactory)
+    property = factory.SubFactory(CarFactory)
     start_date = factory.fuzzy.FuzzyDate(date(2025, 1, 1), date(2025, 8, 1))
     end_date = factory.LazyAttribute(lambda i: i.start_date + timedelta(days=randint(1, 10)))
     total_price = factory.fuzzy.FuzzyDecimal(low=30.0, high=130.0, precision=2)

@@ -11,8 +11,8 @@ class Command(BaseCommand):
     requires_system_checks = []
 
     def handle(self, *args: Any, **options: Any) -> None:  # noqa
-        from booking.utils.fixtures import Accommodation, AccommodationFactory, ServiceFactory
+        from booking.utils.fixtures import Car, CarFactory, ServiceFactory
 
-        Accommodation.objects.all().delete()
+        Car.objects.all().delete()
+        CarFactory.create_batch(5)
         ServiceFactory.create_batch(10)
-        AccommodationFactory.create_batch(10)

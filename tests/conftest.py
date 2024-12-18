@@ -24,9 +24,9 @@ def user(db):
 
 @pytest.fixture
 def place(db):
-    from booking.utils.fixtures import AccommodationFactory
+    from booking.utils.fixtures import CarFactory
 
-    return AccommodationFactory()
+    return CarFactory()
 
 
 @pytest.fixture
