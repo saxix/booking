@@ -15,13 +15,13 @@ dependencies = [
     "social-auth-app-django>=5.4.2",
     "django-constance>=4.1.3",
     "django-stubs-ext>=5.1.1",
+    "factory-boy>=3.3.1",  # here to create demo data
 ]
 
 [tool.uv]
 package = true
 
 dev-dependencies = [
-    "factory-boy>=3.3.1",
     "pytest>=8.3.4",
     "pytest-django>=4.9.0",
     "pytest-echo>=1.7.3",

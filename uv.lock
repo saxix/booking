@@ -92,6 +92,7 @@ dependencies = [
     { name = "django-environ" },
     { name = "django-stubs-ext" },
     { name = "django-tailwind" },
+    { name = "factory-boy" },
     { name = "pip" },
     { name = "psycopg" },
     { name = "psycopg-binary" },
@@ -111,7 +112,6 @@ docs = [
 dev = [
     { name = "black" },
     { name = "django-webtest" },
-    { name = "factory-boy" },
     { name = "flake8" },
     { name = "isort" },
     { name = "mypy" },
@@ -131,6 +131,7 @@ requires-dist = [
     { name = "django-environ", specifier = ">=0.11.2" },
     { name = "django-stubs-ext", specifier = ">=5.1.1" },
     { name = "django-tailwind", specifier = ">=3.6.0" },
+    { name = "factory-boy", specifier = ">=3.3.1" },
     { name = "mkdocs", marker = "extra == 'docs'", specifier = ">=1.6.1" },
     { name = "mkdocs-awesome-pages-plugin", marker = "extra == 'docs'", specifier = ">=2.9.3" },
     { name = "mkdocs-gen-files", marker = "extra == 'docs'", specifier = ">=0.5.0" },
@@ -146,7 +147,6 @@ requires-dist = [
 dev = [
     { name = "black", specifier = ">=24.10.0" },
     { name = "django-webtest", specifier = ">=1.9.12" },
-    { name = "factory-boy", specifier = ">=3.3.1" },
     { name = "flake8", specifier = ">=7.1.1" },
     { name = "isort", specifier = ">=5.13.2" },
     { name = "mypy", specifier = ">=1.13.0" },

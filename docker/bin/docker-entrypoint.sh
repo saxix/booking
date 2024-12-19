@@ -9,6 +9,7 @@ mkdir -p ${STATIC_ROOT}
 case "$1" in
     run)
       django-admin migrate --no-input
+      django-admin demo
       django-admin collectstatic --no-input
       set -- tini -- "$@"
 	    set -- uwsgi --http :8000 \
