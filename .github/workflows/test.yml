@@ -135,6 +135,10 @@ jobs:
               --network host \
               -e PYTHONPATH=/app/src \
               -e DATABASE_URL=${DATABASE_URL} \
+              -e GOOGLE_CLIENT_ID=google-id \
+              -e GOOGLE_CLIENT_SECRET=google-secret \
+              -e ADMINS=admin@example.com \
+              -e SUPERUSERS=admin@example.com \
               -e SECRET_KEY=super-secret-key-just-for-testing \
               -v "./output/:/app/output" \
               -v "./src/:/app/src" \
