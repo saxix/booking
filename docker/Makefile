@@ -154,4 +154,5 @@ shell5:
 
 push:
 	docker push ${DOCKER_IMAGE_NAME}:latest
+	docker push ${DOCKER_IMAGE_NAME}:main
 	railway up
