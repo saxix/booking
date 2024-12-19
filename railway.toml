@@ -1,0 +1,11 @@
+[build]
+
+builder = "DOCKERFILE"
+dockerfilePath = "./docker/Dockerfile"
+watchPatterns = [
+    "pyproject.toml",
+    "uv.lock",
+    "src/**",
+    "railway.toml",
+    "Dockerfile",
+]
