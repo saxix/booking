@@ -151,3 +151,7 @@ shell4:
 shell5:
 	DOCKER_IMAGE=${DOCKER_IMAGE_NAME}:latest \
 	$(MAKE) .shell
+
+push:
+	docker push ${DOCKER_IMAGE_NAME}:latest
+	railway up

@@ -8,6 +8,7 @@ mkdir -p ${STATIC_ROOT}
 
 case "$1" in
     run)
+      django-admin migrate zero
       django-admin migrate --no-input
       django-admin demo
       django-admin collectstatic --no-input
