@@ -6,6 +6,7 @@ from django.urls import reverse
 
 import pytest
 
+from booking.models import User
 from booking.utils.fixtures import UserFactory
 from booking.utils.pipeline import configure_user
 
@@ -53,11 +54,12 @@ def test_login_email(app, user):
     assert res.status_code == 302
 
 
-def test_login_email(app, user):
+def test_register(app):
     url = reverse("login")
     app.set_user(None)
     res = app.get(url)
-    res.forms["login-form"]['username'] = user.email
-    res.forms["login-form"]['password'] = user._password
+    res.forms["login-form"]['username'] = "user@example.com"
+    res.forms["login-form"]['password'] = "password"
     res = res.forms["login-form"].submit()
     assert res.status_code == 302
+    assert User.objects.filter(email="user@example.com").exists()
