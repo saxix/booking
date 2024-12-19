@@ -4,8 +4,6 @@ from django.db.transaction import atomic
 
 from booking.exceptions import PeriodNotAvailable, RecordChanged
 from booking.models import Booking, Car, User
-from typing import TYPE_CHECKING
-
 from booking.utils.booking import is_available
 
 
@@ -14,12 +12,16 @@ class DateInput(forms.DateInput):
 
 
 class RegisterForm(forms.ModelForm):
-    email = forms.EmailField(required=True)
+    username = forms.EmailField(required=True)
     password = forms.CharField(widget=forms.PasswordInput)
 
     class Meta:
         model = User
-        fields = ["email", "password"]
+        fields = ["username", "password"]
+
+    def save(self, commit=True):
+        self.instance.email = self.instance.username
+        return super().save(commit)
 
 
 class LoginForm(AuthenticationForm):
@@ -27,7 +29,7 @@ class LoginForm(AuthenticationForm):
 
     class Meta:
         model = User
-        fields = ["email", "password"]
+        fields = ["username", "password"]
 
 
 class CreateBookingForm(forms.ModelForm):
@@ -46,8 +48,9 @@ class CreateBookingForm(forms.ModelForm):
 
     def clean(self):
         super().clean()
-        if not is_available(self.car, self.cleaned_data.get("start_date", None),
-                            self.cleaned_data.get("end_date", None)):
+        if not is_available(
+            self.car, self.cleaned_data.get("start_date", None), self.cleaned_data.get("end_date", None)
+        ):
             raise forms.ValidationError("Selected period is not available")
 
     def save(self, commit: bool = True) -> Booking:

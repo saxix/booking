@@ -1,6 +1,6 @@
 from datetime import date
 
-from booking.models import Car, Booking
+from booking.models import Booking, Car
 
 
 def is_available(car: Car, start: date, end: date) -> bool:

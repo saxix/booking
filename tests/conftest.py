@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from django_webtest import DjangoTestApp
     from django_webtest.pytest_plugin import MixinWithInstanceVariables
 
-    from booking.models import User, Car
+    from booking.models import Car, User
 
 here = Path(__file__).parent
 sys.path.insert(0, str(here / "../src"))

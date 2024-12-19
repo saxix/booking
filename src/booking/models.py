@@ -50,14 +50,11 @@ class Booking(BaseModel):
     class Meta:
         constraints = [
             models.CheckConstraint(
-                check=(models.Q(start_date__lte=models.F('end_date'))),
-                name='start_date_lte_end_date'
+                check=(models.Q(start_date__lte=models.F("end_date"))), name="start_date_lte_end_date"
             ),
             models.CheckConstraint(
-                check=~(models.Q(start_date=models.F('end_date'))
-                        & models.Q(start_date__gt=models.F('end_date'))
-                        ),
-                name='not_start_date_eq_end_date_and_start_date_gt_end_date'
+                check=~(models.Q(start_date=models.F("end_date")) & models.Q(start_date__gt=models.F("end_date"))),
+                name="not_start_date_eq_end_date_and_start_date_gt_end_date",
             ),
         ]
 

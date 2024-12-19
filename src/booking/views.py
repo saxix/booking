@@ -5,14 +5,14 @@ from django.contrib.auth.views import LoginView as LoginView_
 from django.db.models import QuerySet
 from django.forms import ModelForm
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from django.utils import timezone
 from django.utils.functional import cached_property
-from django.views.generic import CreateView, DeleteView, ListView, TemplateView, FormView
+from django.views.generic import CreateView, DeleteView, ListView, TemplateView
 
-from booking.exceptions import PeriodNotAvailable, RecordChanged
-from booking.forms import CreateBookingForm, RegisterForm, LoginForm
-from booking.models import Car, Booking
+from booking.exceptions import RecordChanged
+from booking.forms import CreateBookingForm, LoginForm, RegisterForm
+from booking.models import Booking, Car
 
 
 class CommonContextMixin:
@@ -22,13 +22,14 @@ class CommonContextMixin:
         return super().get_context_data(**kwargs)
 
 
-class RegisterView(CommonContextMixin, FormView):
+class RegisterView(CommonContextMixin, CreateView):
     template_name = "register.html"
     form_class = RegisterForm
+    success_url = reverse_lazy("index")
 
 
 class LoginView(CommonContextMixin, LoginView_):
-    template_name = 'login.html'
+    template_name = "login.html"
     form_class = LoginForm
 
 

@@ -1,22 +1,31 @@
-from datetime import datetime, timedelta, date
+from datetime import date, timedelta
 from random import randint
 
 from django.conf import settings
-
-import factory
-import factory.fuzzy
 from django.utils.text import slugify
+
+import factory.fuzzy
 from factory.django import DjangoModelFactory
 
-from booking.models import Car, Booking, Service
+from booking.models import Booking, Car, Service
 
 
 class UserFactory(DjangoModelFactory):
-    username = factory.Sequence(lambda n: "name-{n}".format(n=n))
-    password = factory.django.Password("password")
+    username = factory.Sequence(lambda n: "name-{n}@example.com".format(n=n))
+    email = factory.Sequence(lambda n: "name-{n}@example.com".format(n=n))
+    password = "password"
 
     class Meta:
         model = settings.AUTH_USER_MODEL
+
+    @classmethod
+    def _create(cls, model_class, *args, **kwargs):
+        """Create an instance of the model, and save it to the database."""
+        if cls._meta.django_get_or_create:
+            return cls._get_or_create(model_class, *args, **kwargs)
+
+        manager = cls._get_manager(model_class)
+        return manager.create_user(*args, **kwargs)  # Just user the create_user method recommended by Django
 
 
 MODELS = ["Audi A5", "Mercedes Coupe SL", "Mercedes S450", "Tesla Model S", "Bmw Sedane", "Range-Rover"]

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as _UserAdmin
 
-from booking.models import Car, Booking, User, Service
+from booking.models import Booking, Car, Service, User
 
 
 @admin.register(User)

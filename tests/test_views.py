@@ -3,15 +3,15 @@ from typing import TYPE_CHECKING
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse
+from django.utils import timezone
 
 import pytest
-from django.utils import timezone
 from django_webtest import DjangoTestApp
 
 from booking.exceptions import RecordChanged
 
 if TYPE_CHECKING:
-    from booking.models import Car, Booking
+    from booking.models import Booking, Car
 
 
 def test_index(app: "DjangoTestApp"):

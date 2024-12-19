@@ -48,18 +48,18 @@ def test_login_email(app, user):
     url = reverse("login")
     app.set_user(None)
     res = app.get(url)
-    res.forms["login-form"]['username'] = user.email
-    res.forms["login-form"]['password'] = user._password
+    res.forms["login-form"]["username"] = user.username
+    res.forms["login-form"]["password"] = "password"
     res = res.forms["login-form"].submit()
     assert res.status_code == 302
 
 
 def test_register(app):
-    url = reverse("login")
+    url = reverse("register")
     app.set_user(None)
     res = app.get(url)
-    res.forms["login-form"]['username'] = "user@example.com"
-    res.forms["login-form"]['password'] = "password"
-    res = res.forms["login-form"].submit()
+    res.forms["register-form"]["username"] = "user@example.com"
+    res.forms["register-form"]["password"] = "password"
+    res = res.forms["register-form"].submit()
     assert res.status_code == 302
-    assert User.objects.filter(email="user@example.com").exists()
+    assert User.objects.filter(email="user@example.com", username="user@example.com").exists()
