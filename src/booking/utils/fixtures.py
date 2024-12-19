@@ -13,13 +13,17 @@ from booking.models import Car, Booking, Service
 
 class UserFactory(DjangoModelFactory):
     username = factory.Sequence(lambda n: "name-{n}".format(n=n))
+    password = factory.django.Password("password")
 
     class Meta:
         model = settings.AUTH_USER_MODEL
 
 
+MODELS = ["Audi A5", "Mercedes Coupe SL", "Mercedes S450", "Tesla Model S", "Bmw Sedane", "Range-Rover"]
+
+
 class CarFactory(DjangoModelFactory):
-    model = factory.Iterator(["Audi A5", "Mercedes Coupe SL", "Mercedes S450", "Tesla Model S", "Bmw Sedane"])
+    model = factory.Iterator(MODELS)
     image = factory.LazyAttribute(lambda o: f"{slugify(o.model)}.png")
     plate = factory.Faker("license_plate")
     price = factory.fuzzy.FuzzyDecimal(low=30.0, high=130.0, precision=2)
@@ -31,7 +35,7 @@ class CarFactory(DjangoModelFactory):
 
 class BookingFactory(DjangoModelFactory):
     customer = factory.SubFactory(UserFactory)
-    property = factory.SubFactory(CarFactory)
+    car = factory.SubFactory(CarFactory)
     start_date = factory.fuzzy.FuzzyDate(date(2025, 1, 1), date(2025, 8, 1))
     end_date = factory.LazyAttribute(lambda i: i.start_date + timedelta(days=randint(1, 10)))
     total_price = factory.fuzzy.FuzzyDecimal(low=30.0, high=130.0, precision=2)

@@ -11,8 +11,8 @@ class UserAdmin(_UserAdmin[User]):
 
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin[Booking]):
-    list_display = ("property", "customer", "start_date", "end_date")
-    autocomplete_fields = ["customer", "property"]
+    list_display = ("car", "customer", "start_date", "end_date")
+    autocomplete_fields = ["customer", "car"]
 
 
 @admin.register(Car)

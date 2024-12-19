@@ -1,16 +1,17 @@
 from typing import Any, Optional
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView as LoginView_
 from django.db.models import QuerySet
 from django.forms import ModelForm
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.utils.functional import cached_property
-from django.views.generic import CreateView, DeleteView, ListView, TemplateView
+from django.views.generic import CreateView, DeleteView, ListView, TemplateView, FormView
 
 from booking.exceptions import PeriodNotAvailable, RecordChanged
-from booking.forms import CreateBookingForm
+from booking.forms import CreateBookingForm, RegisterForm, LoginForm
 from booking.models import Car, Booking
 
 
@@ -19,6 +20,16 @@ class CommonContextMixin:
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         kwargs["active_view"] = self.__class__.__name__
         return super().get_context_data(**kwargs)
+
+
+class RegisterView(CommonContextMixin, FormView):
+    template_name = "register.html"
+    form_class = RegisterForm
+
+
+class LoginView(CommonContextMixin, LoginView_):
+    template_name = 'login.html'
+    form_class = LoginForm
 
 
 class Index(CommonContextMixin, TemplateView):
@@ -48,7 +59,6 @@ class CancelBookView(CommonContextMixin, LoginRequiredMixin, DeleteView):
     template_name = "book_delete.html"
     pk_url_kwarg = "book"
     success_url = reverse_lazy("booking-list")
-
 
     def get_queryset(self) -> QuerySet[Booking]:
         return Booking.objects.filter(customer=self.request.user)
@@ -84,7 +94,7 @@ class CreateBookView(CommonContextMixin, LoginRequiredMixin, CreateView):
         }
 
     def form_valid(self, form: ModelForm) -> HttpResponseRedirect | HttpResponse:
-        form.instance.property = self.selected_car
+        form.instance.car = self.selected_car
         form.instance.customer = self.request.user
         return super().form_valid(form)
 

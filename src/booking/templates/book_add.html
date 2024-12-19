@@ -10,20 +10,20 @@
     {#    </form>#}
 
     <!-- https://gist.github.com/goodreds/5b8a4a2bf11ff67557d38c5e727ea86c -->
-<div class="flex items-center text-center mt-10 mb-8 ">
+    <div class="flex items-center text-center mt-10 mb-8 ">
         <h1 class="m-auto text-2xl"> Book a Rent</h1>
-</div>
+    </div>
     <div
             class="max-w-2xl mx-4 sm:max-w-sm md:max-w-sm lg:max-w-sm xl:max-w-xl sm:mx-auto md:mx-auto lg:mx-auto xl:mx-auto bg-white shadow-xl rounded-lg text-gray-900">
         <div class="rounded-t-lg h-56 overflow-hidden">
             <img class="object-cover object-top w-full"
                  src='{% static car.image %}'
-{#                 src='{% static 'mountain.jpg' %}'#}
+                    {#                 src='{% static 'mountain.jpg' %}'#}
                  alt='Mountain'>
         </div>
-{#        <div class="mx-auto w-32 h-32 relative -mt-16 border-4 border-white rounded-full overflow-hidden">#}
-{#            <img class="object-cover object-center h-56" src='{% static car.image %}' alt='{{ car.model }}'>#}
-{#        </div>#}
+        {#        <div class="mx-auto w-32 h-32 relative -mt-16 border-4 border-white rounded-full overflow-hidden">#}
+        {#            <img class="object-cover object-center h-56" src='{% static car.image %}' alt='{{ car.model }}'>#}
+        {#        </div>#}
         <div class="text-center mt-2">
             <h2 class="font-semibold">{{ car }}</h2>
             <p class="text-gray-500">{{ car.price }}</p>
@@ -52,15 +52,19 @@
         {#        </li>#}
         {#    </ul>#}
         <div class="">
-            <form method="post" class="mt-10 ">
+            <form method="post" class="mt-10 " id="booking-form">
                 {% csrf_token %}
                 <div class="p-4 border-t mx-8 mt-2 flax items-center">
                     {{ form.car_version }}
-{#                    <div>{{ form.errors }}</div>#}
-{#                    <div>{{ form.non_field_errors }}</div>#}
-{#                    <div>{{ form.start_date.errors }}</div>#}
-                    <div class="inline-flex"> {{ form.start_date }}</div>
-                    <div class="inline-flex"> {{ form.end_date }}</div>
+                    {{ form.non_field_errors }}
+                    <div class="mt-4">
+                        <div class="mx-auto w-1/2 self-center">
+                        <label class="block w-10 text-gray-700 text-sm font-bold mb-2">{% trans "From" %}</label>
+                        {{ form.start_date }}
+                        <label class="block w-10 text-gray-700 text-sm font-bold mb-2 mt-4">{% trans "To" %}</label>
+                        {{ form.end_date }}
+                            </div>
+                    </div>
                 </div>
                 <div class="p-4 border-t mx-8 mt-2">
                     <button type="submit"

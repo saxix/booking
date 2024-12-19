@@ -41,3 +41,23 @@ def test_pipeline(user, settings):
     configure_user(user)
     user.refresh_from_db()
     assert user.is_superuser
+
+
+def test_login_email(app, user):
+    url = reverse("login")
+    app.set_user(None)
+    res = app.get(url)
+    res.forms["login-form"]['username'] = user.email
+    res.forms["login-form"]['password'] = user._password
+    res = res.forms["login-form"].submit()
+    assert res.status_code == 302
+
+
+def test_login_email(app, user):
+    url = reverse("login")
+    app.set_user(None)
+    res = app.get(url)
+    res.forms["login-form"]['username'] = user.email
+    res.forms["login-form"]['password'] = user._password
+    res = res.forms["login-form"].submit()
+    assert res.status_code == 302

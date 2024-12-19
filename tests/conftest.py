@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from django_webtest import DjangoTestApp
     from django_webtest.pytest_plugin import MixinWithInstanceVariables
 
-    from booking.models import User
+    from booking.models import User, Car
 
 here = Path(__file__).parent
 sys.path.insert(0, str(here / "../src"))
@@ -23,19 +23,19 @@ def user(db):
 
 
 @pytest.fixture
-def place(db):
+def car(db):
     from booking.utils.fixtures import CarFactory
 
     return CarFactory()
 
 
 @pytest.fixture
-def booking(request: SubRequest, place):
+def booking(request: SubRequest, car: "Car"):
     from booking.utils.fixtures import BookingFactory
 
     app: "DjangoTestApp" = request.getfixturevalue("app")
 
-    return BookingFactory(property=place, customer=app._user)
+    return BookingFactory(car=car, customer=app._user)
 
 
 @pytest.fixture()

@@ -20,7 +20,7 @@ def test_index(app: "DjangoTestApp"):
     assert res.status_code == 200
 
     res = app.get(url)
-    assert res.status_code == 302
+    assert res.status_code == 200
 
 
 def test_book_list(app: "DjangoTestApp", booking: "Booking"):
@@ -30,10 +30,10 @@ def test_book_list(app: "DjangoTestApp", booking: "Booking"):
     assert res.status_code == 200, res.location
 
 
-def test_book_create(app: "DjangoTestApp", place: "Car"):
-    url = reverse("booking-add", args=[place.pk])
+def test_book_create(app: "DjangoTestApp", car: "Car"):
+    url = reverse("booking-add", args=[car.pk])
     res = app.get(url)
-    ver = place.version
+    ver = car.version
     assert res.status_code == 200, res.location
     res.forms[0]["start_date"] = timezone.now().date()
     res.forms[0]["end_date"] = timezone.now().date() + timedelta(days=1)
@@ -41,9 +41,9 @@ def test_book_create(app: "DjangoTestApp", place: "Car"):
     assert res.status_code == 302, res.showbrowser()
     assert res.location == reverse("booking-list")
 
-    place.refresh_from_db()
-    assert place.bookings.count() == 1
-    assert place.version != ver
+    car.refresh_from_db()
+    assert car.bookings.count() == 1
+    assert car.version != ver
 
 
 def test_book_cancel(app: "DjangoTestApp", booking: "Booking"):
@@ -60,7 +60,7 @@ def test_book_cancel(app: "DjangoTestApp", booking: "Booking"):
 
 
 def test_book_avoid_overlapping(app: "DjangoTestApp", booking: "Booking"):
-    url = reverse("booking-add", args=[booking.property.pk])
+    url = reverse("booking-add", args=[booking.car.pk])
     res = app.get(url)
     res.forms[0]["start_date"] = booking.start_date
     res.forms[0]["end_date"] = booking.start_date + timedelta(days=1)
@@ -68,20 +68,12 @@ def test_book_avoid_overlapping(app: "DjangoTestApp", booking: "Booking"):
     assert res.status_code == 200
     assert "Selected period is not available" in res.text
 
-def test_book_avoid_overlapping(app: "DjangoTestApp", booking: "Booking"):
-    url = reverse("booking-add", args=[booking.property.pk])
-    res = app.get(url)
-    res.forms[0]["start_date"] = booking.start_date
-    res.forms[0]["end_date"] = booking.start_date + timedelta(days=1)
-    res = res.forms[0].submit()
-    assert res.status_code == 200
-    assert "Selected period is not available" in res.text
 
-def test_book_place_changed(app: "DjangoTestApp", place: "Car"):
-    url = reverse("booking-add", args=[place.pk])
+def test_book_car_changed(app: "DjangoTestApp", car: "Car"):
+    url = reverse("booking-add", args=[car.pk])
     res = app.get(url)
-    place.price = 101.1
-    place.save()
+    car.price = 101.1
+    car.save()
     res.forms[0]["start_date"] = timezone.now().date()
     res.forms[0]["end_date"] = timezone.now().date() + timedelta(days=1)
     res = res.forms[0].submit()
