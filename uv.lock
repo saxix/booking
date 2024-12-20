@@ -111,6 +111,7 @@ docs = [
 [package.dev-dependencies]
 dev = [
     { name = "black" },
+    { name = "django-browser-reload" },
     { name = "django-webtest" },
     { name = "flake8" },
     { name = "isort" },
@@ -146,6 +147,7 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "black", specifier = ">=24.10.0" },
+    { name = "django-browser-reload", specifier = ">=1.17.0" },
     { name = "django-webtest", specifier = ">=1.9.12" },
     { name = "flake8", specifier = ">=7.1.1" },
     { name = "isort", specifier = ">=5.13.2" },
@@ -500,6 +502,19 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/63/58/709978ddf7e9393c0a89b57a5edbd764ee76eeea68697af3f77f3820980b/Django-4.2.17.tar.gz", hash = "sha256:6b56d834cc94c8b21a8f4e775064896be3b4a4ca387f2612d4406a5927cd2fdc", size = 10437674 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/5e/85/457360cb3de496382e35db4c2af054066df5c40e26df31400d0109a0500c/Django-4.2.17-py3-none-any.whl", hash = "sha256:3a93350214ba25f178d4045c0786c61573e7dbfa3c509b3551374f1e11ba8de0", size = 7993390 },
+]
+
+[[package]]
+name = "django-browser-reload"
+version = "1.17.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "asgiref" },
+    { name = "django" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/9f/bc/3c67f7daca53b826ec51888576fe5e117d9442d2d0acb58f4264d48b9dba/django_browser_reload-1.17.0.tar.gz", hash = "sha256:3667939cde0eee1a6d698dbe3b78cf10b573dabc4e711fb7933f1ba91fb98da4", size = 14312 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/7f/8f/62fc4fbf5c05c2210e6cb616f1c2a3da53871dfecbaa4c44b1f482ca3e8f/django_browser_reload-1.17.0-py3-none-any.whl", hash = "sha256:d372c12c1c5962c02279a53cac7e8a020c48f104592c637a06d0768b28d2d6be", size = 12228 },
 ]
 
 [[package]]

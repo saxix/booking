@@ -23,6 +23,20 @@ def test_index(app: "DjangoTestApp"):
     assert res.status_code == 200
 
 
+def test_fleet(app: "DjangoTestApp", car: "Car"):
+    url = reverse("car-list")
+    res = app.get(url)
+    assert res.status_code == 200, res.location
+    res = app.get(url)
+    assert res.status_code == 200, res.location
+
+
+def test_healthcheck(app: "DjangoTestApp", car: "Car"):
+    url = reverse("healthcheck")
+    res = app.get(url)
+    assert res.status_code == 200, res.location
+
+
 def test_book_list(app: "DjangoTestApp", booking: "Booking"):
     url = reverse("booking-list")
     res = app.get(url)

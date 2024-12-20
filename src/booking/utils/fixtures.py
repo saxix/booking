@@ -1,13 +1,15 @@
 from datetime import date, timedelta
 from random import randint
+from typing import Any
 
 from django.conf import settings
+from django.db.models import Model
 from django.utils.text import slugify
 
 import factory.fuzzy
 from factory.django import DjangoModelFactory
 
-from booking.models import Booking, Car, Service
+from booking.models import Booking, Car, Service, User
 
 
 class UserFactory(DjangoModelFactory):
@@ -19,7 +21,7 @@ class UserFactory(DjangoModelFactory):
         model = settings.AUTH_USER_MODEL
 
     @classmethod
-    def _create(cls, model_class, *args, **kwargs):
+    def _create(cls, model_class: "Model", *args: Any, **kwargs: Any) -> "User":
         """Create an instance of the model, and save it to the database."""
         if cls._meta.django_get_or_create:
             return cls._get_or_create(model_class, *args, **kwargs)

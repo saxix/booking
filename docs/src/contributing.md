@@ -10,6 +10,7 @@ Install [uv](https://docs.astral.sh/uv/)
     uv sync --all-extras
     pre-commit install --hook-type pre-commit --hook-type pre-push
 
+
 ## Tailwind CSS
 
 This project uses [django-tailwind](https://django-tailwind.readthedocs.io/en/latest/installation.html) to manage
@@ -33,6 +34,8 @@ If you need to edit the CSS follow the below steps:
 
         ./manage.py tailwind start
 
+Any changes to the .scss will trigger the .css compilation, followed by the browser reloading the page. 
+Any changes to any other file will trigger the browser page reload.
 
 
 ## Run tests
@@ -40,12 +43,10 @@ If you need to edit the CSS follow the below steps:
     pytests tests
 
 
-
 ## Run local server
 
 
     ./manage.py runserver
-
 
 
 ## Docker compose

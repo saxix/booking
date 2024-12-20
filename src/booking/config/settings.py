@@ -30,19 +30,19 @@ INSTALLED_APPS = [
     "social_django",
     "booking.theme",
     "booking",
+    *env("EXTRA_APPS"),
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.cache.UpdateCacheMiddleware",
-    'django.middleware.locale.LocaleMiddleware',
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.cache.FetchFromCacheMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    *env("EXTRA_MIDDLEWARES"),
 ]
 
 ROOT_URLCONF = "booking.config.urls"
@@ -107,15 +107,13 @@ USE_I18N = True
 
 USE_TZ = True
 
-LANGUAGE_CODE = 'en-us'
-LANGUAGE_COOKIE_NAME = 'booking-language'
+LANGUAGE_CODE = "en-us"
+LANGUAGE_COOKIE_NAME = "booking-language"
 LANGUAGES = (
-    ('en-us', 'English'),
-    ('it', 'Italian'),
+    ("en-us", "English"),
+    ("it", "Italian"),
 )
-LOCALE_PATHS = (
-    str(BASE_DIR / 'LOCALE'),
-)
+LOCALE_PATHS = (str(BASE_DIR / "LOCALE"),)
 
 CACHES = {
     "default": {

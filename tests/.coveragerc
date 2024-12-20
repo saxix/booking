@@ -9,6 +9,7 @@ omit =
     **/wsgi.py
     **/migrations/**
     **/demo.py
+    **/fixtures.py
 
 
 [report]

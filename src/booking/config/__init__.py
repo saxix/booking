@@ -7,10 +7,14 @@ if TYPE_CHECKING:
 
 CONFIG: "dict[str, ConfigItem]" = {
     "SUPERUSERS": (list, []),
-    "DEBUG": (bool, False),
-    "SECRET_KEY": (str, None),
+    "DEBUG": (bool, True),
+    "SECRET_KEY": (str, "change-me"),
     "STATIC_ROOT": (str, None),
     "SOCIAL_AUTH_REDIRECT_IS_HTTPS": (bool, True),
+    "EXTRA_APPS": (list, []),
+    "EXTRA_MIDDLEWARES": (list, []),
+    "GOOGLE_CLIENT_ID": (str, ""),
+    "GOOGLE_CLIENT_SECRET": (str, ""),
 }
 
 env = Env(**CONFIG)

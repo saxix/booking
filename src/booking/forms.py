@@ -1,3 +1,5 @@
+from typing import Any
+
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.db.transaction import atomic
@@ -19,7 +21,7 @@ class RegisterForm(forms.ModelForm):
         model = User
         fields = ["username", "password"]
 
-    def save(self, commit=True):
+    def save(self, commit: bool = True) -> Car:
         self.instance.email = self.instance.username
         return super().save(commit)
 
@@ -41,12 +43,12 @@ class CreateBookingForm(forms.ModelForm):
         model = Booking
         fields = ("start_date", "end_date")
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         self.car = kwargs.pop("car")
         assert self.car, "place must be specified"
         super().__init__(*args, **kwargs)
 
-    def clean(self):
+    def clean(self) -> None:
         super().clean()
         if not is_available(
             self.car, self.cleaned_data.get("start_date", None), self.cleaned_data.get("end_date", None)
