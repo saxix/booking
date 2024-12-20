@@ -22,6 +22,8 @@
                         <p class="pt-1 text-gray-900">{{ e.price }}</p>
                         <p class="pt-1 text-gray-900">{{ e.start_date }}</p>
                         <p class="pt-1 text-gray-900">{{ e.end_date }}</p>
+                    <a href="{% url "booking-cancel" e.id %}" 
+                       class="button border text-center py-1 bg-red-100 shadow-sm rounded-md">{% trans "Cancel booking" %}</a>
                 </div>
             {% endfor %}
         </div>

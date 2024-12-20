@@ -1,10 +1,30 @@
-{% extends "layout.html" %}{% load i18n %}
+{% extends "layout.html" %}{% load i18n static %}
 {% block content %}
-    <form method="post">
-        {% csrf_token %}
-        <table>
-            {{ form }}
-        </table>
-        <input class="button" type="submit" value="{% trans "Cancel" %}">
-    </form>
+    <section class="bg-white w-full sm:w-11/12 md:w-5/6 xl:w-1/2 m-auto p-4">
+        <div class="border text-xl rounded-sm p-4 mb-4">
+            {% trans "Are you sure you want to cancel this booking?" %}
+        </div>
+
+
+        <div class="bg-white shadow-lg rounded-lg p-4 mb-4 flex bg-gray-200">
+            <img src="{% static object.car.image %}"
+                 alt="Map 1" class="w-32 h-32 object-cover rounded-t-lg mr-4 hidden sm:flex">
+            <div class="flex-grow">
+                <div class="flex items-center mb-2">
+                    <h2 class="text-xl font-semibold">{{ object.car.model }}</h2>
+                </div>
+                <p>Passengers: {{ object.car.max_passenger }}</p>
+                <p>Amount: {{ object.price }}</p>
+            </div>
+
+        </div>
+        <form method="post">
+            {% csrf_token %}
+
+            <table>
+                {{ form }}
+            </table>
+            <input class="button" type="submit" value="{% trans "Yes, cancel" %}">
+        </form>
+    </section>
 {% endblock %}

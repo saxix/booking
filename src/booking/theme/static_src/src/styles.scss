@@ -1,7 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+form{
+  input[type=submit], button[type=submit]{
+    @apply w-1/2 block mx-auto rounded-full bg-gray-900 hover:shadow-lg font-semibold text-white px-6 py-2 cursor-pointer;
+  }
+}
 #register-form, #login-form {
   input[type=text], input[type=password], input[type=email] {
     @apply border w-full border-gray-300 rounded py-2 px-4 flex appearance-none;

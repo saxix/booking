@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-20 07:46+0000\n"
+"POT-Creation-Date: 2024-12-20 18:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -79,27 +79,27 @@ msgstr "Noleggia"
 msgid "Fleet"
 msgstr "Flotta"
 
-#: booking/templates/layout.html:52
+#: booking/templates/layout.html:51
 msgid "Hi"
 msgstr "Ciao"
 
-#: booking/templates/login.html:39
+#: booking/templates/login.html:40 booking/templates/register.html:40
 msgid "or login with e-mail"
 msgstr "o tramite indirizzo email"
 
-#: booking/templates/login.html:56
-msgid "Sign up"
-msgstr ""
+#: booking/templates/login.html:57 booking/templates/register.html:58
+msgid "Sign Up"
+msgstr "Registrazione"
 
-#: booking/templates/login.html:63
+#: booking/templates/login.html:64
 msgid "Not registered?"
 msgstr "Non ancora registrato?"
 
-#: booking/templates/login.html:69
+#: booking/templates/login.html:70
 msgid "Terms of Service"
 msgstr "Termini di servizio"
 
-#: booking/templates/login.html:73
+#: booking/templates/login.html:74
 msgid "Privacy Policy"
 msgstr "Privacy"
 
@@ -107,14 +107,10 @@ msgstr "Privacy"
 msgid "Register"
 msgstr "Registrazione"
 
-#: booking/templates/register.html:24
-msgid "Sign Up"
-msgstr ""
-
-#: booking/templates/register.html:33
+#: booking/templates/register.html:67
 msgid "Already registered?"
 msgstr "Già registrato"
 
-#: booking/templates/register.html:33
+#: booking/templates/register.html:68
 msgid "login here"
 msgstr "accedi qui"

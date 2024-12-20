@@ -1,4 +1,5 @@
 nav:
   - Home: index.md
   - contributing.md
+  - docker.md
   - run

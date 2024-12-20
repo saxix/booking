@@ -11,7 +11,7 @@ Install [uv](https://docs.astral.sh/uv/)
     pre-commit install --hook-type pre-commit --hook-type pre-push
 
 
-## Tailwind CSS
+## Tailwind CSS (optional)
 
 This project uses [django-tailwind](https://django-tailwind.readthedocs.io/en/latest/installation.html) to manage
 CSS. CSS sources are located in the `booking/theme/static_src/src/`.
@@ -44,6 +44,28 @@ Any changes to any other file will trigger the browser page reload.
 
 
 ## Run local server
+
+Before you can run the sample application you should set some environment variables:
+
+      export DATABASE_URL=sqlite://booking.db 
+      export SECRET_KEY="super_secret_key_just_for_testing"
+      export DEBUG=True
+      export SUPERUSERS= <your email>
+
+!!! note 
+        
+    In case you prefer to use PostgreSQL you can set `DATABASE_URL` as
+      
+       `postgres://<username>:<password>@<ip>:<port>/<database>`
+
+
+if you want to enable Google SSO you should add:
+
+      export GOOGLE_CLIENT_ID=...
+      export GOOGLE_CLIENT_SECRET=...
+      export SOCIAL_AUTH_REDIRECT_IS_HTTPS=False
+
+later you can
 
 
     ./manage.py runserver
