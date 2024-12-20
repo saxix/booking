@@ -35,7 +35,7 @@ MODELS = ["Audi A5", "Mercedes Coupe SL", "Mercedes S450", "Tesla Model S", "Bmw
 
 class CarFactory(DjangoModelFactory):
     model = factory.Iterator(MODELS)
-    image = factory.LazyAttribute(lambda o: f"{slugify(o.model)}.png")
+    image = factory.LazyAttribute(lambda o: f"{slugify(o.model)}.jpg")
     plate = factory.Faker("license_plate")
     price = factory.fuzzy.FuzzyDecimal(low=30.0, high=130.0, precision=2)
     max_passenger = factory.Faker("pyint", min_value=1, max_value=5)

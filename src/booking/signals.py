@@ -9,6 +9,7 @@ from .models import Booking, Car, User
 
 
 @receiver(post_save, sender=Car)
+@receiver(post_save, sender=Booking)
 def invalidate_csr_cache(**kwargs: Any) -> None:
     try:
         cache.incr("version:fleet")

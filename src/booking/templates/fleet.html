@@ -1,6 +1,6 @@
 {% extends "layout.html" %}{% load static i18n %}
 {% block content %}
-    <div class="mb-8 overflow-hidden rounded-lg shadow-xs p-10 m-10">
+    <div class="mb-8 overflow-hidden rounded-lg shadow-xs p-2 md:p-5 xl:p-10 xl:mx-20">
         {% for e in object_list %}
 
             <div class="bg-white shadow-lg rounded-lg p-4 mb-4 flex">
@@ -21,5 +21,5 @@
 
         {% endfor %}
     </div>
-    
+
 {% endblock %}
