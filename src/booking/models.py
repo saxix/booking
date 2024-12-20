@@ -27,14 +27,14 @@ class Service(BaseModel):
 
 
 class Car(BaseModel):
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
     model = models.CharField(max_length=255)
     plate = models.CharField(max_length=10, default="")
     image = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     max_passenger = models.PositiveIntegerField()
     in_service = models.BooleanField(default=True)
-    services = models.ManyToManyField(Service)
+    services = models.ManyToManyField(Service, blank=True)
 
     def __str__(self) -> str:
         return self.model

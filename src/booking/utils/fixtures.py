@@ -8,7 +8,7 @@ from django.utils.text import slugify
 
 import factory.fuzzy
 from factory.django import DjangoModelFactory
-
+from django.utils.translation import gettext as _
 from booking.models import Booking, Car, Service, User
 
 
@@ -56,7 +56,7 @@ class BookingFactory(DjangoModelFactory):
 
 
 class ServiceFactory(DjangoModelFactory):
-    name = factory.Iterator(["wifi", "TV", "Laundry", "Pool", "Daily cleaning"])
+    name = factory.Iterator([_("bar"), _("TV"), _("seat warmers"), _("ski rack")])
 
     class Meta:
         model = Service
