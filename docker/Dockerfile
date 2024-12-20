@@ -33,12 +33,15 @@ ARG GIT_SHA
 
 LABEL distro="tests"
 
-ENV PATH=/app/.venv/bin:/usr/local/bin/:/usr/bin:/bin \
+ENV PATH=/venv/bin:/usr/local/bin/:/usr/bin:/bin \
     DJANGO_SETTINGS_MODULE=booking.config.settings \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONPATH=""\
+    VIRTUAL_ENV=/venv \
+    UV_PROJECT_ENVIRONMENT=/venv \
     UWSGI_PROCESSES=4
+
 WORKDIR /app
 COPY uv.lock README.md MANIFEST.in pyproject.toml /app/
 COPY src /app/src/
@@ -55,12 +58,16 @@ RUN --mount=type=cache,target=/root/.uv-cache \
 
 # ------- production only deps-------
 FROM builder AS production
-ENV PATH=/app/.venv/bin:/usr/local/bin/:/usr/bin:/bin \
+ENV PATH=/venv/bin:/usr/local/bin/:/usr/bin:/bin \
     DJANGO_SETTINGS_MODULE=booking.config.settings \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONPATH=""\
+    VIRTUAL_ENV=/venv \
+    UV_PROJECT_ENVIRONMENT=/venv \
     UWSGI_PROCESSES=4
+
+
 WORKDIR /app
 COPY uv.lock README.md MANIFEST.in pyproject.toml /app/
 COPY src /app/src/
@@ -69,7 +76,7 @@ RUN --mount=type=cache,target=/root/.uv-cache \
     uv sync --cache-dir=/root/.uv-cache \
         --python=/usr/local/bin/python \
         --python-preference=system \
-        --no-dev --frozen --extra distribution
+        --no-dev --frozen
 
 
 
@@ -79,27 +86,27 @@ ARG BUILD_DATE
 ARG GIT_SHA
 ARG BRANCH
 
-ENV PATH=/app/.venv/bin:/usr/local/bin/:/usr/bin:/bin \
+ENV PATH=/venv/bin:/usr/local/bin/:/usr/bin:/bin \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONPATH=""\
-    PGSSLCERT="/tmp/postgresql.crt"
+    PGSSLCERT="/tmp/postgresql.crt" \
+    UV_PROJECT_ENVIRONMENT=/venv \
+    VIRTUAL_ENV=/venv
 
 
 WORKDIR /app
 COPY docker/conf /conf/
 COPY docker/bin/* /usr/local/bin/
 COPY LICENSE.md README.md /
-COPY src /app/src/
+COPY . /app/
 
-COPY --chown=user:booking --from=production /app/.venv /app/.venv
+COPY --chown=user:booking --from=production /venv /venv
 COPY --from=builder /usr/local/bin/uwsgi /usr/local/bin/uv /usr/local/bin/
 
 RUN --mount=type=cache,target=/root/.uv-cache \
     uv pip install --no-deps . \
-    && rm -fr /app/build \
-    && rm -fr /app/src
-
+    && rm -fr /app/
 
 EXPOSE 8000
 ENTRYPOINT ["docker-entrypoint.sh"]

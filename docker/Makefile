@@ -78,7 +78,7 @@ build5: dist
 .run:
 	cd .. && docker run \
 	 		--rm \
-			-p 8001:8000 \
+			-p 8000:8000 \
 			-e DATABASE_URL="${DATABASE_URL}" \
 			-e DEBUG="1" \
 			-e SECRET_KEY=liujhljhlkjhlkjhlkj \

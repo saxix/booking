@@ -13,7 +13,7 @@ case "$1" in
       django-admin collectstatic --no-input
       set -- tini -- "$@"
 	    set -- uwsgi --http :8000 \
-	          -H /app/.venv \
+	          -H /venv \
 	          --module booking.config.wsgi \
 	          --mimefile=/conf/mime.types \
 	          --uid user \
