@@ -1,10 +1,11 @@
 from django.contrib import admin
 from django.contrib.auth.views import LogoutView
 from django.urls import include, path
+from django.conf.urls.i18n import i18n_patterns
 
 from .. import views
 
-urlpatterns = [
+urlpatterns = i18n_patterns(
     path("admin/", admin.site.urls),
     path("social/", include("social_django.urls", namespace="social")),
     path("", views.Index.as_view(), name="index"),
@@ -19,5 +20,5 @@ urlpatterns = [
     path("login/", views.LoginView.as_view(), name="login"),
     path("register/", views.RegisterView.as_view(), name="register"),
     path("logout/", LogoutView.as_view(), name="logout"),
-]
+)
 admin.autodiscover()
