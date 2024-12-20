@@ -1,0 +1,120 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-12-20 07:46+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: booking/templates/_about.html:9
+msgid ""
+"Luxury Car is a Rental With Driver company active on the market since 2000. "
+"It offers individuals and companies a complete and efficient service for "
+"transfers to and from Milan, Malpensa and Varese but also to any location in "
+"Italy, France and Switzerland. We have been ensuring you a punctual and "
+"excellent service for over twenty years, thanks to the professionalism of "
+"our drivers. Our fleet is made up of prestigious vehicles, recently "
+"registered cars and minivans, equipped with every comfort and the highest "
+"insurance limits for the transport of people. Book taxi Malpensa. Booking a "
+"taxi to and from Malpensa through our Malpensa taxi booking service of "
+"Ncccarservice is very simple. We will guarantee you an exclusive taxi "
+"service with comfortable and prestigious cars.\n"
+msgstr ""
+"Luxury Car è un'azienda di Noleggio Con Conducente attiva sul mercato dal "
+"2000. Offre a privati e aziende un servizio completo ed efficiente per "
+"transfer da e per Milano, Malpensa e Varese ma anche verso ogni località in "
+"Italia, Francia e Svizzera. Vi assicuriamo da oltre vent'anni un servizio "
+"puntuale ed eccellente, grazie alla professionalità dei nostri autisti. La "
+"nostra flotta è composta da mezzi di prestigio, auto e minivan di recente "
+"immatricolazione, dotati di ogni comfort e dei massimali assicurativi più "
+"alti per il trasporto di persone. Prenotare taxi malpensa. Prenotare un taxi "
+"da e per Malpensa tramite il nostro servizio di prenotazione taxi Malpensa "
+"di Ncccarservice è molto semplice. Ti garantiremo un servizio taxi esclusivo "
+"con auto confortevoli e di prestigio.\n"
+
+#: booking/templates/_carousel.html:13
+msgid "rent this car"
+msgstr "Noleggia"
+
+#: booking/templates/_fleet.html:7
+msgid "the most requested"
+msgstr "Le più richieste"
+
+#: booking/templates/_fleet.html:9
+msgid "see our fleet"
+msgstr "Flotta completa"
+
+#: booking/templates/book_add.html:62
+msgid "From"
+msgstr "Dal"
+
+#: booking/templates/book_add.html:64
+msgid "To"
+msgstr "Al"
+
+#: booking/templates/book_delete.html:8
+msgid "Cancel"
+msgstr "Annulla"
+
+#: booking/templates/bookings.html:10 booking/templates/layout.html:38
+msgid "Your bookings"
+msgstr "Le tue prenotazioni"
+
+#: booking/templates/fleet.html:16 booking/templates/fleet.html:18
+msgid "Rent this car"
+msgstr "Noleggia"
+
+#: booking/templates/layout.html:36
+msgid "Fleet"
+msgstr "Flotta"
+
+#: booking/templates/layout.html:52
+msgid "Hi"
+msgstr "Ciao"
+
+#: booking/templates/login.html:39
+msgid "or login with e-mail"
+msgstr "o tramite indirizzo email"
+
+#: booking/templates/login.html:56
+msgid "Sign up"
+msgstr ""
+
+#: booking/templates/login.html:63
+msgid "Not registered?"
+msgstr "Non ancora registrato?"
+
+#: booking/templates/login.html:69
+msgid "Terms of Service"
+msgstr "Termini di servizio"
+
+#: booking/templates/login.html:73
+msgid "Privacy Policy"
+msgstr "Privacy"
+
+#: booking/templates/register.html:8
+msgid "Register"
+msgstr "Registrazione"
+
+#: booking/templates/register.html:24
+msgid "Sign Up"
+msgstr ""
+
+#: booking/templates/register.html:33
+msgid "Already registered?"
+msgstr "Già registrato"
+
+#: booking/templates/register.html:33
+msgid "login here"
+msgstr "accedi qui"

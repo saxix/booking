@@ -10,6 +10,7 @@ CONFIG: "dict[str, ConfigItem]" = {
     "DEBUG": (bool, False),
     "SECRET_KEY": (str, None),
     "STATIC_ROOT": (str, None),
+    "SOCIAL_AUTH_REDIRECT_IS_HTTPS": (bool, True),
 }
 
 env = Env(**CONFIG)
