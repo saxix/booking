@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-20 18:04+0000\n"
+"POT-Creation-Date: 2024-12-21 15:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -55,21 +55,39 @@ msgstr "Le più richieste"
 msgid "see our fleet"
 msgstr "Flotta completa"
 
-#: booking/templates/book_add.html:62
+#: booking/templates/book_add.html:27
 msgid "From"
 msgstr "Dal"
 
-#: booking/templates/book_add.html:64
+#: booking/templates/book_add.html:31
 msgid "To"
 msgstr "Al"
 
-#: booking/templates/book_delete.html:8
-msgid "Cancel"
-msgstr "Annulla"
+#: booking/templates/book_delete.html:5
+msgid "Are you sure you want to cancel this booking?"
+msgstr "Sei sicuro di voler annullare questa prenotazione?"
+
+#: booking/templates/book_delete.html:27
+msgid "Yes, cancel"
+msgstr "Si, annulla"
 
 #: booking/templates/bookings.html:10 booking/templates/layout.html:38
 msgid "Your bookings"
 msgstr "Le tue prenotazioni"
+
+#: booking/templates/bookings.html:26
+#, fuzzy
+#| msgid "Cancel"
+msgid "Cancel booking"
+msgstr "Annulla"
+
+#: booking/templates/fleet.html:13
+msgid "Passengers"
+msgstr "Passegeri"
+
+#: booking/templates/fleet.html:14
+msgid "Daily Rate"
+msgstr "Tariffa giornalieri"
 
 #: booking/templates/fleet.html:16 booking/templates/fleet.html:18
 msgid "Rent this car"
@@ -114,3 +132,19 @@ msgstr "Già registrato"
 #: booking/templates/register.html:68
 msgid "login here"
 msgstr "accedi qui"
+
+#: booking/utils/fixtures.py:67
+msgid "bar"
+msgstr "bar"
+
+#: booking/utils/fixtures.py:67
+msgid "TV"
+msgstr ""
+
+#: booking/utils/fixtures.py:67
+msgid "seat warmers"
+msgstr "sedili riscaldati"
+
+#: booking/utils/fixtures.py:67
+msgid "ski rack"
+msgstr "portasci"

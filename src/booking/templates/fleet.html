@@ -10,8 +10,8 @@
                     <div class="flex items-center mb-2">
                         <h2 class="text-xl font-semibold">{{ e.model }}</h2>
                     </div>
-                    <p>Passengers: {{ e.max_passenger }}</p>
-                    <p>Daily Price: {{ e.price }}</p>
+                    <p>{% trans "Passengers" %}: {{ e.max_passenger }}</p>
+                    <p>{% trans "Daily Rate" %}: {{ e.price }}</p>
                     <div class="md:hidden mt-5 float-right block"><a
                             href="{% url "booking-add"  e.id %}">{% translate 'Rent this car' %}</a></div>
                 </div>
