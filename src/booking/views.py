@@ -1,9 +1,8 @@
-from typing import Any, Optional
+from typing import Any
 
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView as LoginView_
-from django.core.cache import cache
 from django.db.models import QuerySet
 from django.forms import ModelForm
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
@@ -18,7 +17,6 @@ from booking.models import Booking, Car
 
 
 class CommonContextMixin:
-
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         kwargs["active_view"] = self.__class__.__name__
         kwargs["sso_enabled"] = bool(settings.SOCIAL_AUTH_GOOGLE_OAUTH2_KEY)
@@ -41,9 +39,9 @@ class Index(CommonContextMixin, TemplateView):
     template_name = "index.html"
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-        if not (home_page_models := cache.get("home_page_models")):
+        if not (home_page_models := Car.retrieve("home_page_models")):
             home_page_models = list(Car.objects.values("model", "image", "pk", "price")[:4])
-            cache.set("home_page_models", home_page_models)
+            Car.store(home_page_models, "home_page_models")
         kwargs["models"] = home_page_models
         return super().get_context_data(**kwargs)
 
@@ -53,12 +51,10 @@ class FleetView(CommonContextMixin, ListView):
     template_name = "fleet.html"
 
     def get_queryset(self) -> QuerySet[Car]:
-        base = "fleet"
-        v = cache.get(f"version:{base}") or 1
-        key = f"{base}:{v}"
-        if not (fleet := cache.get(key)):
+        key = "fleet"
+        if not (fleet := Car.retrieve()):
             fleet = list(Car.objects.values())
-            cache.set(key, fleet)
+            Car.store(fleet, key)
 
         return fleet
 
@@ -71,7 +67,7 @@ class CancelBookView(CommonContextMixin, LoginRequiredMixin, DeleteView):
     def get_queryset(self) -> QuerySet[Booking]:
         return Booking.objects.filter(customer=self.request.user)
 
-    def get_object(self, queryset: Optional[QuerySet[Booking]] = None) -> Booking:
+    def get_object(self, queryset: QuerySet[Booking] | None = None) -> Booking:
         return self.get_queryset().get(pk=self.kwargs.get(self.pk_url_kwarg))
 
 
@@ -111,6 +107,7 @@ class CreateBookView(CommonContextMixin, LoginRequiredMixin, CreateView):
         form = self.get_form()
         if form.is_valid():
             try:
+                Booking.invalidate_cache()
                 return self.form_valid(form)
             except RecordChanged:
                 return self.form_invalid(form)
@@ -123,9 +120,19 @@ class BookingView(CommonContextMixin, LoginRequiredMixin, ListView):
     template_name = "bookings.html"
     manager = False
 
-    def get_queryset(self) -> QuerySet[Booking]:
-        return Booking.objects.filter(customer=self.request.user)
+    def get_queryset(self) -> QuerySet[Car]:
+        key = f"my-booking:{self.request.user.username}"
+        if not (fleet := Booking.retrieve(key)):
+            fleet = Booking.objects.filter(customer=self.request.user)
+            Booking.store(fleet, key)
+
+        return fleet
 
 
 def healthcheck(request: "HttpRequest") -> HttpResponse:
+    """View endpoint. Used to check the health of the server.
+
+    :param request: HttpRequest
+    :rtype: HttpResponse
+    """
     return HttpResponse("Ok")

@@ -1,11 +1,12 @@
+from typing import Any
+
 from django.contrib.auth.models import AbstractUser
+from django.core.cache import cache
 from django.db import models
 
 from concurrency.fields import AutoIncVersionField
 
-__all__ = [
-    "User",
-]
+__all__ = ["Booking", "Car", "Feedback", "Service", "User"]
 
 
 class BaseModel(models.Model):
@@ -14,8 +15,26 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 
+    @classmethod
+    def retrieve(cls, section: str | None = "") -> Any:
+        v = cache.get(f"version:{cls.__name__}")
+        return cache.get(f"cache:{v}:{section}")
 
-class User(AbstractUser):
+    @classmethod
+    def store(cls, value: Any, section: str | None = "") -> Any:
+        v = cache.get(f"version:{cls.__name__}")
+        cache.set(f"cache:{v}:{section}", value, timeout=86400)
+        cls.invalidate_cache()
+
+    @classmethod
+    def invalidate_cache(cls):
+        try:
+            cache.incr(f"version:{cls.__name__}")
+        except ValueError:
+            cache.set(f"version:{cls.__name__}", 1)
+
+
+class User(BaseModel, AbstractUser):
     pass
 
 
@@ -50,7 +69,8 @@ class Booking(BaseModel):
     class Meta:
         constraints = [
             models.CheckConstraint(
-                check=(models.Q(start_date__lte=models.F("end_date"))), name="start_date_lte_end_date"
+                check=(models.Q(start_date__lte=models.F("end_date"))),
+                name="start_date_lte_end_date",
             ),
             models.CheckConstraint(
                 check=~(models.Q(start_date=models.F("end_date")) & models.Q(start_date__gt=models.F("end_date"))),

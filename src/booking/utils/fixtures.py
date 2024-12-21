@@ -5,16 +5,17 @@ from typing import Any
 from django.conf import settings
 from django.db.models import Model
 from django.utils.text import slugify
+from django.utils.translation import gettext as _
 
 import factory.fuzzy
 from factory.django import DjangoModelFactory
-from django.utils.translation import gettext as _
+
 from booking.models import Booking, Car, Service, User
 
 
 class UserFactory(DjangoModelFactory):
-    username = factory.Sequence(lambda n: "name-{n}@example.com".format(n=n))
-    email = factory.Sequence(lambda n: "name-{n}@example.com".format(n=n))
+    username = factory.Sequence(lambda n: f"name-{n}@example.com")
+    email = factory.Sequence(lambda n: f"name-{n}@example.com")
     password = "password"
 
     class Meta:
@@ -30,7 +31,14 @@ class UserFactory(DjangoModelFactory):
         return manager.create_user(*args, **kwargs)  # Just user the create_user method recommended by Django
 
 
-MODELS = ["Audi A5", "Mercedes Coupe SL", "Mercedes S450", "Tesla Model S", "Bmw Sedane", "Range-Rover"]
+MODELS = [
+    "Audi A5",
+    "Mercedes Coupe SL",
+    "Mercedes S450",
+    "Tesla Model S",
+    "Bmw Sedane",
+    "Range-Rover",
+]
 
 
 class CarFactory(DjangoModelFactory):

@@ -33,13 +33,15 @@ def car(db):
 def booking(request: SubRequest, car: "Car"):
     from booking.utils.fixtures import BookingFactory
 
-    app: "DjangoTestApp" = request.getfixturevalue("app")
+    app: DjangoTestApp = request.getfixturevalue("app")
 
     return BookingFactory(car=car, customer=app._user)
 
 
 @pytest.fixture()
-def app(django_app_factory: "MixinWithInstanceVariables", user: "User") -> "DjangoTestApp":
+def app(
+    django_app_factory: "MixinWithInstanceVariables", user: "User"
+) -> "DjangoTestApp":
     django_app = django_app_factory(csrf_checks=False)
     django_app.set_user(user)
     django_app._user = user

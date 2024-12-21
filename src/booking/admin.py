@@ -12,7 +12,7 @@ class UserAdmin(_UserAdmin[User]):
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin[Booking]):
     list_display = ("car", "customer", "start_date", "end_date")
-    autocomplete_fields = ["customer", "car"]
+    autocomplete_fields = ("customer", "car")
 
 
 @admin.register(Car)

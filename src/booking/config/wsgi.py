@@ -1,5 +1,4 @@
-"""
-WSGI config for booking project.
+"""WSGI config for booking project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 

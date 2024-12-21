@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Any
 
 from django.core.exceptions import ValidationError
 
@@ -10,6 +10,11 @@ class PeriodNotAvailable(ValidationError):
 class RecordChanged(ValidationError):
     message = "Selected place infos hae been updated. Please check before proceeding."
 
-    def __init__(self, message: Optional[str] = None, code: Optional[str] = None, params: Optional[Any] = None) -> None:
+    def __init__(
+        self,
+        message: str | None = None,
+        code: str | None = None,
+        params: Any | None = None,
+    ) -> None:
         msg = message or self.message
         super().__init__(msg, code, params)

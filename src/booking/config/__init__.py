@@ -1,9 +1,9 @@
-from typing import TYPE_CHECKING, Any, TypeAlias, Union
+from typing import TYPE_CHECKING, Any
 
 from environ import Env
 
 if TYPE_CHECKING:
-    ConfigItem: TypeAlias = Union[tuple[type, Any],]
+    ConfigItem: type = tuple[type, Any]
 
 CONFIG: "dict[str, ConfigItem]" = {
     "SUPERUSERS": (list, []),

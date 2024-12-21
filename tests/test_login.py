@@ -16,7 +16,9 @@ def user(db):
     return UserFactory()
 
 
-@override_settings(SOCIAL_AUTH_GOOGLE_OAUTH2_KEY="1", SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET="2")
+@override_settings(
+    SOCIAL_AUTH_GOOGLE_OAUTH2_KEY="1", SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET="2"
+)
 def test_login(db, client):
     session = client.session
     session["google-oauth2_state"] = "1"
@@ -30,7 +32,8 @@ def test_login(db, client):
         url += "?code=2&state=1"
         mock_request.return_value.json.return_value = {"access_token": "123"}
         with mock.patch(
-            "django.contrib.sessions.backends.base.SessionBase" ".set_expiry", side_effect=[OverflowError, None]
+            "django.contrib.sessions.backends.base.SessionBase" ".set_expiry",
+            side_effect=[OverflowError, None],
         ):
             response = client.get(url)
             assert response.status_code == 302
@@ -62,4 +65,6 @@ def test_register(app):
     res.forms["register-form"]["password"] = "password"
     res = res.forms["register-form"].submit()
     assert res.status_code == 302
-    assert User.objects.filter(email="user@example.com", username="user@example.com").exists()
+    assert User.objects.filter(
+        email="user@example.com", username="user@example.com"
+    ).exists()

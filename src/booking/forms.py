@@ -19,7 +19,7 @@ class RegisterForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ["username", "password"]
+        fields = ("username", "password")
 
     def save(self, commit: bool = True) -> Car:
         self.instance.email = self.instance.username
@@ -31,7 +31,7 @@ class LoginForm(AuthenticationForm):
 
     class Meta:
         model = User
-        fields = ["username", "password"]
+        fields = ("username", "password")
 
 
 class CreateBookingForm(forms.ModelForm):
@@ -51,7 +51,9 @@ class CreateBookingForm(forms.ModelForm):
     def clean(self) -> None:
         super().clean()
         if not is_available(
-            self.car, self.cleaned_data.get("start_date", None), self.cleaned_data.get("end_date", None)
+            self.car,
+            self.cleaned_data.get("start_date", None),
+            self.cleaned_data.get("end_date", None),
         ):
             raise forms.ValidationError("Selected period is not available")
 
