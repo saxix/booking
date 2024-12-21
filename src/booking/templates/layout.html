@@ -59,7 +59,8 @@
                     </svg>
                 </a>
             {% endif %}
-            <a class="px-2" href="/it/">ita</a> | <a class="px-2" href="/en-us/">eng</a>
+            <a class="px-2" href="/it-it/{{request.get_full_path|slice:"7:"}}">ita</a> | 
+            <a class="px-2" href="/en-us/{{request.get_full_path|slice:"7:"}}">eng</a>
         </div>
     </div>
 </nav>

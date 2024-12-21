@@ -79,7 +79,7 @@ msgstr "Le tue prenotazioni"
 #, fuzzy
 #| msgid "Cancel"
 msgid "Cancel booking"
-msgstr "Annulla"
+msgstr "Annulla prenotazione"
 
 #: booking/templates/fleet.html:13
 msgid "Passengers"

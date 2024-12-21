@@ -19,12 +19,12 @@ urlpatterns = i18n_patterns(
         views.CancelBookView.as_view(),
         name="booking-cancel",
     ),
-    path("manager/cars/", views.FleetView.as_view(manager=True), name="car-list"),
-    path(
-        "manager/bookings/",
-        views.BookingView.as_view(manager=True),
-        name="booking-list",
-    ),
+    # path("manager/cars/", views.FleetView.as_view(manager=True), name="car-list"),
+    # path(
+    #     "manager/bookings/",
+    #     views.BookingView.as_view(manager=True),
+    #     name="booking-list",
+    # ),
     path("login/", views.LoginView.as_view(), name="login"),
     path("register/", views.RegisterView.as_view(), name="register"),
     path("logout/", LogoutView.as_view(), name="logout"),

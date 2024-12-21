@@ -111,7 +111,7 @@ LANGUAGE_CODE = "en-us"
 LANGUAGE_COOKIE_NAME = "booking-language"
 LANGUAGES = (
     ("en-us", "English"),
-    ("it", "Italian"),
+    ("it-it", "Italian"),
 )
 LOCALE_PATHS = (str(BASE_DIR / "LOCALE"),)
 
