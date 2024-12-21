@@ -93,8 +93,8 @@ class CreateBookView(CommonContextMixin, LoginRequiredMixin, CreateView):
     def get_initial(self) -> dict[str, Any]:
         return {
             "start_date": timezone.now(),
-            "car_version": self.selected_car.version,
             "end_date": timezone.now(),
+            "car_version": self.selected_car.version,
         }
 
     def form_valid(self, form: ModelForm) -> HttpResponseRedirect | HttpResponse:

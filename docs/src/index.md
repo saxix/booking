@@ -8,3 +8,5 @@ A Django application for car rentals that  allows users to browse, book, and man
 2.	Car Listings: A catalog of available cars with details like model, price, availability, and specifications.
 3.	Booking System: Allows users to select vehicles, set rental dates, and confirm bookings.
 4.	Admin Dashboard: For rental companies to manage cars, bookings, and customer data.
+5.  Dual language ITA-ENG
+6.  Google SSO support
