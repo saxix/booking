@@ -1,4 +1,4 @@
-{% extends "layout.html" %}{% load static i18n %}
+{% extends "layout.html" %}{% load i18n static %}
 {% block content %}
     <div class="mb-8 overflow-hidden rounded-lg shadow-xs p-2 md:p-5 xl:p-10 xl:mx-20">
         {% for e in object_list %}
@@ -10,16 +10,16 @@
                     <div class="flex items-center mb-2">
                         <h2 class="text-xl font-semibold">{{ e.model }}</h2>
                     </div>
-                    <p>{% trans "Passengers" %}: {{ e.max_passenger }}</p>
-                    <p>{% trans "Daily Rate" %}: {{ e.price }}</p>
+                    <p>{% translate "Passengers" %}: {{ e.max_passenger }}</p>
+                    <p>{% translate "Daily Rate" %}: {{ e.price }}</p>
                     <div class="md:hidden mt-5 float-right block"><a
-                            href="{% url "booking-add"  e.id %}">{% translate 'Rent this car' %}</a></div>
+                            href="{% url "booking-add" e.id %}">{% translate 'Rent this car' %}</a></div>
                 </div>
-                <div class="md:flex hidden"><a href="{% url "booking-add"  e.id %}">{% translate 'Rent this car' %}</a>
+                <div class="md:flex hidden"><a href="{% url "booking-add" e.id %}">{% translate 'Rent this car' %}</a>
                 </div>
             </div>
 
         {% endfor %}
     </div>
 
-{% endblock %}
+{% endblock content %}

@@ -18,11 +18,11 @@ CSS. CSS sources are located in the `booking/theme/static_src/src/`.
 If you need to edit the CSS follow the below steps:
 
 1. Install node dependencies
-    
+
         ./manage.py tailwind install
 
 1. Configure the enviroment
-        
+
         export EXTRA_APPS="django_browser_reload"
         export EXTRA_MIDDLEWARES="django_browser_reload.middleware.BrowserReloadMiddleware,"
 
@@ -34,7 +34,7 @@ If you need to edit the CSS follow the below steps:
 
         ./manage.py tailwind start
 
-Any changes to the .scss will trigger the .css compilation, followed by the browser reloading the page. 
+Any changes to the .scss will trigger the .css compilation, followed by the browser reloading the page.
 Any changes to any other file will trigger the browser page reload.
 
 
@@ -47,15 +47,15 @@ Any changes to any other file will trigger the browser page reload.
 
 Before you can run the sample application you should set some environment variables:
 
-      export DATABASE_URL=sqlite://booking.db 
+      export DATABASE_URL=sqlite://booking.db
       export SECRET_KEY="super_secret_key_just_for_testing"
       export DEBUG=True
       export SUPERUSERS= <your email>
 
-!!! note 
-        
+!!! note
+
     In case you prefer to use PostgreSQL you can set `DATABASE_URL` as
-      
+
        `postgres://<username>:<password>@<ip>:<port>/<database>`
 
 

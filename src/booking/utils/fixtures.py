@@ -16,7 +16,7 @@ from booking.models import Booking, Car, Service, User
 class UserFactory(DjangoModelFactory):
     username = factory.Sequence(lambda n: f"name-{n}@example.com")
     email = factory.Sequence(lambda n: f"name-{n}@example.com")
-    password = "password"
+    password = "password"  # noqa
 
     class Meta:
         model = settings.AUTH_USER_MODEL
@@ -56,7 +56,7 @@ class BookingFactory(DjangoModelFactory):
     customer = factory.SubFactory(UserFactory)
     car = factory.SubFactory(CarFactory)
     start_date = factory.fuzzy.FuzzyDate(date(2025, 1, 1), date(2025, 8, 1))
-    end_date = factory.LazyAttribute(lambda i: i.start_date + timedelta(days=randint(1, 10)))
+    end_date = factory.LazyAttribute(lambda i: i.start_date + timedelta(days=randint(1, 10)))  # noqa
     total_price = factory.fuzzy.FuzzyDecimal(low=30.0, high=130.0, precision=2)
 
     class Meta:

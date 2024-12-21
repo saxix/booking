@@ -1,4 +1,4 @@
-{% extends "layout.html" %}{% load static i18n %}
+{% extends "layout.html" %}{% load i18n static %}
 {% block content %}
     <div class="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
         <div class="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
@@ -37,7 +37,7 @@
                             <div class="my-12 border-b text-center">
                                 <div
                                         class="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
-                                    {% trans "or login with e-mail" %}
+                                    {% translate "or login with e-mail" %}
                                 </div>
                             </div>
                         {% endif %}
@@ -64,8 +64,8 @@
                         <div class="my-12 border-b text-center">
                             <div
                                     class="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
-                                {% trans "Already registered?" %} <a
-                                    href="{% url "login" %}">{% trans "login here" %}</a>
+                                {% translate "Already registered?" %} <a
+                                    href="{% url "login" %}">{% translate "login here" %}</a>
                             </div>
                         </div>
 
@@ -79,4 +79,4 @@
             </div>
         </div>
     </div>
-{% endblock %}
+{% endblock content %}

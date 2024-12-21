@@ -77,7 +77,7 @@ msgstr "Le tue prenotazioni"
 
 #: booking/templates/bookings.html:26
 #, fuzzy
-#| msgid "Cancel"
+#| msgid "Cancel booking"
 msgid "Cancel booking"
 msgstr "Annulla prenotazione"
 

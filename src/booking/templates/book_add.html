@@ -24,11 +24,11 @@
                     <div class="mt-4">
                         <div class="mx-auto text-center items-center">
                             <div class="m-auto w-1/2">
-                                <label class="block w-10 text-gray-700 text-sm font-bold mb-2">{% trans "From" %}</label>
+                                <label class="block w-10 text-gray-700 text-sm font-bold mb-2">{% translate "From" %}</label>
                                 {{ form.start_date }}
                             </div>
                             <div class="m-auto w-1/2">
-                                <label class="block w-10 text-gray-700 text-sm font-bold mb-2 mt-4">{% trans "To" %}</label>
+                                <label class="block w-10 text-gray-700 text-sm font-bold mb-2 mt-4">{% translate "To" %}</label>
                                 {{ form.end_date }}
                             </div>
                         </div>
@@ -40,10 +40,10 @@
                         Rent
                     </button>
                 </div>
-                {#        <input class="button" type="submit" value="{% trans "Book" %}">#}
+                {# <input class="button" type="submit" value="{% trans "Book" %}"> #}
             </form>
         </div>
     </div>
 
 
-{% endblock %}
+{% endblock content %}

@@ -1,20 +1,33 @@
 target-version = "py312"
 line-length = 120
+exclude = [".venv"]
+output-format = "concise"
+src = ["src", "test"]
 
 [lint]
 select = [
     "A", # prevent using keywords that clobber python builtins
     "B", # bugbear: security warnings
+    "BLE", # blind exceptions
+    "C4", # flake8-comprehensions
     "C901", # McCabe complexity
     "D", # pydocstyle
+    "DJ", # flake8-django
     "E", # pycodestylex
     "E4", "E7", "E9",
+    "ERA", # eradicate
     "F", # pyflakes
-    "ISC", # implicit string concatenation
-#    "RUF", # the ruff developer's own rules
-    "UP", # pyupgrade
-    "SIM", # flake8-simplify
+    "FURB", # refurb
     "I", # isort
+    "ISC", # implicit string concatenation
+    "PERF", # perflint
+    "PIE", # flake8-pie
+    "PL", # PyLint
+    "S", # bandit,
+    "SIM", # flake8-simplify
+    "T10", # flake8-debugger
+    "UP", # pyupgrade
+#    "RUF", # the ruff developer's own rules
 ]
 extend-select = [
     "UP", # pyupgrade
@@ -33,6 +46,7 @@ ignore = [
     "D203", # one-blank-line-before-class
     "D212", # multi-line-summary-first-line
     "D213", # multi-line-summary-second-line
+    "DJ008", # Model does not define __str__ method
     "E731",  # lambda-assignment: lambdas are substential in maintenance of py2/3 codebase
     "ISC001",  # conflicts with ruff format command
     "RUF005",  # collection-literal-concatenation: syntax not compatible with py2
@@ -42,6 +56,9 @@ ignore = [
 
 [lint.isort]
 case-sensitive = true
+[lint.per-file-ignores]
+# Ignore `E402` (import vio
+"tests/**.py" = ["S101", "PLR2004", "S"]
 
 [format]
 # Like Black, use double quotes for strings.

@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+
 {% block content %}
 {% load i18n static %}    <section class="bg-white py-8">
 
@@ -7,7 +8,7 @@
             <nav id="store" class="w-full z-30 top-0 px-6 py-1">
                 <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 px-2 py-3">
                     <a class="uppercase tracking-wide no-underline hover:no-underline font-bold text-gray-800 text-xl "
-                       href="{% url "car-list" %}"> {% trans "Your bookings" %}
+                       href="{% url "car-list" %}"> {% translate "Your bookings" %}
                     </a>
 
                 </div>
@@ -23,42 +24,10 @@
                         <p class="pt-1 text-gray-900">{{ e.start_date }}</p>
                         <p class="pt-1 text-gray-900">{{ e.end_date }}</p>
                     <a href="{% url "booking-cancel" e.id %}"
-                       class="button border text-center py-1 bg-red-100 shadow-sm rounded-md">{% trans "Cancel booking" %}</a>
+                       class="button border text-center py-1 bg-red-100 shadow-sm rounded-md">{% translate "Cancel booking" %}</a>
                 </div>
             {% endfor %}
         </div>
 
     </section>
-{##}
-{#    <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">#}
-{#        <div class="w-full overflow-x-auto">#}
-{#            <table class="w-full whitespace-no-wrap">#}
-{#                <tbody>#}
-{#                {% for e in object_list.all %}#}
-{#                    <tr class="text-gray-700 dark:text-gray-400 border-b {% if not is_available %}not_available{% endif %}">#}
-{#                        <td class="px-4 py-3">#}
-{#                            {{ e.property }}#}
-{#                        </td>#}
-{#                        <td class="px-4 py-3">#}
-{#                            {{ e.name }}#}
-{#                        </td>#}
-{#                        <td class="px-4 py-3">#}
-{#                            {{ e.address }}#}
-{#                        </td>#}
-{#                        <td class="px-4 py-3">#}
-{#                            {{ e.start_date }}#}
-{#                        </td>#}
-{#                        <td class="px-4 py-3">#}
-{#                            {{ e.end_date }}#}
-{#                        </td>#}
-{#                        <td class="px-4 py-3">#}
-{#                            <a href="{% url "booking-cancel" e.pk %}">Cancel</a>#}
-{#                        </td>#}
-{#                    </tr>#}
-{#                {% endfor %}#}
-{#                </tbody>#}
-{#            </table>#}
-{#        </div>#}
-{##}
-{#    </div>#}
-{% endblock %}
+{% endblock content %}

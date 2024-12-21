@@ -46,7 +46,7 @@ class Service(BaseModel):
 
 
 class Car(BaseModel):
-    description = models.TextField(blank=True, null=True)
+    description = models.TextField(blank=True)
     model = models.CharField(max_length=255)
     plate = models.CharField(max_length=10, default="")
     image = models.CharField(max_length=255)

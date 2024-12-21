@@ -17,8 +17,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="user",
             name="version",
-            field=concurrency.fields.AutoIncVersionField(
-                default=0, help_text="record revision number"
-            ),
+            field=concurrency.fields.AutoIncVersionField(default=0, help_text="record revision number"),
         ),
     ]

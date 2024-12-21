@@ -45,7 +45,6 @@ class CreateBookingForm(forms.ModelForm):
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         self.car = kwargs.pop("car")
-        assert self.car, "place must be specified"
         super().__init__(*args, **kwargs)
 
     def clean(self) -> None:

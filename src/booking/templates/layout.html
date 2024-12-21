@@ -1,4 +1,4 @@
-{% load static tailwind_tags i18n %}
+{% load i18n static tailwind_tags %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,9 +33,9 @@
                     <li><a class="inline-block no-underline hover:text-black hover:underline py-2 px-4"
                            href="/">Home</a></li>
                     <li><a class="inline-block no-underline hover:text-black hover:underline py-2 px-4"
-                           href="{% url "car-list" %}">{% trans "Fleet" %}</a></li>
+                           href="{% url "car-list" %}">{% translate "Fleet" %}</a></li>
                     <li><a class="inline-block no-underline hover:text-black hover:underline py-2 px-4"
-                           href="{% url "booking-list" %}">{% trans "Your bookings" %}</a></li>
+                           href="{% url "booking-list" %}">{% translate "Your bookings" %}</a></li>
                 </ul>
             </nav>
         </div>
@@ -48,7 +48,7 @@
 
         <div class="order-2 md:order-3 flex items-center" id="nav-content">
             {% if user.is_authenticated %}
-                {% trans "Hi" %}, {{ user }}&nbsp;&nbsp;
+                {% translate "Hi" %}, {{ user }}&nbsp;&nbsp;
                 <a class="inline-block no-underline hover:text-black" href="{% url "logout" %}">logout</a>
             {% else %}
                 <a class="inline-block no-underline hover:text-black" href="{% url "login" %}">
@@ -59,8 +59,8 @@
                     </svg>
                 </a>
             {% endif %}
-            <a class="px-2" href="/it-it/{{request.get_full_path|slice:"7:"}}">ita</a> | 
-            <a class="px-2" href="/en-us/{{request.get_full_path|slice:"7:"}}">eng</a>
+            <a class="px-2" href="/it-it/{{ request.get_full_path|slice:"7:" }}">ita</a> |
+            <a class="px-2" href="/en-us/{{ request.get_full_path|slice:"7:" }}">eng</a>
         </div>
     </div>
 </nav>
@@ -90,7 +90,7 @@
 
             </div>
         </div>
-    {% endblock %}
+    {% endblock carousel %}
     {% include "_about.html" %}
 
     {% include "_fleet.html" %}
@@ -99,7 +99,7 @@
     <footer class="container mx-auto bg-white py-2 border-t border-gray-400 mt-10">
         <div class="container flex px-3">
             <div class="flow-root w-full">
-{#                <div class="lg:w-1/2 lg:justify-end lg:text-right">#}
+{# <div class="lg:w-1/2 lg:justify-end lg:text-right"> #}
                     <div class="px-2 md:px-0 block md:float-left">
                         <div class="inline-flex">Copyright</div>
                         -
@@ -133,9 +133,9 @@
                     </div>
                 </div>
             </div>
-{#        </div>#}
+{# </div> #}
     </footer>
-{% endblock %}
+{% endblock footer %}
 </body>
 
 </html>
