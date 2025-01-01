@@ -1,10 +1,11 @@
 # Contributing
 
 
-Install [uv](https://docs.astral.sh/uv/)
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/)
 
 
-    git clone ..
+    git clone https://github.com/saxix/booking
+    cd booking
     uv venv .venv --python 3.12
     source .venv/bin/activate
     uv sync --all-extras
@@ -17,14 +18,15 @@ This project uses [django-tailwind](https://django-tailwind.readthedocs.io/en/la
 CSS. CSS sources are located in the `booking/theme/static_src/src/`.
 If you need to edit the CSS follow the below steps:
 
-1. Install node dependencies
-
-        ./manage.py tailwind install
-
 1. Configure the enviroment
 
         export EXTRA_APPS="django_browser_reload"
         export EXTRA_MIDDLEWARES="django_browser_reload.middleware.BrowserReloadMiddleware,"
+
+1. Install node dependencies
+
+        ./manage.py tailwind install
+
 
 1. Build the final CSS
 
@@ -40,7 +42,9 @@ Any changes to any other file will trigger the browser page reload.
 
 ## Run tests
 
-    pytests tests
+Tests are located in the `tests` folder. To run them just type
+
+    pytest tests
 
 
 ## Run local server
@@ -50,7 +54,7 @@ Before you can run the sample application you should set some environment variab
       export DATABASE_URL=sqlite://booking.db
       export SECRET_KEY="super_secret_key_just_for_testing"
       export DEBUG=True
-      export SUPERUSERS= <your email>
+      export SUPERUSERS=<your email>
 
 !!! note
 
@@ -69,6 +73,9 @@ later you can
 
 
     ./manage.py runserver
+
+and point your browser to http://localhost:8000
+
 
 
 ## Docker compose

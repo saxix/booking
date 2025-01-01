@@ -17,6 +17,8 @@ from booking.models import Booking, Car
 
 
 class CommonContextMixin:
+    """Common context mixin for all views. Used to add common data to UI."""
+
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         kwargs["active_view"] = self.__class__.__name__
         kwargs["sso_enabled"] = bool(settings.SOCIAL_AUTH_GOOGLE_OAUTH2_KEY)
@@ -25,17 +27,23 @@ class CommonContextMixin:
 
 
 class RegisterView(CommonContextMixin, CreateView):
+    """New user registration view."""
+
     template_name = "register.html"
     form_class = RegisterForm
     success_url = reverse_lazy("index")
 
 
 class LoginView(CommonContextMixin, LoginView_):
+    """Login view."""
+
     template_name = "login.html"
     form_class = LoginForm
 
 
 class Index(CommonContextMixin, TemplateView):
+    """Home page view."""
+
     template_name = "index.html"
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
@@ -47,7 +55,8 @@ class Index(CommonContextMixin, TemplateView):
 
 
 class FleetView(CommonContextMixin, ListView):
-    manager = False
+    """Full fleet page view."""
+
     template_name = "fleet.html"
 
     def get_queryset(self) -> QuerySet[Car]:
@@ -60,6 +69,8 @@ class FleetView(CommonContextMixin, ListView):
 
 
 class CancelBookView(CommonContextMixin, LoginRequiredMixin, DeleteView):
+    """User booking cancellation view."""
+
     template_name = "book_delete.html"
     pk_url_kwarg = "book"
     success_url = reverse_lazy("booking-list")
@@ -72,6 +83,8 @@ class CancelBookView(CommonContextMixin, LoginRequiredMixin, DeleteView):
 
 
 class CreateBookView(CommonContextMixin, LoginRequiredMixin, CreateView):
+    """Create new booking view."""
+
     template_name = "book_add.html"
     queryset = Booking.objects.all()
     form_class = CreateBookingForm
@@ -117,6 +130,8 @@ class CreateBookView(CommonContextMixin, LoginRequiredMixin, CreateView):
 
 
 class BookingView(CommonContextMixin, LoginRequiredMixin, ListView):
+    """User personal booking list view."""
+
     template_name = "bookings.html"
     manager = False
 
@@ -130,7 +145,7 @@ class BookingView(CommonContextMixin, LoginRequiredMixin, ListView):
 
 
 def healthcheck(request: "HttpRequest") -> HttpResponse:
-    """View endpoint. Used to check the health of the server.
+    """Healthcheck endpoint. Used to check the health of the server.
 
     :param request: HttpRequest
     :rtype: HttpResponse

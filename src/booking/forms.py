@@ -10,10 +10,14 @@ from booking.utils.booking import is_available
 
 
 class DateInput(forms.DateInput):
+    """Force HTML date input type for DateInput. Overrides default Django behavior."""
+
     input_type = "date"
 
 
 class RegisterForm(forms.ModelForm):
+    """Form to register a user."""
+
     username = forms.EmailField(required=True)
     password = forms.CharField(widget=forms.PasswordInput)
 
@@ -27,6 +31,8 @@ class RegisterForm(forms.ModelForm):
 
 
 class LoginForm(AuthenticationForm):
+    """Local login form."""
+
     username = forms.EmailField(label="Email", widget=forms.TextInput(attrs={"autofocus": True}))
 
     class Meta:
@@ -35,6 +41,8 @@ class LoginForm(AuthenticationForm):
 
 
 class CreateBookingForm(forms.ModelForm):
+    """Form to create a booking."""
+
     car_version = forms.IntegerField(widget=forms.HiddenInput())
     start_date = forms.DateField(widget=DateInput())
     end_date = forms.DateField(widget=DateInput())
@@ -60,6 +68,7 @@ class CreateBookingForm(forms.ModelForm):
         days = (self.instance.end_date - self.instance.start_date).days
 
         with atomic():
+            """wraps into transaction to lock the record and prevent conflicts."""
             lock: Car = Car.objects.select_for_update().get(pk=self.car.pk)
             if lock.version != self.cleaned_data["car_version"]:
                 self.add_error(None, RecordChanged.message)

@@ -2,12 +2,11 @@ from datetime import date, timedelta
 from random import randint
 from typing import Any
 
+import factory.fuzzy
 from django.conf import settings
 from django.db.models import Model
 from django.utils.text import slugify
 from django.utils.translation import gettext as _
-
-import factory.fuzzy
 from factory.django import DjangoModelFactory
 
 from booking.models import Booking, Car, Service, User

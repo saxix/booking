@@ -11,6 +11,7 @@ from .models import BaseModel, Booking, Car, User
 @receiver(post_save, sender=Booking)
 @receiver(post_save, sender=User)
 def invalidate_car_cache(sender: BaseModel, **kwargs: Any) -> None:
+    """Signal handler to invalidate cache on object update."""
     try:
         sender.invalidate_cache()
     except ValueError:

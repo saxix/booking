@@ -4,6 +4,8 @@
 !.github
 !.flake8
 !.mypy.ini
+!.pre-commit-config.yaml
+!.python-version
 booking.db
 dist
 *.egg-info
