@@ -11,6 +11,7 @@ Install [uv](https://docs.astral.sh/uv/getting-started/installation/)
     uv sync --all-extras
     pre-commit install --hook-type pre-commit --hook-type pre-push
 
+Just want to run the app without installing source code? Use provided [Docker compose](Docker compose)
 
 ## Tailwind CSS (optional)
 
@@ -25,16 +26,16 @@ If you need to edit the CSS follow the below steps:
 
 1. Install node dependencies
 
-        ./manage.py tailwind install
+        python manage.py tailwind install
 
 
 1. Build the final CSS
 
-        ./manage.py tailwind build
+        python manage.py tailwind build
 
     Or you can run the [development mode](https://django-tailwind.readthedocs.io/en/latest/usage.html#running-in-development-mode)
 
-        ./manage.py tailwind start
+        python manage.py tailwind start
 
 Any changes to the .scss will trigger the .css compilation, followed by the browser reloading the page.
 Any changes to any other file will trigger the browser page reload.
@@ -72,10 +73,13 @@ if you want to enable Google SSO you should add:
 later you can
 
 
-    ./manage.py runserver
+    python manage.py runserver
 
 and point your browser to http://localhost:8000
 
+## Load sample data
+
+    python manage.py demo
 
 
 ## Docker compose
