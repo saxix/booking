@@ -12,6 +12,8 @@ x-env: &env
     - DATABASE_URL=postgres://db:password@db:5432/booking
     - ADMIN_USER=admin@example.com
     - ADMIN_PASSWORD=password
+    - GOOGLE_CLIENT_ID=
+    - GOOGLE_CLIENT_SECRET=
 
 x-common: &common
   build:
@@ -37,6 +39,7 @@ services:
 #      retries: 5
   backend2:
     image: saxix/booking
+    platform: linux/amd64
     <<:  [*env]
     ports:
       - 8000:8000
