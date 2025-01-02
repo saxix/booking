@@ -3,6 +3,7 @@
 
 Install [uv](https://docs.astral.sh/uv/getting-started/installation/)
 
+1. Clone the repo and create virtualenv
 
     git clone https://github.com/saxix/booking
     cd booking
@@ -10,6 +11,22 @@ Install [uv](https://docs.astral.sh/uv/getting-started/installation/)
     source .venv/bin/activate
     uv sync --all-extras
     pre-commit install --hook-type pre-commit --hook-type pre-push
+
+1. Configure your environment:
+
+
+     export DATABASE_URL=sqlite:///booking.db
+     export SECRET_KEY="super_secret_key_just_for_testing"
+     export DEBUG=True
+     export SUPERUSERS="admin@example.com,"  # can be a list
+     export ADMION_USER="admin@example.com"  # must be only one email
+     export ADMION_PASSWORD="password"
+
+If you have a google SSO key and you want to enable it:
+
+     export GOOGLE_CLIENT_ID=
+     export GOOGLE_CLIENT_SECRET=
+     export SOCIAL_AUTH_REDIRECT_IS_HTTPS=False
 
 Just want to run the app without installing source code? Use provided [Docker compose](Docker compose)
 

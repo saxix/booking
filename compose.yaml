@@ -25,19 +25,8 @@ x-common: &common
       condition: service_healthy
 
 services:
-  backend:
-    <<:  [*common, *env]
-    ports:
-      - 8000:8000
-    command: run
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8000/healthcheck" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-#  backend2:
-#    image: saxix/booking
-#    <<:  [*env]
+#  backend:
+#    <<:  [*common, *env]
 #    ports:
 #      - 8000:8000
 #    command: run
@@ -46,9 +35,20 @@ services:
 #      interval: 10s
 #      timeout: 5s
 #      retries: 5
-#    depends_on:
-#      db:
-#        condition: service_healthy
+  backend2:
+    image: saxix/booking
+    <<:  [*env]
+    ports:
+      - 8000:8000
+    command: run
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/healthcheck" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    depends_on:
+      db:
+        condition: service_healthy
 
   db:
     image: postgres:15
