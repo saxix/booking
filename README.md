@@ -21,3 +21,7 @@ Sample Car Booking application.
 
 
 Read full documentation [here](https://saxix.github.io/booking/)
+
+## Demo site
+
+Running demo available at: https://booking-ncc.up.railway.app/
