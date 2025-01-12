@@ -1,4 +1,10 @@
 repos:
+  - repo: https://github.com/mxab/pre-commit-trivy.git
+    rev: v0.14.0
+    hooks:
+    -   id: trivyfs-docker
+        args:
+          - ./src
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
