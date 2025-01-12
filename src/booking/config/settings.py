@@ -115,7 +115,7 @@ LANGUAGES = (
 )
 LOCALE_PATHS = (str(BASE_DIR / "LOCALE"),)
 
-CACHES = {"default": env("CACHE_URL")}
+CACHES = {"default": env.cache("CACHE_URL")}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
