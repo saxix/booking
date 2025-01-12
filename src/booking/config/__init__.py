@@ -7,6 +7,7 @@ if TYPE_CHECKING:
 
 CONFIG: "dict[str, ConfigItem]" = {
     "SUPERUSERS": (list, []),
+    "CACHE_URL": (str, None),
     "DEBUG": (bool, True),
     "SECRET_KEY": (str, "change-me"),
     "STATIC_ROOT": (str, None),
