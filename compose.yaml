@@ -1,19 +1,21 @@
 x-env: &env
   environment:
-    - DEBUG=true
-    - ALLOWED_HOSTS=localhost
-    - CSRF_COOKIE_SECURE=False
-    - CSRF_TRUSTED_ORIGINS=http://localhost
-    - AUTHENTICATION_BACKENDS=country_workspace.security.backends.AnyUserAuthBackend
-    - SECRET_KEY=sensitive-secret-key
-    - POSTGRES_USER=db
-    - POSTGRES_PASSWORD=password
-    - POSTGRES_DB=booking
-    - DATABASE_URL=postgres://db:password@db:5432/booking
-    - ADMIN_USER=admin@example.com
     - ADMIN_PASSWORD=password
-    - GOOGLE_CLIENT_ID=
-    - GOOGLE_CLIENT_SECRET=
+    - ADMIN_USER=admin@example.com
+    - ALLOWED_HOSTS=localhost
+    - AUTHENTICATION_BACKENDS=country_workspace.security.backends.AnyUserAuthBackend
+    - CACHE_URL=redis://valkey/1
+    - CSRF_COOKIE_SECURE=False
+    - CSRF_TRUSTED_ORIGINS=http://localhost:8000
+    - DATABASE_URL=postgres://db:password@db:5432/booking
+    - DEBUG=true
+    - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+    - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+    - POSTGRES_DB=booking
+    - POSTGRES_PASSWORD=password
+    - POSTGRES_USER=db
+    - SECRET_KEY=sensitive-secret-key
+    - SOCIAL_AUTH_REDIRECT_IS_HTTPS=false
 
 x-common: &common
   build:
@@ -24,6 +26,7 @@ x-common: &common
   depends_on:
     db:
       condition: service_healthy
+
 
 services:
   backend:
@@ -36,21 +39,13 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-#  backend2:
-#    image: saxix/booking
-#    platform: linux/amd64
-#    <<:  [*env]
-#    ports:
-#      - 8000:8000
-#    command: run
-#    healthcheck:
-#      test: [ "CMD", "curl", "-f", "http://localhost:8000/healthcheck" ]
-#      interval: 10s
-#      timeout: 5s
-#      retries: 5
-#    depends_on:
-#      db:
-#        condition: service_healthy
+
+
+  valkey:
+    image: valkey/valkey:alpine3.21
+    <<:  [*env]
+    restart: always
+
 
   db:
     image: postgres:15

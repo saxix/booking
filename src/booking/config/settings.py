@@ -115,12 +115,8 @@ LANGUAGES = (
 )
 LOCALE_PATHS = (str(BASE_DIR / "LOCALE"),)
 
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
-        "LOCATION": "unix:/tmp/memcached.sock",
-    }
-}
+CACHES = {"default": env("CACHE_URL")}
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
