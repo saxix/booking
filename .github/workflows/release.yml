@@ -8,22 +8,7 @@ on:
       - deleted
       - prereleased
       - released
-# Trigger the action manually from the UI
-#  workflow_dispatch:
-#    inputs:
-#      branch:
-#        description: 'Branch'
-#        required: true
-#        default: 'develop'
-#        type: choice
-#        options:
-#          - develop
-#          - staging
-#          - master
-#      tag:
-#        description: 'Version Tag'
-#        required: true
-#        default: 'warning'
+
 jobs:
   build:
     name: Build Docker Images

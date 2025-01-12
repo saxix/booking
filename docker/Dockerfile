@@ -55,7 +55,7 @@ RUN find ../src -name 'node_modules' -prune \
         --python-preference=system \
         --frozen
 
-# ------- production only deps-------
+# ------- dipendenze di produzion -------
 FROM builder AS production
 ENV PATH=/venv/bin:/usr/local/bin/:/usr/bin:/bin \
     DJANGO_SETTINGS_MODULE=booking.config.settings \
@@ -78,7 +78,7 @@ RUN uv sync --cache-dir=/root/.uv-cache \
 
 
 
-# ------- dist -------
+# ------- distribuzione finale -------
 FROM base_os AS dist
 ARG BUILD_DATE
 ARG GIT_SHA
