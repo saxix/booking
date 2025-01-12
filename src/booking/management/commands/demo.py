@@ -1,5 +1,6 @@
 import logging
 import os
+from django.db import IntegrityError
 from typing import Any
 
 from django.core.management import BaseCommand
@@ -17,12 +18,16 @@ class Command(BaseCommand):
         from booking.utils.fixtures import Car, CarFactory, Service, ServiceFactory, User
 
         if "ADMIN_USER" in os.environ:
-            User.objects.create_superuser(
-                os.environ["ADMIN_USER"],
-                email=os.environ["ADMIN_USER"],
-                password=os.environ["ADMIN_PASSWORD"],
-            )
-            self.stdout.write(self.style.SUCCESS("Superuser Successfully created"))
+            try:
+                User.objects.create_superuser(
+                    os.environ["ADMIN_USER"],
+                    email=os.environ["ADMIN_USER"],
+                    password=os.environ["ADMIN_PASSWORD"],
+                )
+                self.stdout.write(self.style.SUCCESS("Superuser Successfully created"))
+            except IntegrityError:
+                self.stdout.write(self.style.SUCCESS("Existing superuser found."))
+
         Car.objects.all().delete()
         CarFactory.create_batch(len(MODELS))
         ServiceFactory.create_batch(10)
