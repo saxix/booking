@@ -107,6 +107,7 @@ jobs:
           echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           echo "BUILD_DATE=$(date +"%Y-%m-%d %H:%M" )" >> $GITHUB_ENV
           echo "IMAGE=$IMAGE" >> $GITHUB_ENV
+          echo "::notice::✅ ${{env.DOCKER_METADATA_OUTPUT_JSON}}"
 
       - name: Build Test Image
         id: build
@@ -151,37 +152,38 @@ jobs:
           verbose: false
           name: codecov-${{env.GITHUB_REF_NAME}}
 
-  release:
-    needs: [ test ]
-    runs-on: ubuntu-latest
-    env:
-      DOCKER_DEFAULT_PLATFORM: linux/amd64
-      DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
-      DATABASE_URL: postgres://postgres:postgres@localhost:4432/booking
-      DOCKER_BUILDKIT: 1
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: DockerHub login
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build Distro
-        run: |
-            echo "::notice::✅ Image name ${{needs.test.outputs.image}}"
-            docker build \
-                --target dist \
-                --cache-from "type=gha" \
-                --cache-to "type=gha,mode=max" \
-                --build-arg "GIT_SHA=${{needs.test.outputs.commit}}" \
-                --build-arg "BUILD_DATE=${{needs.test.outputs.build_date}}" \
-                --build-arg "BRANCH=${{needs.test.outputs.branch}}" \
-                -t ${{needs.test.outputs.image}} \
-                -f docker/Dockerfile .
-
-      - name: Publish images
-        run: |
-            docker push ${{needs.test.outputs.image}}
-            docker inspect ${{needs.test.outputs.image}} | jq -r '.[0].Config.Labels'
-            echo "::notice::✅ Image ${{needs.test.outputs.image}} built and pushed"
+#  release:
+#    needs: [ test ]
+#    runs-on: ubuntu-latest
+#    env:
+#      DOCKER_DEFAULT_PLATFORM: linux/amd64
+#      DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
+#      DATABASE_URL: postgres://postgres:postgres@localhost:4432/booking
+#      DOCKER_BUILDKIT: 1
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v4
+#      - name: DockerHub login
+#        uses: docker/login-action@v3
+#        with:
+#          username: ${{ secrets.DOCKERHUB_USERNAME }}
+#          password: ${{ secrets.DOCKERHUB_TOKEN }}
+#      - name: Build Distro
+#        run: |
+#            echo "::notice::✅ Image name ${{env.IMAGE}}"
+#            echo "::notice::✅ Image name ${{needs.test.outputs.image}}"
+#            docker build \
+#                --target dist \
+#                --cache-from "type=gha" \
+#                --cache-to "type=gha,mode=max" \
+#                --build-arg "GIT_SHA=${{needs.test.outputs.commit}}" \
+#                --build-arg "BUILD_DATE=${{needs.test.outputs.build_date}}" \
+#                --build-arg "BRANCH=${{needs.test.outputs.branch}}" \
+#                -t ${{needs.test.outputs.image}} \
+#                -f docker/Dockerfile .
+#
+#      - name: Publish images
+#        run: |
+#            docker push ${{needs.test.outputs.image}}
+#            docker inspect ${{needs.test.outputs.image}} | jq -r '.[0].Config.Labels'
+#            echo "::notice::✅ Image ${{needs.test.outputs.image}} built and pushed"
