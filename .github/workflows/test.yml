@@ -44,7 +44,7 @@ jobs:
     if: needs.changes.outputs.run_tests == 'true'
     runs-on: ubuntu-latest
     outputs:
-      image: ${{ env.IMAGE }}
+      image: ${{ steps.build.outputs.IMAGE }}
       commit: ${{env.sha_short}}
       build_date: ${{env.BUILD_DATE}}
       branch: ${{env.BRANCH}}
@@ -109,6 +109,7 @@ jobs:
           echo "IMAGE=$IMAGE" >> $GITHUB_ENV
 
       - name: Build Test Image
+        id: build
         run: |
              docker build \
                 --target tests \
@@ -116,10 +117,11 @@ jobs:
                 --cache-from "type=gha" \
                 --cache-to "type=gha,mode=max" \
                 -f docker/Dockerfile .
+              echo "IMAGE=${{env.IMAGE}}" >> "$GITHUB_OUTPUT"
 
       - name: Run Test suite
         run: |
-            mkdir output
+            mkdir -p output
             docker run --rm \
               --network host \
               -e PYTHONPATH=/app/src \
