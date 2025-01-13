@@ -44,7 +44,7 @@ jobs:
     if: needs.changes.outputs.run_tests == 'true'
     runs-on: ubuntu-latest
     outputs:
-      image: ${{ env.IMAGE }}
+      image: ${{ steps.build.outputs.IMAGE }}
       commit: ${{env.sha_short}}
       build_date: ${{env.BUILD_DATE}}
       branch: ${{env.BRANCH}}
@@ -169,6 +169,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build Distro
         run: |
+            echo "::notice::✅ Image name ${{needs.test.outputs.image}}"
             docker build \
                 --target dist \
                 --cache-from "type=gha" \
