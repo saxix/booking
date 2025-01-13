@@ -44,7 +44,7 @@ jobs:
     if: needs.changes.outputs.run_tests == 'true'
     runs-on: ubuntu-latest
     outputs:
-      image: ${{ steps.build.outputs.IMAGE }}
+      image: ${{ env.IMAGE }}
       commit: ${{env.sha_short}}
       build_date: ${{env.BUILD_DATE}}
       branch: ${{env.BRANCH}}
@@ -118,9 +118,11 @@ jobs:
                 --cache-to "type=gha,mode=max" \
                 -f docker/Dockerfile .
               echo "IMAGE=${{env.IMAGE}}" >> "$GITHUB_OUTPUT"
+              echo "::notice::✅ Image name ${{env.IMAGE}}"
 
       - name: Run Test suite
         run: |
+            echo "::notice::✅ Image name ${{env.IMAGE}}"
             mkdir -p output
             docker run --rm \
               --network host \
