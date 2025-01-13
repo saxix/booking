@@ -42,7 +42,6 @@ docs = [
     "mkdocs-material>=9.5.48",
     "mkdocs-awesome-pages-plugin>=2.9.3",
     "mkdocstrings-python",
-    "mkdocs-gen-files>=0.5.0",
 ]
 
 

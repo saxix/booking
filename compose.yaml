@@ -17,20 +17,32 @@ x-env: &env
     - SECRET_KEY=sensitive-secret-key
     - SOCIAL_AUTH_REDIRECT_IS_HTTPS=false
 
-x-common: &common
-  build:
-    context: .
-    dockerfile: docker/Dockerfile
-    target: dist
-  restart: always
-  depends_on:
-    db:
-      condition: service_healthy
-
 
 services:
+  backend-latest:
+    <<:  [*env]
+    image: saxix/booking:latest
+    ports:
+      - 8000:8000
+    command: run
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/healthcheck" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    profiles: [prd]
+
   backend:
-    <<:  [*common, *env]
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      target: dist
+    <<:  [*env]
+    restart: always
+    profiles: [dev]
+    depends_on:
+      db:
+        condition: service_healthy
     ports:
       - 8000:8000
     command: run
@@ -43,14 +55,18 @@ services:
 
   valkey:
     image: valkey/valkey:alpine3.21
+    platform: linux/amd64
     <<:  [*env]
     restart: always
+    profiles: [dev, prd]
 
 
   db:
     image: postgres:15
+    platform: linux/amd64
     <<:  [*env]
     restart: always
+    profiles: [dev, prd]
     healthcheck:
       test: [ "CMD", "pg_isready", "-U", "db", "-d", "booking" ]
       start_period: 5s

@@ -6,9 +6,9 @@ RUN set -x \
     libxml2 \
   " \
   && apt-get update && apt-get install -y --no-install-recommends ${runtimeDeps} \
-  && rm -rf /var/lib/apt/lists/*
-
-RUN groupadd --gid 1024 booking \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/* \
+  && groupadd --gid 1024 booking \
     && adduser --disabled-login --disabled-password --no-create-home --ingroup booking -q user
 
 
@@ -46,16 +46,17 @@ WORKDIR /app
 COPY uv.lock README.md MANIFEST.in pyproject.toml /app/
 COPY src /app/src/
 
-RUN find ../src -name 'node_modules' -prune \
+RUN --mount=type=cache,target=/root/.cache/ \
+    find ../src -name 'node_modules' -prune \
         -o -name *.py -o -name *.html -o -name *.js -o -name *.css \
         -type f \
         -exec ls -l "{}" \;  | sha1sum | awk '{print $1}' > CODE_CHECKSUM \
-    && uv sync --cache-dir=/root/.uv-cache \
+    && uv sync --cache-dir=/root/.cache \
         --python=/usr/local/bin/python \
         --python-preference=system \
         --frozen
 
-# ------- dipendenze di produzion -------
+# ------- dipendenze di produzione -------
 FROM builder AS production
 ENV PATH=/venv/bin:/usr/local/bin/:/usr/bin:/bin \
     DJANGO_SETTINGS_MODULE=booking.config.settings \
@@ -71,7 +72,8 @@ WORKDIR /app
 COPY uv.lock README.md MANIFEST.in pyproject.toml /app/
 COPY src /app/src/
 
-RUN uv sync --cache-dir=/root/.uv-cache \
+RUN --mount=type=cache,target=/root/.cache/ \
+    uv sync --cache-dir=/root/.cache \
         --python=/usr/local/bin/python \
         --python-preference=system \
         --no-dev --frozen
@@ -102,7 +104,8 @@ COPY . /app/
 COPY --chown=user:booking --from=production /venv /venv
 COPY --from=builder /usr/local/bin/uwsgi /usr/local/bin/uv /usr/local/bin/
 
-RUN uv pip install --no-deps . \
+RUN --mount=type=cache,target=/root/.cache/ \
+    uv --cache-dir=/root/.cache pip install --no-deps . \
     && rm -fr /app/
 
 EXPOSE 8000
