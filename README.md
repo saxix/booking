@@ -7,7 +7,7 @@ Booking
 [![Documentation](https://github.com/saxix/booking/actions/workflows/docs.yml/badge.svg)](https://saxix.github.io/booking/)
 [![Docker Pulls](https://img.shields.io/docker/pulls/saxix/booking)](https://hub.docker.com/repository/docker/saxix/booking/tags)
 
-Sample Car Booking application.
+Semplice POC di una applicazione per il noleggio auto che consente agli utenti di cercare, prenotare e gestire i veicoli a noleggio online.
 
 ## Features
 
@@ -19,7 +19,7 @@ Sample Car Booking application.
 7.	Ottimizzazione Mobile: Progettata per dispositivi mobili, garantisce un’esperienza utente fluida su tutti i tipi di schermo.
 
 
-Documentazione completa [here](https://saxix.github.io/booking/)
+Documentazione completa [qui](https://saxix.github.io/booking/)
 
 ## Demo site
 

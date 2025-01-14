@@ -4,26 +4,29 @@ title: Docker
 
 ## Compose
 
-Source repository comes with a pre-configured Docker compose file. To use it just point to the root folder and type
+Il repository dei sorgenti è dotato di un file Docker compose preconfigurato.
+Per utilizzarlo, basta puntare alla cartella principale e digitare
 
     docker compose up
 
-this will start all required components (Postgres, Redis, App).
-You can navigate to http://localhost:8000 to check the application
+tquesto avvierà tutti i componenti richiesti (Postgres, Redis, App).
+
+Puoi andare su http://localhost:8000 per controllare l'applicazione
+
 
 !!! note
 
-    Provided stack also create a supruser account `admin@example.com/password`
+    Lo stack fornito crea anche un account superutente `admin@example.com/password`
+
 
 !!! warning
 
-    Due to the fact this is only for testing purposes, provided compose does not use any volume, so no data are persisted.
+    Poiché questo è solo per scopi di test, lo stack non utilizza alcun volume,
+    tutti i datoi andranno persi alla chiusura dello stack.
 
 ## Dockerfile
 
-To locally build your docker image just run:
+Per creare localmente la tua immagine docker, esegui semplicemente:
 
-    	DOCKER_BUILDKIT=1 docker build \
-			--target dist \
-			-t booking:local \
-			-f docker/Dockerfile .
+    	export DOCKER_BUILDKIT=1
+        docker build --target dist --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from saxix/booking:latest -t booking:local -f docker/Dockerfile .

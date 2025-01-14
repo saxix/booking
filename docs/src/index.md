@@ -2,11 +2,12 @@
 title: Documentation
 ---
 
-A Django application for car rentals that  allows users to browse, book, and manage vehicle rentals online.
+Semplice POC di una applicazione per il noleggio auto che consente agli utenti di cercare, prenotare e gestire i veicoli a noleggio online.
 
-1.	User Authentication: Secure login and registration for customers.
-2.	Car Listings: A catalog of available cars with details like model, price, availability, and specifications.
-3.	Booking System: Allows users to select vehicles, set rental dates, and confirm bookings.
-4.	Admin Dashboard: For rental companies to manage cars, bookings, and customer data.
-5.  Dual language ITA-ENG
-6.  Google SSO support
+
+2. Autenticazione Utente: Accesso e registrazione.
+2.	Catalogo Auto: Un elenco dettagliato delle auto disponibili, con informazioni su modello, prezzo, disponibilità e specifiche.
+3.	Sistema di Prenotazione: Permette agli utenti di selezionare i veicoli, specificare le date di noleggio e confermare le prenotazioni in modo semplice.
+5.	Supporto Multilingua: La piattaforma è disponibile sia in italiano che in inglese per una maggiore accessibilità.
+6.	Supporto Google SSO: Consente agli utenti di accedere o registrarsi utilizzando il proprio account Google per maggiore praticità.
+7.	Ottimizzazione Mobile: Progettata per dispositivi mobili, garantisce un’esperienza utente fluida su tutti i tipi di schermo.

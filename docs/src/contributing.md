@@ -1,9 +1,9 @@
-# Contributing
+# Come Contribuire
 
 
-Install [uv](https://docs.astral.sh/uv/getting-started/installation/)
+Installare [uv](https://docs.astral.sh/uv/getting-started/installation/)
 
-1. Clone the repo and create virtualenv
+1. Clonare il repository e creare un virtualenv:
 
     git clone https://github.com/saxix/booking
     cd booking
@@ -12,7 +12,7 @@ Install [uv](https://docs.astral.sh/uv/getting-started/installation/)
     uv sync --all-extras
     pre-commit install --hook-type pre-commit --hook-type pre-push
 
-1. Configure your environment:
+1. Configurare l’ambiente:
 
 
      export DATABASE_URL=sqlite:///booking.db
@@ -22,7 +22,7 @@ Install [uv](https://docs.astral.sh/uv/getting-started/installation/)
      export ADMION_USER="admin@example.com"  # must be only one email
      export ADMION_PASSWORD="password"
 
-If you have a google SSO key and you want to enable it:
+Se possiedi una chiave Google SSO e desideri abilitarla:
 
      export GOOGLE_CLIENT_ID=
      export GOOGLE_CLIENT_SECRET=
@@ -32,42 +32,39 @@ Just want to run the app without installing source code? Use provided [Docker co
 
 ## Tailwind CSS (optional)
 
-This project uses [django-tailwind](https://django-tailwind.readthedocs.io/en/latest/installation.html) to manage
-CSS. CSS sources are located in the `booking/theme/static_src/src/`.
-If you need to edit the CSS follow the below steps:
+Questo progetto utilizza [django-tailwind](https://django-tailwind.readthedocs.io/en/latest/installation.html) per gestire i file CSS.
+I sorgenti CSS si trovano nella directory  `booking/theme/static_src/src/`.
 
-1. Configure the enviroment
+1. Configurare l’ambiente:
 
         export EXTRA_APPS="django_browser_reload"
         export EXTRA_MIDDLEWARES="django_browser_reload.middleware.BrowserReloadMiddleware,"
 
-1. Install node dependencies
+1.Installare le dipendenze Node.js:
 
         python manage.py tailwind install
 
 
-1. Build the final CSS
+1. Compilare il CSS finale:
 
         python manage.py tailwind build
 
-    Or you can run the [development mode](https://django-tailwind.readthedocs.io/en/latest/usage.html#running-in-development-mode)
+    Oppure utilizzare la [modalità di sviluppo](https://django-tailwind.readthedocs.io/en/latest/usage.html#running-in-development-mode)
 
         python manage.py tailwind start
 
-Any changes to the .scss will trigger the .css compilation, followed by the browser reloading the page.
-Any changes to any other file will trigger the browser page reload.
-
+ALe modifiche ai file .scss attiveranno la compilazione del file .css e il browser ricaricherà automaticamente la pagina.
 
 ## Run tests
 
-Tests are located in the `tests` folder. To run them just type
+I test si trovano nella cartella `tests`. Per eseguirli, usa:
 
     pytest tests
 
 
-## Run local server
+## Avviare il server locale
 
-Before you can run the sample application you should set some environment variables:
+Prima di eseguire l’applicazione, configura alcune variabili d’ambiente:
 
       export DATABASE_URL=sqlite://booking.db
       export SECRET_KEY="super_secret_key_just_for_testing"
@@ -76,35 +73,36 @@ Before you can run the sample application you should set some environment variab
 
 !!! note
 
-    In case you prefer to use PostgreSQL you can set `DATABASE_URL` as
+    Se preferisci utilizzare PostgreSQL, imposta DATABASE_URL come segue:
 
        `postgres://<username>:<password>@<ip>:<port>/<database>`
 
 
-if you want to enable Google SSO you should add:
+Se desideri abilitare Google SSO, aggiungi:
 
       export GOOGLE_CLIENT_ID=...
       export GOOGLE_CLIENT_SECRET=...
       export SOCIAL_AUTH_REDIRECT_IS_HTTPS=False
 
-later you can
+Infine esegui:
 
 
     python manage.py runserver
 
-and point your browser to http://localhost:8000
+e apri il browser su http://localhost:8000
 
-## Load sample data
+
+## Caricare dati di esempio
+
+Per caricare dati demo, esegui:
 
     python manage.py demo
 
 
 ## Docker compose
 
-Alternatively you can use provided docker compose for development
-
-    docker compose up
-
-Alternatively you can use provided docker compose for development
+n alternativa, puoi utilizzare il Docker Compose fornito per lo sviluppo.
+Questa soluzione fa partire tutto il necessario,
+e rende l'applicazione disponibile su https://localhost:8000
 
     docker compose up
