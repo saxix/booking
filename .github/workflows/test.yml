@@ -2,8 +2,6 @@ name: Test
 
 on:
   push:
-    branches:
-      - *
 
 concurrency:
   group: "${{ github.workflow }}-${{ github.ref }}"
@@ -46,7 +44,7 @@ jobs:
     if: needs.changes.outputs.run_tests == 'true'
     runs-on: ubuntu-latest
     outputs:
-      image: ${{ env.IMAGE }}
+      image: ${{ steps.build.outputs.IMAGE }}
       commit: ${{env.sha_short}}
       build_date: ${{env.BUILD_DATE}}
       branch: ${{env.BRANCH}}
@@ -109,8 +107,10 @@ jobs:
           echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           echo "BUILD_DATE=$(date +"%Y-%m-%d %H:%M" )" >> $GITHUB_ENV
           echo "IMAGE=$IMAGE" >> $GITHUB_ENV
+          echo "::notice::✅ ${{env.DOCKER_METADATA_OUTPUT_JSON}}"
 
       - name: Build Test Image
+        id: build
         run: |
              docker build \
                 --target tests \
@@ -118,10 +118,13 @@ jobs:
                 --cache-from "type=gha" \
                 --cache-to "type=gha,mode=max" \
                 -f docker/Dockerfile .
+              echo "IMAGE=${{env.IMAGE}}" >> "$GITHUB_OUTPUT"
+              echo "::notice::✅ Image name ${{env.IMAGE}}"
 
       - name: Run Test suite
         run: |
-            mkdir output
+            echo "::notice::✅ Image name ${{env.IMAGE}}"
+            mkdir -p output
             docker run --rm \
               --network host \
               -e PYTHONPATH=/app/src \
@@ -148,7 +151,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           verbose: false
           name: codecov-${{env.GITHUB_REF_NAME}}
-#
+
 #  release:
 #    needs: [ test ]
 #    runs-on: ubuntu-latest
@@ -167,6 +170,8 @@ jobs:
 #          password: ${{ secrets.DOCKERHUB_TOKEN }}
 #      - name: Build Distro
 #        run: |
+#            echo "::notice::✅ Image name ${{env.IMAGE}}"
+#            echo "::notice::✅ Image name ${{needs.test.outputs.image}}"
 #            docker build \
 #                --target dist \
 #                --cache-from "type=gha" \

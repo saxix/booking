@@ -1,9 +1,9 @@
 import logging
 import os
-from django.db import IntegrityError
 from typing import Any
 
 from django.core.management import BaseCommand
+from django.db import IntegrityError
 
 from booking.utils.fixtures import MODELS
 

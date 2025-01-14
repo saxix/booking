@@ -3,8 +3,8 @@ name: "Documentation"
 on:
   push:
     branches:
-      - develop
       - main
+      - develop
   schedule:
     - cron: '37 23 * * 2'
 
@@ -73,6 +73,7 @@ jobs:
   # Deployment job
   deploy:
     needs: generate
+    if: github.ref == 'refs/heads/main'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
