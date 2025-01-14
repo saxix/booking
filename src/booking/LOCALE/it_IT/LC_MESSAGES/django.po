@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-21 19:55+0000\n"
+"POT-Creation-Date: 2025-01-14 15:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -107,7 +107,7 @@ msgstr "Ciao"
 msgid "or login with e-mail"
 msgstr "o tramite indirizzo email"
 
-#: booking/templates/login.html:57 booking/templates/register.html:58
+#: booking/templates/login.html:57 booking/templates/register.html:60
 msgid "Sign Up"
 msgstr "Registrazione"
 
@@ -127,26 +127,45 @@ msgstr "Privacy"
 msgid "Register"
 msgstr "Registrazione"
 
-#: booking/templates/register.html:67
+#: booking/templates/register.html:69
 msgid "Already registered?"
 msgstr "Già registrato"
 
-#: booking/templates/register.html:68
+#: booking/templates/register.html:70
 msgid "login here"
 msgstr "accedi qui"
 
-#: booking/utils/fixtures.py:67
+#: booking/templates/registered.html:8
+#, fuzzy
+#| msgid "Register"
+msgid "Registered"
+msgstr "Registrazione"
+
+#: booking/templates/registered.html:11
+msgid ""
+"\n"
+"An email has been sent to your email address.<br/>\n"
+"Please check your inbox and follow the instructions to complete the "
+"process.\n"
+"                        "
+msgstr ""
+"\n"
+"Un’email è stata inviata al tuo indirizzo di posta elettronica.<br/>\n"
+"Controlla la tua casella di posta e segui le istruzioni per completare il processo. \n"
+"                        "
+
+#: booking/utils/fixtures.py:66
 msgid "bar"
 msgstr "bar"
 
-#: booking/utils/fixtures.py:67
+#: booking/utils/fixtures.py:66
 msgid "TV"
 msgstr ""
 
-#: booking/utils/fixtures.py:67
+#: booking/utils/fixtures.py:66
 msgid "seat warmers"
 msgstr "sedili riscaldati"
 
-#: booking/utils/fixtures.py:67
+#: booking/utils/fixtures.py:66
 msgid "ski rack"
 msgstr "portasci"

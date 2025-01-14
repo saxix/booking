@@ -16,6 +16,8 @@ CONFIG: "dict[str, ConfigItem]" = {
     "EXTRA_MIDDLEWARES": (list, []),
     "GOOGLE_CLIENT_ID": (str, ""),
     "GOOGLE_CLIENT_SECRET": (str, ""),
+    "GMAIL_USER": (str, ""),
+    "GMAIL_PASSWORD": (str, ""),
 }
 
 env = Env(**CONFIG)

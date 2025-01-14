@@ -17,17 +17,9 @@ class BaseModel(models.Model):
         abstract = True
 
     @classmethod
-    def retrieve(cls, label: str | None = "") -> Any:
+    def get_cache_version(cls, label: str | None = "") -> int:
         """Retrieve an entry from the cache."""
-        v = cache.get(f"version:{cls.__name__}")
-        return cache.get(f"cache:{v}:{label}")
-
-    @classmethod
-    def store(cls, value: Any, label: str | None = "") -> Any:
-        """Store `value` into the cache, optionally label it."""
-        v = cache.get(f"version:{cls.__name__}")
-        cache.set(f"cache:{v}:{label}", value, timeout=86400)
-        cls.invalidate_cache()
+        return cache.get(f"version:{cls.__name__}") or 1
 
     @classmethod
     def invalidate_cache(cls):
@@ -36,6 +28,18 @@ class BaseModel(models.Model):
             cache.incr(f"version:{cls.__name__}")
         except ValueError:
             cache.set(f"version:{cls.__name__}", 1)
+
+    @classmethod
+    def get_from_cache(cls, label: str | None = "") -> Any:
+        """Retrieve an entry from the cache."""
+        v = cls.get_cache_version()
+        return cache.get(f"cache:{label}", version=v)
+
+    @classmethod
+    def store_to_cache(cls, value: Any, label: str | None = "") -> Any:
+        """Store `value` into the cache, optionally label it."""
+        v = cls.get_cache_version()
+        cache.set(f"cache:{label}", value, timeout=86400, version=v)
 
 
 class User(BaseModel, AbstractUser):

@@ -19,7 +19,9 @@ urlpatterns = i18n_patterns(
         name="booking-cancel",
     ),
     path("login/", views.LoginView.as_view(), name="login"),
+    path("otp/<str:key>/", views.OTPLoginView.as_view(), name="otp-login"),
     path("register/", views.RegisterView.as_view(), name="register"),
+    path("registered/", views.RegisterCompleteView.as_view(), name="register-complete"),
     path("logout/", LogoutView.as_view(), name="logout"),
     path("healthcheck/", views.healthcheck, name="healthcheck"),
 )
