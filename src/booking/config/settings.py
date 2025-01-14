@@ -157,3 +157,10 @@ SOCIAL_AUTH_PIPELINE = (
     "social_core.pipeline.user.user_details",
     "booking.utils.pipeline.configure_user",
 )
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = env("GMAIL_USER")
+EMAIL_HOST_PASSWORD = env("GMAIL_PASSWORD")

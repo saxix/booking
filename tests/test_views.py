@@ -93,3 +93,17 @@ def test_book_car_changed(app: "DjangoTestApp", car: "Car"):
     res = res.forms[0].submit()
     assert res.status_code == 200
     assert RecordChanged.message in res.text, res.showbrowser()
+
+
+def test_etag(app: "DjangoTestApp", car: "Car"):
+    url = reverse("index")
+    res = app.get(url, user=None)
+    assert (etag := res["Etag"])
+    assert res.status_code == 200
+    res = app.get(url, user=None, headers={"IF_NONE_MATCH": etag})
+    assert res.status_code == 304
+
+    car.save()  # force cache invalidation
+    res = app.get(url, user=None, headers={"IF_NONE_MATCH": etag})
+    assert res.status_code == 200
+    assert res["Etag"] != etag

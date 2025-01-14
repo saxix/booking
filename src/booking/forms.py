@@ -2,6 +2,7 @@ from typing import Any
 
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.hashers import make_password
 from django.db.transaction import atomic
 
 from booking.exceptions import PeriodNotAvailable, RecordChanged
@@ -27,6 +28,7 @@ class RegisterForm(forms.ModelForm):
 
     def save(self, commit: bool = True) -> Car:
         self.instance.email = self.instance.username
+        self.instance.password = make_password(self.cleaned_data["password"])
         return super().save(commit)
 
 

@@ -5,6 +5,7 @@ from django.test import override_settings
 from django.urls import reverse
 
 import pytest
+from webob.exc import strip_tags
 
 from booking.models import User
 from booking.utils.fixtures import UserFactory
@@ -30,7 +31,7 @@ def test_login(db, client):
         url += "?code=2&state=1"
         mock_request.return_value.json.return_value = {"access_token": "123"}
         with mock.patch(
-            "django.contrib.sessions.backends.base.SessionBase" ".set_expiry",
+            "django.contrib.sessions.backends.base.SessionBase.set_expiry",
             side_effect=[OverflowError, None],
         ):
             response = client.get(url)
@@ -55,12 +56,24 @@ def test_login_email(app, user):
     assert res.status_code == 302
 
 
-def test_register(app):
-    url = reverse("register")
-    app.set_user(None)
-    res = app.get(url)
-    res.forms["register-form"]["username"] = "user@example.com"
-    res.forms["register-form"]["password"] = "password"
+def test_register(app, mailoutbox):
+    username = "user@example.com"
+    password = "password"
+    res = app.get(reverse("register"), user=None)
+    res.forms["register-form"]["username"] = username
+    res.forms["register-form"]["password"] = password
     res = res.forms["register-form"].submit()
     assert res.status_code == 302
-    assert User.objects.filter(email="user@example.com", username="user@example.com").exists()
+    assert User.objects.filter(email=username, username=username, is_active=True).exists()
+    # Check OTP email and link
+    assert len(mailoutbox) == 1
+    url = strip_tags(mailoutbox[0].body).replace("Per accedere fai click su questo link", "").strip()
+    res = app.get(url, user=None)
+    assert res.status_code == 302
+
+    # Check standard login
+    res = app.get(reverse("login"), user=None)
+    res.forms["login-form"]["username"] = username
+    res.forms["login-form"]["password"] = password
+    res = res.forms["login-form"].submit()
+    assert res.status_code == 302
