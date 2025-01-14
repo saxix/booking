@@ -1,10 +1,9 @@
 from unittest import mock
 
+import pytest
 from django.conf import settings
 from django.test import override_settings
 from django.urls import reverse
-
-import pytest
 from webob.exc import strip_tags
 
 from booking.models import User

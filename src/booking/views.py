@@ -18,7 +18,7 @@ from django.views.decorators.http import condition
 from django.views.generic import CreateView, DeleteView, ListView, RedirectView, TemplateView
 
 from booking.config import env
-from booking.exceptions import RecordChanged
+from booking.exceptions import RecordChanged, CollisionError
 from booking.forms import CreateBookingForm, LoginForm, RegisterForm
 from booking.models import Booking, Car, User
 
@@ -167,6 +167,9 @@ class CreateBookView(CommonContextMixin, LoginRequiredMixin, CreateView):
             "car_version": self.selected_car.version,
         }
 
+    def form_invalid(self, form):
+        return super().form_invalid(form)
+
     def form_valid(self, form: ModelForm) -> HttpResponseRedirect | HttpResponse:
         form.instance.car = self.selected_car
         form.instance.customer = self.request.user
@@ -177,11 +180,12 @@ class CreateBookView(CommonContextMixin, LoginRequiredMixin, CreateView):
         form = self.get_form()
         if form.is_valid():
             try:
-                Booking.invalidate_cache()
-                return self.form_valid(form)
-            except RecordChanged:
+                ret = self.form_valid(form)
+                return ret
+            except (RecordChanged, CollisionError):
                 return self.form_invalid(form)
-
+            finally:
+                Booking.invalidate_cache()
         else:
             return self.form_invalid(form)
 
