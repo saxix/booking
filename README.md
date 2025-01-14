@@ -11,17 +11,17 @@ Sample Car Booking application.
 
 ## Features
 
-1.	User Authentication: Secure login and registration for customers.
-2.	Car Listings: A catalog of available cars with details like model, price, availability, and specifications.
-3.	Booking System: Allows users to select vehicles, set rental dates, and confirm bookings.
-4.	Admin Dashboard: For rental companies to manage cars, bookings, and customer data.
-5.  Dual language ITA-ENG
-6.  Google SSO support
-7.  Mobile friendly
+  1.	Autenticazione Utente: Accesso e registrazione sicuri per i clienti, garantendo protezione dei dati e privacy.
+	2.	Catalogo Auto: Un elenco dettagliato delle auto disponibili, con informazioni su modello, prezzo, disponibilità e specifiche.
+	3.	Sistema di Prenotazione: Permette agli utenti di selezionare i veicoli, specificare le date di noleggio e confermare le prenotazioni in modo semplice.
+	4.	Dashboard Amministrativa: Fornisce alle aziende di noleggio strumenti per gestire l’inventario delle auto, le prenotazioni e i dati dei clienti in modo efficiente.
+	5.	Supporto Multilingua: La piattaforma è disponibile sia in italiano (ITA) che in inglese (ENG) per una maggiore accessibilità.
+	6.	Supporto Google SSO: Consente agli utenti di accedere o registrarsi utilizzando il proprio account Google per maggiore praticità.
+	7.	Ottimizzazione Mobile: Progettata per dispositivi mobili, garantisce un’esperienza utente fluida su tutti i tipi di schermo.
 
 
-Read full documentation [here](https://saxix.github.io/booking/)
+Documentazione completa [here](https://saxix.github.io/booking/)
 
 ## Demo site
 
-Running demo available at: https://booking-ncc.up.railway.app/
+Applicazione demo dsiponibile: https://booking-ncc.up.railway.app/
