@@ -46,7 +46,7 @@ WORKDIR /app
 COPY uv.lock README.md MANIFEST.in pyproject.toml /app/
 COPY src /app/src/
 
-RUN --mount=type=cache,target=/root/.cache/ \
+RUN --mount=type=cache,target=/root/.cache/,id=uvcache \
     find ../src -name 'node_modules' -prune \
         -o -name *.py -o -name *.html -o -name *.js -o -name *.css \
         -type f \
@@ -72,7 +72,7 @@ WORKDIR /app
 COPY uv.lock README.md MANIFEST.in pyproject.toml /app/
 COPY src /app/src/
 
-RUN --mount=type=cache,target=/root/.cache/ \
+RUN --mount=type=cache,target=/root/.cache/,id=uvcache \
     uv sync --cache-dir=/root/.cache \
         --python=/usr/local/bin/python \
         --python-preference=system \
@@ -104,7 +104,7 @@ COPY . /app/
 COPY --chown=user:booking --from=production /venv /venv
 COPY --from=builder /usr/local/bin/uwsgi /usr/local/bin/uv /usr/local/bin/
 
-RUN --mount=type=cache,target=/root/.cache/ \
+RUN --mount=type=cache,target=/root/.cache/,id=uvcache \
     uv --cache-dir=/root/.cache pip install --no-deps . \
     && rm -fr /app/
 
