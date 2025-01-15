@@ -3,9 +3,11 @@ from typing import Any
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.hashers import make_password
+from django.db import OperationalError
 from django.db.transaction import atomic
+from django.utils.translation import gettext as _
 
-from booking.exceptions import PeriodNotAvailable, RecordChanged
+from booking.exceptions import CollisionError, RecordChanged
 from booking.models import Booking, Car, User
 from booking.utils.booking import is_available
 
@@ -68,17 +70,15 @@ class CreateBookingForm(forms.ModelForm):
 
     def save(self, commit: bool = True) -> Booking:
         days = (self.instance.end_date - self.instance.start_date).days
-
         with atomic():
             """wraps into transaction to lock the record and prevent conflicts."""
-            lock: Car = Car.objects.select_for_update().get(pk=self.car.pk)
-            if lock.version != self.cleaned_data["car_version"]:
-                self.add_error(None, RecordChanged.message)
-                raise RecordChanged()
-            if is_available(self.car, self.instance.start_date, self.instance.end_date):
+            try:
+                lock: Car = Car.objects.select_for_update(nowait=True).get(pk=self.car.pk)
+                if lock.version != self.cleaned_data["car_version"]:
+                    self.add_error(None, RecordChanged.message)
+                    raise RecordChanged()
                 self.instance.total_price = self.instance.car.price * days
-                super().save(commit)
-                self.instance.car.save(update_fields=["version"])
-            else:
-                raise forms.ValidationError(PeriodNotAvailable)
+                self.instance = super().save(commit)
+            except OperationalError:
+                raise CollisionError(_("Period is not available"))
         return self.instance

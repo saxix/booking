@@ -1,14 +1,19 @@
 from typing import Any
 
 from django.core.exceptions import ValidationError
+from django.utils.translation import gettext as _
 
 
 class PeriodNotAvailable(ValidationError):
     pass
 
 
+class CollisionError(Exception):
+    pass
+
+
 class RecordChanged(ValidationError):
-    message = "Selected place infos hae been updated. Please check before proceeding."
+    message = _("Selected car details hae been updated. Please check before proceeding.")
 
     def __init__(
         self,

@@ -1,0 +1,9 @@
+{% extends "layout.html" %}{% load i18n static %}
+{% block content %}
+    <div class="py-10 bg-gray-100 dark:bg-gray-900 text-gray-900 justify-center">
+        <div class="mx-20 sm:mx-32 lg:mx-52 dark:bg-gray-500 bg-white shadow rounded-lg text-center p-5">
+            <h1 class="block text-3xl xl:text-3xl font-extrabold">{{ error_code }}</h1>
+            <div class=" block text-xl m-5">{{ message }}</div>
+        </div>
+    </div>
+{% endblock content %}

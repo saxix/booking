@@ -19,12 +19,12 @@ Installare [uv](https://docs.astral.sh/uv/getting-started/installation/)
      export SECRET_KEY="super_secret_key_just_for_testing"
      export DEBUG=True
      export SUPERUSERS="admin@example.com,"  # can be a list
-     export ADMION_USER="admin@example.com"  # must be only one email
-     export ADMION_PASSWORD="password"
+     export ADMIN_USER="admin@example.com"  # must be only one email
+     export ADMIN_PASSWORD="password"
 
 Se possiedi una chiave Google SSO e desideri abilitarla:
 
-     export GOOGLE_CLIENT_ID=
+     export GOOGLE_CLIENT_ID= <
      export GOOGLE_CLIENT_SECRET=
      export SOCIAL_AUTH_REDIRECT_IS_HTTPS=False
 

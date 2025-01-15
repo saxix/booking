@@ -8,6 +8,7 @@ x-env: &env
     - CSRF_COOKIE_SECURE=False
     - CSRF_TRUSTED_ORIGINS=http://localhost:8000
     - DATABASE_URL=postgres://db:password@db:5432/booking
+    - DJANGO_SETTINGS_MODULE=booking.config.settings
     - DEBUG=true
     - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
     - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
@@ -32,10 +33,12 @@ services:
       retries: 5
     profiles: [prd]
 
-  backend:
+  backend-dev:
     build:
       context: .
       dockerfile: docker/Dockerfile
+      cache_from:
+        - saxix/booking:latest
       target: dist
     <<:  [*env]
     restart: always
@@ -45,7 +48,20 @@ services:
         condition: service_healthy
     ports:
       - 8000:8000
-    command: run
+#    command: django-admin migrate --no-input && django-admin demo && django-admin runserver 0.0.0.0:8000
+    develop:
+      watch:
+      - path: ./uv.lock
+        action: rebuild
+      - path: ./src/booking
+        target: /venv/lib/python3.12/site-packages/booking
+        ignore:
+          - theme/static_src
+        action: sync+restart
+#    volumes:
+#      - $PWD/docker/conf:/conf/
+#      - $PWD/docker/bin/docker-entrypoint.sh:/usr/local/bin/docker-entrypoint.sh
+#      - $PWD/src/booking:/venv/lib/python3.12/site-packages/booking
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/healthcheck" ]
       interval: 10s

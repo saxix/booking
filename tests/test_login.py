@@ -1,10 +1,9 @@
 from unittest import mock
 
+import pytest
 from django.conf import settings
 from django.test import override_settings
 from django.urls import reverse
-
-import pytest
 from webob.exc import strip_tags
 
 from booking.models import User
@@ -77,3 +76,9 @@ def test_register(app, mailoutbox):
     res.forms["login-form"]["password"] = password
     res = res.forms["login-form"].submit()
     assert res.status_code == 302
+
+
+def test_invalid_or_expired_otp(app, mailoutbox):
+    url = reverse("otp-login", args=["abc"])
+    res = app.get(url, user=None, expect_errors=True)
+    assert res.status_code == 404

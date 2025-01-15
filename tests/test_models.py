@@ -1,6 +1,5 @@
-from django.db import IntegrityError
-
 import pytest
+from django.db import IntegrityError
 
 from booking.models import Booking
 

@@ -6,6 +6,11 @@ from django.urls import include, path
 
 from .. import views
 
+handler400 = views.error_400
+handler403 = views.error_403
+handler404 = views.error_404
+handler500 = views.error_500
+
 urlpatterns = i18n_patterns(
     path("admin/", admin.site.urls),
     path("social/", include("social_django.urls", namespace="social")),
@@ -24,6 +29,11 @@ urlpatterns = i18n_patterns(
     path("registered/", views.RegisterCompleteView.as_view(), name="register-complete"),
     path("logout/", LogoutView.as_view(), name="logout"),
     path("healthcheck/", views.healthcheck, name="healthcheck"),
+    # utility urls
+    path("errors/400/", handler400, name="errors-400"),
+    path("errors/403/", handler403, name="errors-403"),
+    path("errors/404/", handler404, name="errors-404"),
+    path("errors/500/", handler500, name="errors-500"),
 )
 
 if "django_browser_reload" in settings.INSTALLED_APPS:  # pragma: no cover

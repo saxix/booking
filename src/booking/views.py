@@ -9,6 +9,7 @@ from django.core.mail import EmailMessage
 from django.db.models import QuerySet
 from django.forms import ModelForm
 from django.http import Http404, HttpRequest, HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.utils.crypto import get_random_string, md5
@@ -18,7 +19,7 @@ from django.views.decorators.http import condition
 from django.views.generic import CreateView, DeleteView, ListView, RedirectView, TemplateView
 
 from booking.config import env
-from booking.exceptions import RecordChanged
+from booking.exceptions import CollisionError, RecordChanged
 from booking.forms import CreateBookingForm, LoginForm, RegisterForm
 from booking.models import Booking, Car, User
 
@@ -167,6 +168,9 @@ class CreateBookView(CommonContextMixin, LoginRequiredMixin, CreateView):
             "car_version": self.selected_car.version,
         }
 
+    def form_invalid(self, form):
+        return super().form_invalid(form)
+
     def form_valid(self, form: ModelForm) -> HttpResponseRedirect | HttpResponse:
         form.instance.car = self.selected_car
         form.instance.customer = self.request.user
@@ -177,11 +181,12 @@ class CreateBookView(CommonContextMixin, LoginRequiredMixin, CreateView):
         form = self.get_form()
         if form.is_valid():
             try:
-                Booking.invalidate_cache()
-                return self.form_valid(form)
-            except RecordChanged:
+                ret = self.form_valid(form)
+                return ret
+            except (RecordChanged, CollisionError):
                 return self.form_invalid(form)
-
+            finally:
+                Booking.invalidate_cache()
         else:
             return self.form_invalid(form)
 
@@ -214,3 +219,19 @@ def healthcheck(request: "HttpRequest") -> HttpResponse:
     :rtype: HttpResponse
     """
     return HttpResponse("Ok")
+
+
+def error_400(request: HttpRequest, exception: Exception = None) -> HttpResponse:
+    return render(request, "errors/400.html", {"error_code": 400, "message": "Bad Request"}, status=400)
+
+
+def error_403(request: HttpRequest, exception: Exception = None) -> HttpResponse:
+    return render(request, "errors/403.html", {"error_code": 403, "message": "Forbidden"}, status=403)
+
+
+def error_404(request: HttpRequest, exception: Exception = None) -> HttpResponse:
+    return render(request, "errors/404.html", {"error_code": 404, "message": "Page not found"}, status=404)
+
+
+def error_500(request: HttpRequest, exception: Exception = None) -> HttpResponse:
+    return render(request, "errors/500.html", {"error_code": 500, "message": "Server Error"}, status=500)
