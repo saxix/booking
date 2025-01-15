@@ -131,3 +131,10 @@ def test_concurrency(app, car):
 
         assert m1.call_count >= 1
         assert m2.call_count >= 1
+
+
+@pytest.mark.parametrize("code", [400, 403, 404, 500])
+def test_custom_pages(app: "DjangoTestApp", code: int):
+    url = reverse(f"errors-{code}")
+    res = app.get(url, user=None, expect_errors=True)
+    assert res.status_code == code
