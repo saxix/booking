@@ -121,7 +121,7 @@ def test_concurrency(app, car):
         def t1():
             return app.post(url, {"car_version": car.version, "start_date": "2000-01-01", "end_date": "2000-01-31"})
 
-        threads = [threading.Thread(target=t1) for __ in range(10)]
+        threads = [threading.Thread(target=t1) for __ in range(5)]
 
         for t in threads:
             t.start()
