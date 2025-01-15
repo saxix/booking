@@ -88,6 +88,7 @@ ARG BRANCH
 
 ENV PATH=/venv/bin:/usr/local/bin/:/usr/bin:/bin \
     PYTHONUNBUFFERED=1 \
+    DJANGO_SETTINGS_MODULE=booking.config.settings \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONPATH=""\
     PGSSLCERT="/tmp/postgresql.crt" \
@@ -105,7 +106,7 @@ COPY --chown=user:booking --from=production /venv /venv
 COPY --from=builder /usr/local/bin/uwsgi /usr/local/bin/uv /usr/local/bin/
 
 RUN --mount=type=cache,target=/root/.cache/,id=uvcache \
-    uv --cache-dir=/root/.cache pip install --no-deps . \
+    uv --cache-dir=/root/.cache pip install --link-mode=copy  --no-deps . \
     && rm -fr /app/
 
 EXPOSE 8000

@@ -9,6 +9,7 @@ from django.core.mail import EmailMessage
 from django.db.models import QuerySet
 from django.forms import ModelForm
 from django.http import Http404, HttpRequest, HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.utils.crypto import get_random_string, md5
@@ -18,7 +19,7 @@ from django.views.decorators.http import condition
 from django.views.generic import CreateView, DeleteView, ListView, RedirectView, TemplateView
 
 from booking.config import env
-from booking.exceptions import RecordChanged, CollisionError
+from booking.exceptions import CollisionError, RecordChanged
 from booking.forms import CreateBookingForm, LoginForm, RegisterForm
 from booking.models import Booking, Car, User
 
@@ -218,3 +219,19 @@ def healthcheck(request: "HttpRequest") -> HttpResponse:
     :rtype: HttpResponse
     """
     return HttpResponse("Ok")
+
+
+def error_400(request: HttpRequest, exception: Exception = None) -> HttpResponse:
+    return render(request, "errors/400.html", {"error_code": 400, "message": "Bad Request"})
+
+
+def error_403(request: HttpRequest, exception: Exception = None) -> HttpResponse:
+    return render(request, "errors/403.html", {"error_code": 403, "message": "Forbidden"})
+
+
+def error_404(request: HttpRequest, exception: Exception = None) -> HttpResponse:
+    return render(request, "errors/404.html", {"error_code": 404, "message": "Page not found"})
+
+
+def error_500(request: HttpRequest, exception: Exception = None) -> HttpResponse:
+    return render(request, "errors/500.html", {"error_code": 500, "message": "Server Error"})

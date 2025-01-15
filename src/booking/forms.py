@@ -7,7 +7,7 @@ from django.db import OperationalError
 from django.db.transaction import atomic
 from django.utils.translation import gettext as _
 
-from booking.exceptions import RecordChanged, CollisionError
+from booking.exceptions import CollisionError, RecordChanged
 from booking.models import Booking, Car, User
 from booking.utils.booking import is_available
 
