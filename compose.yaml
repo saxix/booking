@@ -44,11 +44,10 @@ services:
     restart: always
     profiles: [dev]
     depends_on:
-      db:
-        condition: service_healthy
+      - db
+      - valkey
     ports:
       - 8000:8000
-#    command: django-admin migrate --no-input && django-admin demo && django-admin runserver 0.0.0.0:8000
     develop:
       watch:
       - path: ./uv.lock
@@ -58,10 +57,6 @@ services:
         ignore:
           - theme/static_src
         action: sync+restart
-#    volumes:
-#      - $PWD/docker/conf:/conf/
-#      - $PWD/docker/bin/docker-entrypoint.sh:/usr/local/bin/docker-entrypoint.sh
-#      - $PWD/src/booking:/venv/lib/python3.12/site-packages/booking
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/healthcheck" ]
       interval: 10s

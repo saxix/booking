@@ -46,8 +46,7 @@ WORKDIR /app
 COPY uv.lock README.md MANIFEST.in pyproject.toml /app/
 COPY src /app/src/
 
-RUN --mount=type=cache,target=/root/.cache/,id=uvcache \
-    find ../src -name 'node_modules' -prune \
+RUN find ../src -name 'node_modules' -prune \
         -o -name *.py -o -name *.html -o -name *.js -o -name *.css \
         -type f \
         -exec ls -l "{}" \;  | sha1sum | awk '{print $1}' > CODE_CHECKSUM \
@@ -72,8 +71,7 @@ WORKDIR /app
 COPY uv.lock README.md MANIFEST.in pyproject.toml /app/
 COPY src /app/src/
 
-RUN --mount=type=cache,target=/root/.cache/,id=uvcache \
-    uv sync --cache-dir=/root/.cache \
+RUN uv sync --cache-dir=/root/.cache \
         --python=/usr/local/bin/python \
         --python-preference=system \
         --no-dev --frozen
@@ -105,8 +103,7 @@ COPY . /app/
 COPY --chown=user:booking --from=production /venv /venv
 COPY --from=builder /usr/local/bin/uwsgi /usr/local/bin/uv /usr/local/bin/
 
-RUN --mount=type=cache,target=/root/.cache/,id=uvcache \
-    uv --cache-dir=/root/.cache pip install --link-mode=copy  --no-deps . \
+RUN uv --cache-dir=/root/.cache pip install --link-mode=copy  --no-deps . \
     && rm -fr /app/
 
 EXPOSE 8000

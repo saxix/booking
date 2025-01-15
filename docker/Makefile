@@ -63,10 +63,10 @@ production:
 
 dist:
 	STAGE=dist $(MAKE) .build-stage
-	docker tag
+	docker tag ${DOCKER_IMAGE_NAME}:latest-${STAGE} ${DOCKER_IMAGE_NAME}:latest
 
 build: dist
-	docker tag ${DOCKER_IMAGE_NAME}:latest-${STAGE} ${DOCKER_IMAGE_NAME}:latest
+
 
 
 step1: base_os
