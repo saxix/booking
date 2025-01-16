@@ -29,7 +29,7 @@
                                     </svg>
                                 </div>
                                 <span class="ml-4">
-                                Login/Sign Up with Google
+                                {% translate "Login with Google" %}
                             </span>
                             </a>
                         </div>
@@ -54,26 +54,16 @@
                                         <path d="M20 8v6M23 11h-6"/>
                                     </svg>
                                     <span class="ml-3">
-                                {% translate "Sign Up" %}
+                                {% translate "Login" %}
                             </span>
                                 </button>
                             </form>
                             <div class="my-12 border-b text-center">
                                 <div
                                         class="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
-                                    {% translate "Not registered?" %} <a href="{% url "register" %}">register here</a>
+                                    {% translate "Not registered?" %} <a href="{% url "register" %}">{% translate "Register here" %}</a>
                                 </div>
                             </div>
-                            <p class="mt-6 text-xs text-gray-600 text-center">
-                                I agree to abide by templatana's
-                                <a href="#" class="border-b border-gray-500 border-dotted">
-                                    {% translate "Terms of Service" %}
-                                </a>
-                                and its
-                                <a href="#" class="border-b border-gray-500 border-dotted">
-                                    {% translate "Privacy Policy" %}
-                                </a>
-                            </p>
                         </div>
                     </div>
                 </div>

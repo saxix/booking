@@ -19,22 +19,27 @@ from django.views.decorators.http import condition
 from django.views.generic import CreateView, DeleteView, ListView, RedirectView, TemplateView
 
 from booking.config import env
-from booking.exceptions import CollisionError, RecordChanged
+from booking.exceptions import PeriodNotAvailable, RecordChanged
 from booking.forms import CreateBookingForm, LoginForm, RegisterForm
 from booking.models import Booking, Car, User
+from django.utils.translation import gettext as _
 
 
 def get_fleet_version_key(request, *args, **kwargs):
+    # make etag based on Car status
     etag_key = f"etag:{request.user.username}:{Car.get_cache_version()}"
     return md5(etag_key.encode("utf-8")).hexdigest()
 
 
 def get_booking_version_key(request, *args, **kwargs):
+    # make etag based on Car end Booking status
     etag_key = f"etag:{request.user.username}:{Car.get_cache_version()}:{Booking.get_cache_version()}"
     return md5(etag_key.encode("utf-8")).hexdigest()
 
 
 class FleetConditionMixin:
+    """Mixin to handle ETag / Cache headers for shared views."""
+
     @method_decorator(condition(etag_func=get_fleet_version_key, last_modified_func=None))
     def dispatch(self, *args, **kwargs):
         response = super().dispatch(*args, **kwargs)
@@ -52,6 +57,8 @@ class CommonContextMixin:
 
 
 class RegisterCompleteView(CommonContextMixin, TemplateView):
+    """Registration Complete View."""
+
     template_name = "registered.html"
 
 
@@ -62,18 +69,17 @@ class RegisterView(CommonContextMixin, CreateView):
     form_class = RegisterForm
     success_url = reverse_lazy("index")
 
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-        if "form" in kwargs and not kwargs["form"].is_valid():
-            kwargs["invalid_post"] = True
-        return super().get_context_data(**kwargs)
-
     def form_valid(self, form):
         ret = super().form_valid(form)
+        # If the user successfully login, create a random string that will be used as OTP to make a unique url,
+        # used to validate the email. The key is set in cache and expired after 1 day.
+        # The link with OTP is sent by email
+        # FIXME: For the POC the link is not mandatory to be clicked. The user is immediately able to login
         otp = get_random_string(128)
         cache.set(f"otp:{otp}", self.object.pk, timeout=86400)
         url = self.request.build_absolute_uri(reverse("otp-login", args=[otp]))
-        subject = "Grazie per la registrazione a Booking"
-        text_content = f"Per accedere fai click su questo link <a href='{url}'>{url}</a>"
+        subject = _("Thank you for registering with Booking")
+        text_content = _("To login, follow this link <a href='{url}'>{url}</a>").format(url=url)
 
         msg = EmailMessage(subject, text_content, env("GMAIL_USER"), [self.object.email])
         msg.content_subtype = "html"
@@ -82,7 +88,10 @@ class RegisterView(CommonContextMixin, CreateView):
 
 
 class OTPLoginView(CommonContextMixin, RedirectView):
+    """Validate the link sent by email in the RegisterView."""
+
     def get(self, request, *args, **kwargs):
+        # FIXME: This code should "enable" then user
         pk = cache.get(f"otp:{self.kwargs['key']}")
         if not pk:
             raise Http404
@@ -105,6 +114,7 @@ class Index(CommonContextMixin, FleetConditionMixin, TemplateView):
     template_name = "index.html"
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        # Check if data are stored in cache otherwise retrieve them.
         if not (home_page_models := Car.get_from_cache("home_page_models")):
             home_page_models = list(Car.objects.values("model", "image", "pk", "price")[:4])
             Car.store_to_cache(home_page_models, "home_page_models")
@@ -119,6 +129,7 @@ class FleetView(CommonContextMixin, FleetConditionMixin, ListView):
 
     def get_queryset(self) -> QuerySet[Car]:
         key = "fleet"
+        # Check if data are stored in cache otherwise retrieve them.
         if not (fleet := Car.get_from_cache(key)):
             fleet = list(Car.objects.values())
             Car.store_to_cache(fleet, key)
@@ -134,6 +145,7 @@ class CancelBookView(CommonContextMixin, LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("booking-list")
 
     def get_queryset(self) -> QuerySet[Booking]:
+        # Linit queryset the bookings belong the current user
         return Booking.objects.filter(customer=self.request.user)
 
     def get_object(self, queryset: QuerySet[Booking] | None = None) -> Booking:
@@ -154,6 +166,7 @@ class CreateBookView(CommonContextMixin, LoginRequiredMixin, CreateView):
 
     @cached_property
     def selected_car(self) -> Car:
+        # Get the selected car from the url
         return Car.objects.get(pk=self.kwargs["car"])
 
     def get_form_kwargs(self) -> dict[str, Any]:
@@ -162,6 +175,7 @@ class CreateBookView(CommonContextMixin, LoginRequiredMixin, CreateView):
         return kwargs
 
     def get_initial(self) -> dict[str, Any]:
+        # Note: We store the card version here to detect any changes.
         return {
             "start_date": timezone.now(),
             "end_date": timezone.now(),
@@ -183,7 +197,7 @@ class CreateBookView(CommonContextMixin, LoginRequiredMixin, CreateView):
             try:
                 ret = self.form_valid(form)
                 return ret
-            except (RecordChanged, CollisionError):
+            except (RecordChanged, PeriodNotAvailable):
                 return self.form_invalid(form)
             finally:
                 Booking.invalidate_cache()

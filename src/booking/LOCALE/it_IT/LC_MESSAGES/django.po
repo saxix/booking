@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-14 15:16+0000\n"
+"POT-Creation-Date: 2025-01-16 09:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: booking/exceptions.py:16
+msgid "Selected car details hae been updated. Please check before proceeding."
+msgstr ""
+
+#: booking/forms.py:83
+msgid "Period is not available"
+msgstr ""
 
 #: booking/templates/_about.html:9
 msgid ""
@@ -55,6 +63,10 @@ msgstr "Le più richieste"
 msgid "see our fleet"
 msgstr "Flotta completa"
 
+#: booking/templates/book_add.html:4
+msgid "Book a Rent"
+msgstr "Prenota"
+
 #: booking/templates/book_add.html:27 booking/templates/bookings.html:23
 msgid "From"
 msgstr "Dal"
@@ -71,7 +83,7 @@ msgstr "Sei sicuro di voler annullare questa prenotazione?"
 msgid "Yes, cancel"
 msgstr "Si, annulla"
 
-#: booking/templates/bookings.html:11 booking/templates/layout.html:38
+#: booking/templates/bookings.html:11 booking/templates/layout.html:39
 msgid "Your bookings"
 msgstr "Le tue prenotazioni"
 
@@ -99,32 +111,44 @@ msgstr "Noleggia"
 msgid "Fleet"
 msgstr "Flotta"
 
-#: booking/templates/layout.html:51
+#: booking/templates/layout.html:48 booking/templates/login.html:57
+msgid "Login"
+msgstr ""
+
+#: booking/templates/layout.html:65
 msgid "Hi"
 msgstr "Ciao"
+
+#: booking/templates/layout.html:150
+msgid "Work in progress."
+msgstr "Funzionalità in corso di sviluppo."
+
+#: booking/templates/login.html:32
+msgid "Login with Google"
+msgstr "Login con Google"
 
 #: booking/templates/login.html:40 booking/templates/register.html:40
 msgid "or login with e-mail"
 msgstr "o tramite indirizzo email"
 
-#: booking/templates/login.html:57 booking/templates/register.html:60
-msgid "Sign Up"
-msgstr "Registrazione"
-
 #: booking/templates/login.html:64
 msgid "Not registered?"
 msgstr "Non ancora registrato?"
 
-#: booking/templates/login.html:70
-msgid "Terms of Service"
-msgstr "Termini di servizio"
-
-#: booking/templates/login.html:74
-msgid "Privacy Policy"
-msgstr "Privacy"
+#: booking/templates/login.html:64
+msgid "Register here"
+msgstr "Registrati qui"
 
 #: booking/templates/register.html:8
 msgid "Register"
+msgstr "Registrazione"
+
+#: booking/templates/register.html:32
+msgid "Sign Up with Google"
+msgstr "Registrati con Google"
+
+#: booking/templates/register.html:60
+msgid "Sign Up"
 msgstr "Registrazione"
 
 #: booking/templates/register.html:69
@@ -136,8 +160,6 @@ msgid "login here"
 msgstr "accedi qui"
 
 #: booking/templates/registered.html:8
-#, fuzzy
-#| msgid "Register"
 msgid "Registered"
 msgstr "Registrazione"
 
@@ -151,7 +173,8 @@ msgid ""
 msgstr ""
 "\n"
 "Un’email è stata inviata al tuo indirizzo di posta elettronica.<br/>\n"
-"Controlla la tua casella di posta e segui le istruzioni per completare il processo. \n"
+"Controlla la tua casella di posta e segui le istruzioni per completare il "
+"processo. \n"
 "                        "
 
 #: booking/utils/fixtures.py:66
@@ -169,3 +192,18 @@ msgstr "sedili riscaldati"
 #: booking/utils/fixtures.py:66
 msgid "ski rack"
 msgstr "portasci"
+
+#: booking/views.py:75
+msgid "Thank you for registering with Booking"
+msgstr "Grazie per esserti registrato a Booking"
+
+#: booking/views.py:76
+#, python-brace-format
+msgid "To login, follow this link <a href='{url}'>{url}</a>"
+msgstr "Per effettuare il login, segui questo link <a href='{url}'>{url}</a>"
+
+#~ msgid "Terms of Service"
+#~ msgstr "Termini di servizio"
+
+#~ msgid "Privacy Policy"
+#~ msgstr "Privacy"

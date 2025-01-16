@@ -5,11 +5,7 @@ from django.utils.translation import gettext as _
 
 
 class PeriodNotAvailable(ValidationError):
-    pass
-
-
-class CollisionError(Exception):
-    pass
+    """Raises when period is not available."""
 
 
 class RecordChanged(ValidationError):

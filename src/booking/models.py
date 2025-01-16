@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.cache import cache
 from django.db import models
 
-__all__ = ["Booking", "Car", "Feedback", "Service", "User"]
+__all__ = ["Booking", "Car", "Service", "User"]
 
 
 class BaseModel(models.Model):
@@ -70,6 +70,8 @@ class Car(BaseModel):
 
 
 class Booking(BaseModel):
+    """Represents the user booking."""
+
     car = models.ForeignKey(
         Car, on_delete=models.CASCADE, related_name="bookings", help_text="Car related to the booking."
     )
@@ -93,15 +95,3 @@ class Booking(BaseModel):
                 name="not_start_date_eq_end_date_and_start_date_gt_end_date",
             ),
         ]
-
-
-class Feedback(BaseModel):
-    property = models.ForeignKey(
-        Car, on_delete=models.CASCADE, related_name="feedbacks", help_text="Car related to the booking."
-    )
-    customer = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="feedbacks", help_text="The customer who owns the booking."
-    )
-    rating = models.PositiveIntegerField(help_text="Rating of the feedback.")
-    comment = models.TextField(help_text="Comment of the feedback.")
-    created_at = models.DateTimeField(auto_now_add=True, help_text="Feedback creation data.")
