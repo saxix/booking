@@ -7,7 +7,7 @@ from django.db import OperationalError
 from django.db.transaction import atomic
 from django.utils.translation import gettext as _
 
-from booking.exceptions import CollisionError, RecordChanged
+from booking.exceptions import RecordChanged, PeriodNotAvailable
 from booking.models import Booking, Car, User
 from booking.utils.booking import is_available
 
@@ -70,15 +70,19 @@ class CreateBookingForm(forms.ModelForm):
 
     def save(self, commit: bool = True) -> Booking:
         days = (self.instance.end_date - self.instance.start_date).days
+        # start transaction here and..
         with atomic():
-            """wraps into transaction to lock the record and prevent conflicts."""
             try:
+                # get the selected car and lock it to avoid race condition
                 lock: Car = Car.objects.select_for_update(nowait=True).get(pk=self.car.pk)
+                # check if the car has been updated during the BookingForm editing
                 if lock.version != self.cleaned_data["car_version"]:
+                    # If the version deos not match, the Car has been updated. Es. the daily price changed
                     self.add_error(None, RecordChanged.message)
                     raise RecordChanged()
                 self.instance.total_price = self.instance.car.price * days
                 self.instance = super().save(commit)
             except OperationalError:
-                raise CollisionError(_("Period is not available"))
+                # OperationalError can happen due to database constraints.
+                raise PeriodNotAvailable(_("Period is not available"))
         return self.instance

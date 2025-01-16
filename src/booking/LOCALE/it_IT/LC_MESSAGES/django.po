@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-16 09:02+0000\n"
+"POT-Creation-Date: 2025-01-16 09:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -111,11 +111,15 @@ msgstr "Noleggia"
 msgid "Fleet"
 msgstr "Flotta"
 
-#: booking/templates/layout.html:53
+#: booking/templates/layout.html:48 booking/templates/login.html:57
+msgid "Login"
+msgstr ""
+
+#: booking/templates/layout.html:65
 msgid "Hi"
 msgstr "Ciao"
 
-#: booking/templates/layout.html:147
+#: booking/templates/layout.html:150
 msgid "Work in progress."
 msgstr "Funzionalità in corso di sviluppo."
 
@@ -126,10 +130,6 @@ msgstr "Login con Google"
 #: booking/templates/login.html:40 booking/templates/register.html:40
 msgid "or login with e-mail"
 msgstr "o tramite indirizzo email"
-
-#: booking/templates/login.html:57
-msgid "Login"
-msgstr ""
 
 #: booking/templates/login.html:64
 msgid "Not registered?"
@@ -192,6 +192,15 @@ msgstr "sedili riscaldati"
 #: booking/utils/fixtures.py:66
 msgid "ski rack"
 msgstr "portasci"
+
+#: booking/views.py:75
+msgid "Thank you for registering with Booking"
+msgstr "Grazie per esserti registrato a Booking"
+
+#: booking/views.py:76
+#, python-brace-format
+msgid "To login, follow this link <a href='{url}'>{url}</a>"
+msgstr "Per effettuare il login, segui questo link <a href='{url}'>{url}</a>"
 
 #~ msgid "Terms of Service"
 #~ msgstr "Termini di servizio"

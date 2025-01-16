@@ -18,6 +18,7 @@ def user(db):
 
 @override_settings(SOCIAL_AUTH_GOOGLE_OAUTH2_KEY="1", SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET="2")
 def test_login(db, client):
+    """Test login with SSO."""
     session = client.session
     session["google-oauth2_state"] = "1"
     session.save()
@@ -39,6 +40,7 @@ def test_login(db, client):
 
 
 def test_pipeline(user, settings):
+    """Test SSO pipeline to grant superuser permissions."""
     settings.SUPERUSERS = [user.email]
     configure_user(user)
     user.refresh_from_db()
@@ -46,6 +48,7 @@ def test_pipeline(user, settings):
 
 
 def test_login_email(app, user):
+    """Test login with username/password."""
     url = reverse("login")
     app.set_user(None)
     res = app.get(url)
@@ -56,6 +59,7 @@ def test_login_email(app, user):
 
 
 def test_register(app, mailoutbox):
+    """Test user registration."""
     username = "user@example.com"
     password = "password"
     res = app.get(reverse("register"), user=None)
@@ -66,7 +70,7 @@ def test_register(app, mailoutbox):
     assert User.objects.filter(email=username, username=username, is_active=True).exists()
     # Check OTP email and link
     assert len(mailoutbox) == 1
-    url = strip_tags(mailoutbox[0].body).replace("Per accedere fai click su questo link", "").strip()
+    url = strip_tags(mailoutbox[0].body).replace("To login, follow this link", "").strip()
     res = app.get(url, user=None)
     assert res.status_code == 302
 
@@ -79,6 +83,7 @@ def test_register(app, mailoutbox):
 
 
 def test_invalid_or_expired_otp(app, mailoutbox):
+    """Test user registration with invalid or expired OTP."""
     url = reverse("otp-login", args=["abc"])
     res = app.get(url, user=None, expect_errors=True)
     assert res.status_code == 404

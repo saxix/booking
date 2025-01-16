@@ -70,6 +70,8 @@ class Car(BaseModel):
 
 
 class Booking(BaseModel):
+    """Represents the user booking."""
+
     car = models.ForeignKey(
         Car, on_delete=models.CASCADE, related_name="bookings", help_text="Car related to the booking."
     )
