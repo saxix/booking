@@ -2,6 +2,8 @@ from typing import Any
 
 from concurrency.fields import AutoIncVersionField
 from django.contrib.auth.models import AbstractUser
+from django.contrib.postgres.constraints import ExclusionConstraint
+from django.contrib.postgres.fields import RangeOperators
 from django.core.cache import cache
 from django.db import models
 
@@ -56,7 +58,6 @@ class Service(BaseModel):
 class Car(BaseModel):
     """Car model. It represents the Car Business Object."""
 
-    description = models.TextField(blank=True, help_text="Short description of the car.")
     model = models.CharField(max_length=255, help_text="Model of the car.")
     plate = models.CharField(max_length=10, default="", help_text="Plate of the car.")
     image = models.CharField(max_length=255, blank=True, help_text="Image of the car.")
@@ -90,8 +91,14 @@ class Booking(BaseModel):
                 check=(models.Q(start_date__lte=models.F("end_date"))),
                 name="start_date_lte_end_date",
             ),
-            models.CheckConstraint(
-                check=~(models.Q(start_date=models.F("end_date")) & models.Q(start_date__gt=models.F("end_date"))),
-                name="not_start_date_eq_end_date_and_start_date_gt_end_date",
+            ExclusionConstraint(
+                name="prevent_overlapping_bookings",
+                expressions=[
+                    ("car", RangeOperators.EQUAL),  # Auto deve essere la stessa
+                    (
+                        models.Func(models.F("start_date"), models.F("end_date"), function="DATERANGE"),
+                        RangeOperators.OVERLAPS,
+                    ),
+                ],
             ),
         ]

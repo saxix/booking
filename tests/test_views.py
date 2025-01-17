@@ -109,28 +109,34 @@ def test_etag(app: "DjangoTestApp", car: "Car"):
 @pytest.mark.django_db(transaction=True)
 def test_concurrency(app, car):
     url = reverse("booking-add", args=[car.id])
+    # mock the parent methods, we need to count the calls but not override the logic
+    # cannot pathc object here
     with (
         mock.patch(
             "django.views.generic.edit.FormMixin.form_valid",
         ) as m1,
         mock.patch("django.views.generic.edit.FormMixin.form_invalid") as m2,
     ):
+        # just set the response codes
         m1.return_value = HttpResponse("Ok", status=302)
         m2.return_value = HttpResponse("Ok", status=200)
 
+        # simulate user the post the form using the same car.version and same period
         def t1():
             return app.post(url, {"car_version": car.version, "start_date": "2000-01-01", "end_date": "2000-01-31"})
 
+        # create and start 5 threads to simulate 5 concurrent users
         threads = [threading.Thread(target=t1) for __ in range(5)]
-
         for t in threads:
             t.start()
 
+        # wait all threads complete
         for t in threads:
             t.join()
-
-        assert m1.call_count >= 1
-        assert m2.call_count >= 1
+        assert car.bookings.count() == 1
+        # only one can succeed
+        assert m1.call_count == 1
+        assert m2.call_count == 4
 
 
 @pytest.mark.parametrize("code", [400, 403, 404, 500])

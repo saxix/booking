@@ -15,6 +15,7 @@ from django.utils import timezone
 from django.utils.crypto import get_random_string, md5
 from django.utils.decorators import method_decorator
 from django.utils.functional import cached_property
+from django.utils.translation import gettext as _
 from django.views.decorators.http import condition
 from django.views.generic import CreateView, DeleteView, ListView, RedirectView, TemplateView
 
@@ -22,7 +23,6 @@ from booking.config import env
 from booking.exceptions import PeriodNotAvailable, RecordChanged
 from booking.forms import CreateBookingForm, LoginForm, RegisterForm
 from booking.models import Booking, Car, User
-from django.utils.translation import gettext as _
 
 
 def get_fleet_version_key(request, *args, **kwargs):
