@@ -14,6 +14,7 @@ from booking.models import Booking, Car
 
 
 def test_index(app: "DjangoTestApp"):
+    """Test home page."""
     url = reverse("index")
     res = app.get(url, user="")
     assert res.status_code == 200
@@ -23,11 +24,29 @@ def test_index(app: "DjangoTestApp"):
 
 
 def test_fleet(app: "DjangoTestApp", car: "Car"):
+    """Test fleet page."""
+    Car.invalidate_cache()
     url = reverse("car-list")
-    res = app.get(url)
-    assert res.status_code == 200, res.location
-    res = app.get(url)
-    assert res.status_code == 200, res.location
+    with (
+        mock.patch("booking.models.Car.get_from_cache", autospec=True, side_effect=Car.get_from_cache) as m1,
+        mock.patch("booking.models.Car.store_to_cache", autospec=True, side_effect=Car.store_to_cache) as m2,
+    ):
+        res = app.get(url)
+        assert res.status_code == 200, res.location
+        # controlliano che get_from_cache e store_to_cache siano stati chiamati una sola volta
+        assert m1.call_count == 1
+        assert m2.call_count == 1
+
+    with (
+        mock.patch("booking.models.Car.get_from_cache", autospec=True, side_effect=Car.get_from_cache) as m1,
+        mock.patch("booking.models.Car.store_to_cache", autospec=True, side_effect=Car.store_to_cache) as m2,
+    ):
+        # ripetiamo la chiamata per forzare la cache
+        res = app.get(url)
+        assert res.status_code == 200, res.location
+        # controlliano che store_to_cache non sia stato chiamato
+        assert m1.call_count == 1
+        assert m2.call_count == 0
 
 
 def test_healthcheck(app: "DjangoTestApp", car: "Car"):
@@ -110,7 +129,9 @@ def test_etag(app: "DjangoTestApp", car: "Car"):
 def test_concurrency(app, car):
     url = reverse("booking-add", args=[car.id])
     # mock the parent methods, we need to count the calls but not override the logic
-    # cannot pathc object here
+    # cannot patch object here
+    Booking.invalidate_cache()
+    Car.invalidate_cache()
     with (
         mock.patch(
             "django.views.generic.edit.FormMixin.form_valid",
@@ -144,3 +165,23 @@ def test_custom_pages(app: "DjangoTestApp", code: int):
     url = reverse(f"errors-{code}")
     res = app.get(url, user=None, expect_errors=True)
     assert res.status_code == code
+
+
+def test_view_booking(app: "DjangoTestApp", booking: Booking):
+    """Test application cache is triggered."""
+    Booking.invalidate_cache()
+    Car.invalidate_cache()
+    url = reverse("booking-list")
+    with (
+        mock.patch("booking.models.Booking.get_from_cache", autospec=True, side_effect=Booking.get_from_cache) as m1,
+        mock.patch("booking.models.Booking.store_to_cache", autospec=True, side_effect=Booking.store_to_cache) as m2,
+    ):
+        res = app.get(url)
+        assert res.status_code == 200  # check
+        assert m1.call_count == 1
+        assert m2.call_count == 1
+
+    with mock.patch("booking.models.Booking.store_to_cache", autospec=True, side_effect=Booking.store_to_cache) as m2:
+        res = app.get(url)
+        assert res.status_code == 200
+        assert m2.call_count == 0

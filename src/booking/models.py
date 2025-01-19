@@ -19,8 +19,14 @@ class BaseModel(models.Model):
         abstract = True
 
     @classmethod
-    def get_cache_version(cls, label: str | None = "") -> int:
-        """Retrieve an entry from the cache."""
+    def get_cache_version(cls) -> int:
+        """Retrieve an entry from the cache.
+
+        :param label eventuale label per individuare una sottochiave
+        :type label: string
+        :return numero di versione per la entry selezionata
+        :rtype: int
+        """
         return cache.get(f"version:{cls.__name__}") or 1
 
     @classmethod
@@ -33,13 +39,26 @@ class BaseModel(models.Model):
 
     @classmethod
     def get_from_cache(cls, label: str | None = "") -> Any:
-        """Retrieve an entry from the cache."""
+        """Recupera una voce dalla cache.
+
+        :param label eventuale label per individuare una sottochiave
+        :type label: string
+        :return: Valore registrato nella cache o None
+        :rtype: Any
+        """
         v = cls.get_cache_version()
         return cache.get(f"cache:{label}", version=v)
 
     @classmethod
-    def store_to_cache(cls, value: Any, label: str | None = "") -> Any:
-        """Store `value` into the cache, optionally label it."""
+    def store_to_cache(cls, value: Any, label: str | None = "") -> None:
+        """Memorizza `value` nella cache, eventualmente etichettandolo.
+
+        :param value Valore da inserire nella cache
+        :type value Any
+        :param label eventuale label per individuare una sottochiave
+        :type label: string
+        :return: None
+        """
         v = cls.get_cache_version()
         cache.set(f"cache:{label}", value, timeout=86400, version=v)
 
@@ -71,7 +90,7 @@ class Car(BaseModel):
 
 
 class Booking(BaseModel):
-    """Represents the user booking."""
+    """Representa la prenotazione."""
 
     car = models.ForeignKey(
         Car, on_delete=models.CASCADE, related_name="bookings", help_text="Car related to the booking."
@@ -87,10 +106,12 @@ class Booking(BaseModel):
 
     class Meta:
         constraints = [
+            # primo vincolo: la data di fine prenotazione deve essere dopo la data di inizio
             models.CheckConstraint(
                 check=(models.Q(start_date__lte=models.F("end_date"))),
                 name="start_date_lte_end_date",
             ),
+            # secondo vincolo non ci possono essre periodi sovrapposti per lo stesso veicolo
             ExclusionConstraint(
                 name="prevent_overlapping_bookings",
                 expressions=[

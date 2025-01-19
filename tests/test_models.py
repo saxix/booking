@@ -1,7 +1,8 @@
 import pytest
 from django.db import IntegrityError
+from django.db.models import Model
 
-from booking.models import Booking
+from booking.models import Booking, Car, Service, User
 
 
 @pytest.mark.django_db(transaction=True)
@@ -18,3 +19,9 @@ def test_constraints(user, car):
     # no end overlap
     with pytest.raises(IntegrityError):
         Booking.objects.create(customer=user, car=car, start_date="2000-02-28", end_date="2000-02-02", total_price=2)
+
+
+@pytest.mark.parametrize("model", [Booking, Car, Service, User])
+def test_str(model: type[Model]):
+    """Test models string representation."""
+    assert isinstance(str(model()), str)
