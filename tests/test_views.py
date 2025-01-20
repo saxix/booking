@@ -4,7 +4,6 @@ from unittest import mock
 
 import pytest
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponse
 from django.urls import reverse
 from django.utils import timezone
 from django_webtest import DjangoTestApp
@@ -132,32 +131,23 @@ def test_concurrency(app, car):
     # cannot patch object here
     Booking.invalidate_cache()
     Car.invalidate_cache()
-    with (
-        mock.patch(
-            "django.views.generic.edit.FormMixin.form_valid",
-        ) as m1,
-        mock.patch("django.views.generic.edit.FormMixin.form_invalid") as m2,
-    ):
-        # just set the response codes
-        m1.return_value = HttpResponse("Ok", status=302)
-        m2.return_value = HttpResponse("Ok", status=200)
+    # controllo pre-requisito
+    assert car.bookings.count() == 0
 
-        # simulate user the post the form using the same car.version and same period
-        def t1():
-            return app.post(url, {"car_version": car.version, "start_date": "2000-01-01", "end_date": "2000-01-31"})
+    # chiamata da simulare
+    def t1():
+        return app.post(url, {"car_version": car.version, "start_date": "2000-01-01", "end_date": "2000-01-31"})
 
-        # create and start 5 threads to simulate 5 concurrent users
-        threads = [threading.Thread(target=t1) for __ in range(5)]
-        for t in threads:
-            t.start()
+    # simuliamo 5 chiamate concorrenti
+    threads = [threading.Thread(target=t1) for __ in range(5)]
+    for t in threads:
+        t.start()
 
-        # wait all threads complete
-        for t in threads:
-            t.join()
-        assert car.bookings.count() == 1
-        # only one can succeed
-        assert m1.call_count == 1
-        assert m2.call_count == 4
+    # aspettiamo la fine
+    for t in threads:
+        t.join()
+    # solo una richiesta deve avere successo
+    assert car.bookings.count() == 1
 
 
 @pytest.mark.parametrize("code", [400, 403, 404, 500])

@@ -1,4 +1,4 @@
-"""Confiurazione per l'admin integrato di Django.
+"""Configurazione per l'admin integrato di Django.
 
 @see https://docs.djangoproject.com/en/4.2/ref/contrib/admin/
 
