@@ -6,6 +6,7 @@ from django.contrib.postgres.constraints import ExclusionConstraint
 from django.contrib.postgres.fields import RangeOperators
 from django.core.cache import cache
 from django.db import models
+from booking import VERSION
 
 __all__ = ["Booking", "Car", "Service", "User"]
 
@@ -27,15 +28,15 @@ class BaseModel(models.Model):
         :return numero di versione per la entry selezionata
         :rtype: int
         """
-        return cache.get(f"version:{cls.__name__}") or 1
+        return cache.get(f"version:{VERSION}:{cls.__name__}") or 1
 
     @classmethod
     def invalidate_cache(cls):
         """Invalidate all cache entries for the object."""
         try:
-            cache.incr(f"version:{cls.__name__}")
+            cache.incr(f"version:{VERSION}:{cls.__name__}")
         except ValueError:
-            cache.set(f"version:{cls.__name__}", 1)
+            cache.set(f"version:{VERSION}:{cls.__name__}", 1)
 
     @classmethod
     def get_from_cache(cls, label: str | None = "") -> Any:
@@ -47,7 +48,7 @@ class BaseModel(models.Model):
         :rtype: Any
         """
         v = cls.get_cache_version()
-        return cache.get(f"cache:{label}", version=v)
+        return cache.get(f"cache:{VERSION}:{label}", version=v)
 
     @classmethod
     def store_to_cache(cls, value: Any, label: str | None = "") -> None:
@@ -60,7 +61,7 @@ class BaseModel(models.Model):
         :return: None
         """
         v = cls.get_cache_version()
-        cache.set(f"cache:{label}", value, timeout=86400, version=v)
+        cache.set(f"cache:{VERSION}:{label}", value, timeout=86400, version=v)
 
 
 class User(BaseModel, AbstractUser):

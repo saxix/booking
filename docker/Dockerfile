@@ -89,6 +89,7 @@ ENV PATH=/venv/bin:/usr/local/bin/:/usr/bin:/bin \
     DJANGO_SETTINGS_MODULE=booking.config.settings \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONPATH=""\
+    COMMIT=$GIT_SHA \
     PGSSLCERT="/tmp/postgresql.crt" \
     UV_PROJECT_ENVIRONMENT=/venv \
     VIRTUAL_ENV=/venv
