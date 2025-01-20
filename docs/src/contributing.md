@@ -5,28 +5,29 @@ Installare [uv](https://docs.astral.sh/uv/getting-started/installation/)
 
 1. Clonare il repository e creare un virtualenv:
 
-    git clone https://github.com/saxix/booking
-    cd booking
-    uv venv .venv --python 3.12
-    source .venv/bin/activate
-    uv sync --all-extras
-    pre-commit install --hook-type pre-commit --hook-type pre-push
+
+        git clone https://github.com/saxix/booking
+        cd booking
+        uv venv .venv --python 3.12
+        source .venv/bin/activate
+        uv sync --all-extras
+        pre-commit install --hook-type pre-commit --hook-type pre-push
+
 
 1. Configurare l’ambiente:
 
-
-     export DATABASE_URL=sqlite:///booking.db
-     export SECRET_KEY="super_secret_key_just_for_testing"
-     export DEBUG=True
-     export SUPERUSERS="admin@example.com,"  # can be a list
-     export ADMIN_USER="admin@example.com"  # must be only one email
-     export ADMIN_PASSWORD="password"
+         export DATABASE_URL=postgres://postgres:@127.0.0.1:5432/booking
+         export SECRET_KEY="super_secret_key_just_for_testing"
+         export DEBUG=True
+         export SUPERUSERS="admin@example.com,"  # elenco
+         export ADMIN_USER="admin@example.com"  # must be only one email
+         export ADMIN_PASSWORD="password"
 
 Se possiedi una chiave Google SSO e desideri abilitarla:
 
-     export GOOGLE_CLIENT_ID= <
-     export GOOGLE_CLIENT_SECRET=
-     export SOCIAL_AUTH_REDIRECT_IS_HTTPS=False
+         export GOOGLE_CLIENT_ID=
+         export GOOGLE_CLIENT_SECRET=
+         export SOCIAL_AUTH_REDIRECT_IS_HTTPS=False
 
 Just want to run the app without installing source code? Use provided [Docker compose](Docker compose)
 
