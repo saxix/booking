@@ -24,15 +24,19 @@ def find_by_css(driver, *args):
 
 
 @pytest.mark.skipif(GH_ACTIONS, reason="Selenium test non abilitati in GitHub Actions.")
-def test_login(browser, user):
+def test_navigation(browser, user):
     browser.get(f"{browser.live_server}/")
     wait_for(browser, By.LINK_TEXT, "Login").click()
     wait = WebDriverWait(browser, 10)
+    # Login
     wait.until(ec.url_contains("/login/"))
-
     find_by_css(browser, "input[name=username").send_keys(user.username)
     find_by_css(browser, "input[name=password").send_keys(UserFactory._password)
     wait_for(browser, By.TAG_NAME, "button").click()
-
-    wait_for(browser, By.LINK_TEXT, "Your bookings")
+    # Fleet
     wait_for(browser, By.LINK_TEXT, "Fleet").click()
+
+    wait_for(browser, By.LINK_TEXT, "Rent this car").click()
+    wait_for(browser, By.TAG_NAME, "button").click()
+    wait_for(browser, By.LINK_TEXT, "Your bookings")
+    wait_for(browser, By.LINK_TEXT, "Cancel booking").click()

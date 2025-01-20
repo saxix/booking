@@ -37,7 +37,7 @@ def chrome_options(request):
 @pytest.fixture(scope="session")
 def ff_options(request):
     options = webdriver.FirefoxOptions()
-    options.add_argument("-headless")  # Here
+    options.add_argument("-headless")
     return options
 
 
