@@ -127,6 +127,7 @@ jobs:
             mkdir -p output
             docker run --rm \
               --network host \
+              -e GITHUB_ACTIONS=true \
               -e PYTHONPATH=/app/src \
               -e DATABASE_URL=${DATABASE_URL} \
               -e GOOGLE_CLIENT_ID=google-id \
