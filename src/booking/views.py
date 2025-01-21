@@ -5,6 +5,7 @@ from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView as LoginView_
 from django.core.cache import cache
+from django.core.exceptions import NON_FIELD_ERRORS
 from django.core.mail import EmailMessage
 from django.db.models import QuerySet
 from django.http import Http404, HttpRequest, HttpResponse, HttpResponseRedirect
@@ -253,6 +254,9 @@ class CreateBookView(CommonContextMixin, LoginRequiredMixin, CreateView):
         form.instance.customer = self.request.user
         return super().form_valid(form)
 
+    def form_invalid(self, form):
+        return super().form_invalid(form)
+
     def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseRedirect | HttpResponse:
         """Gestisce le chiamate POST.
 
@@ -269,7 +273,8 @@ class CreateBookView(CommonContextMixin, LoginRequiredMixin, CreateView):
             try:
                 ret = self.form_valid(form)
                 return ret
-            except (RecordChanged, PeriodNotAvailable):
+            except (RecordChanged, PeriodNotAvailable) as e:
+                form._errors[NON_FIELD_ERRORS] = str(e)
                 return self.form_invalid(form)
             finally:
                 Booking.invalidate_cache()

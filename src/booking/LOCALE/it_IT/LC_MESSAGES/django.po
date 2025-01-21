@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-16 09:51+0000\n"
+"POT-Creation-Date: 2025-01-21 06:12+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,13 +17,35 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: booking/exceptions.py:16
+#: booking/exceptions.py:12
 msgid "Selected car details hae been updated. Please check before proceeding."
 msgstr ""
 
-#: booking/forms.py:83
-msgid "Period is not available"
+#: booking/forms.py:55
+msgid "Provide address in case of Driver or Home delivery"
 msgstr ""
+"Si prega di fornire l'indirizzo in caso di autista o consegna a domicilio"
+
+#: booking/forms.py:69
+msgid "Please provide address in case of Driver or Home delivery"
+msgstr ""
+"Si prega di fornire l'indirizzo in caso di autista o consegna a domicilio"
+
+#: booking/forms.py:94
+msgid "Period is not available"
+msgstr "Periodo non disponibile"
+
+#: booking/models.py:107
+msgid "In office retrieval"
+msgstr "Ritiro pressoi nostri uffici"
+
+#: booking/models.py:107
+msgid "Home delivery"
+msgstr "Consegna all'indirizzo fornito"
+
+#: booking/models.py:107
+msgid "With driver"
+msgstr "Con autista"
 
 #: booking/templates/_about.html:9
 msgid ""
@@ -74,6 +96,18 @@ msgstr "Dal"
 #: booking/templates/book_add.html:31 booking/templates/bookings.html:24
 msgid "To"
 msgstr "Al"
+
+#: booking/templates/book_add.html:35
+msgid "Modality"
+msgstr "Modalità"
+
+#: booking/templates/book_add.html:39
+msgid "Address"
+msgstr "Indirizzo"
+
+#: booking/templates/book_add.html:48
+msgid "Book"
+msgstr "Prenota"
 
 #: booking/templates/book_delete.html:5
 msgid "Are you sure you want to cancel this booking?"
@@ -177,27 +211,27 @@ msgstr ""
 "processo. \n"
 "                        "
 
-#: booking/utils/fixtures.py:66
+#: booking/utils/fixtures.py:71
 msgid "bar"
 msgstr "bar"
 
-#: booking/utils/fixtures.py:66
+#: booking/utils/fixtures.py:71
 msgid "TV"
 msgstr ""
 
-#: booking/utils/fixtures.py:66
+#: booking/utils/fixtures.py:71
 msgid "seat warmers"
 msgstr "sedili riscaldati"
 
-#: booking/utils/fixtures.py:66
+#: booking/utils/fixtures.py:71
 msgid "ski rack"
 msgstr "portasci"
 
-#: booking/views.py:75
+#: booking/views.py:124
 msgid "Thank you for registering with Booking"
 msgstr "Grazie per esserti registrato a Booking"
 
-#: booking/views.py:76
+#: booking/views.py:125
 #, python-brace-format
 msgid "To login, follow this link <a href='{url}'>{url}</a>"
 msgstr "Per effettuare il login, segui questo link <a href='{url}'>{url}</a>"

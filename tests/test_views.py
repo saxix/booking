@@ -4,7 +4,6 @@ from unittest import mock
 
 import pytest
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponse
 from django.urls import reverse
 from django.utils import timezone
 from django_webtest import DjangoTestApp
@@ -128,36 +127,33 @@ def test_etag(app: "DjangoTestApp", car: "Car"):
 @pytest.mark.django_db(transaction=True)
 def test_concurrency(app, car):
     url = reverse("booking-add", args=[car.id])
-    # mock the parent methods, we need to count the calls but not override the logic
-    # cannot patch object here
     Booking.invalidate_cache()
     Car.invalidate_cache()
-    with (
-        mock.patch(
-            "django.views.generic.edit.FormMixin.form_valid",
-        ) as m1,
-        mock.patch("django.views.generic.edit.FormMixin.form_invalid") as m2,
-    ):
-        # just set the response codes
-        m1.return_value = HttpResponse("Ok", status=302)
-        m2.return_value = HttpResponse("Ok", status=200)
+    # controllo pre-requisito
+    assert car.bookings.count() == 0
 
-        # simulate user the post the form using the same car.version and same period
-        def t1():
-            return app.post(url, {"car_version": car.version, "start_date": "2000-01-01", "end_date": "2000-01-31"})
+    # chiamata da simulare
+    def t1():
+        return app.post(
+            url,
+            {
+                "car_version": car.version,
+                "start_date": "2000-01-01",
+                "end_date": "2000-01-31",
+                "modalita": Booking.ON_SITE,
+            },
+        )
 
-        # create and start 5 threads to simulate 5 concurrent users
-        threads = [threading.Thread(target=t1) for __ in range(5)]
-        for t in threads:
-            t.start()
+    # simuliamo 5 chiamate concorrenti
+    threads = [threading.Thread(target=t1) for __ in range(5)]
+    for t in threads:
+        t.start()
 
-        # wait all threads complete
-        for t in threads:
-            t.join()
-        assert car.bookings.count() == 1
-        # only one can succeed
-        assert m1.call_count == 1
-        assert m2.call_count == 4
+    # aspettiamo la fine
+    for t in threads:
+        t.join()
+    # solo una richiesta deve avere successo
+    assert car.bookings.count() == 1
 
 
 @pytest.mark.parametrize("code", [400, 403, 404, 500])
@@ -185,3 +181,44 @@ def test_view_booking(app: "DjangoTestApp", booking: Booking):
         res = app.get(url)
         assert res.status_code == 200
         assert m2.call_count == 0
+
+
+def test_view_validate_modality(app: "DjangoTestApp", car: Car):
+    """Test application cache is triggered."""
+    url = reverse("booking-add", args=[car.id])
+
+    res = app.post(
+        url,
+        {
+            "car_version": car.version,
+            "start_date": "2000-01-01",
+            "end_date": "2000-01-31",
+            "modalita": Booking.DRIVER,
+            "address": "",
+        },
+    )
+    assert res.status_code == 200
+    assert "Please provide address in case of Driver or Home delivery" in res.text
+    res = app.post(
+        url,
+        {
+            "car_version": car.version,
+            "start_date": "2000-01-01",
+            "end_date": "2000-01-31",
+            "modalita": Booking.HOME,
+            "address": "",
+        },
+    )
+    assert res.status_code == 200
+    assert "Please provide address in case of Driver or Home delivery" in res.text
+    res = app.post(
+        url,
+        {
+            "car_version": car.version,
+            "start_date": "2000-01-01",
+            "end_date": "2000-01-31",
+            "modalita": Booking.ON_SITE,
+            "address": "",
+        },
+    )
+    assert res.status_code == 302

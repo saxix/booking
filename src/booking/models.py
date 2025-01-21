@@ -6,6 +6,9 @@ from django.contrib.postgres.constraints import ExclusionConstraint
 from django.contrib.postgres.fields import RangeOperators
 from django.core.cache import cache
 from django.db import models
+from django.utils.translation import gettext_lazy as _
+
+from booking import VERSION
 
 __all__ = ["Booking", "Car", "Service", "User"]
 
@@ -27,15 +30,15 @@ class BaseModel(models.Model):
         :return numero di versione per la entry selezionata
         :rtype: int
         """
-        return cache.get(f"version:{cls.__name__}") or 1
+        return cache.get(f"version:{VERSION}:{cls.__name__}") or 1
 
     @classmethod
     def invalidate_cache(cls):
         """Invalidate all cache entries for the object."""
         try:
-            cache.incr(f"version:{cls.__name__}")
+            cache.incr(f"version:{VERSION}:{cls.__name__}")
         except ValueError:
-            cache.set(f"version:{cls.__name__}", 1)
+            cache.set(f"version:{VERSION}:{cls.__name__}", 1)
 
     @classmethod
     def get_from_cache(cls, label: str | None = "") -> Any:
@@ -47,7 +50,7 @@ class BaseModel(models.Model):
         :rtype: Any
         """
         v = cls.get_cache_version()
-        return cache.get(f"cache:{label}", version=v)
+        return cache.get(f"cache:{VERSION}:{label}", version=v)
 
     @classmethod
     def store_to_cache(cls, value: Any, label: str | None = "") -> None:
@@ -60,7 +63,7 @@ class BaseModel(models.Model):
         :return: None
         """
         v = cls.get_cache_version()
-        cache.set(f"cache:{label}", value, timeout=86400, version=v)
+        cache.set(f"cache:{VERSION}:{label}", value, timeout=86400, version=v)
 
 
 class User(BaseModel, AbstractUser):
@@ -92,16 +95,22 @@ class Car(BaseModel):
 class Booking(BaseModel):
     """Representa la prenotazione."""
 
-    car = models.ForeignKey(
-        Car, on_delete=models.CASCADE, related_name="bookings", help_text="Car related to the booking."
+    ON_SITE = 1
+    HOME = 2
+    DRIVER = 3
+
+    car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name="bookings", help_text="Veicolo in noleggio")
+    customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bookings", help_text="Cliente")
+    start_date = models.DateField(help_text="Data inizio noleoggio")
+    end_date = models.DateField(help_text="Data fine noleoggio")
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0, help_text="PRezzo totale.")
+    modalita = models.IntegerField(
+        choices=((ON_SITE, _("In office retrieval")), (HOME, _("Home delivery")), (DRIVER, _("With driver"))),
+        default=ON_SITE,
+        help_text="Modality of the booking.",
     )
-    customer = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="bookings", help_text="The customer who owns the booking."
-    )
-    start_date = models.DateField(help_text="Start date of the booking.")
-    end_date = models.DateField(help_text="End date of the booking.")
-    total_price = models.DecimalField(
-        max_digits=10, decimal_places=2, default=0, help_text="Total price of the booking."
+    address = models.TextField(
+        help_text="Indirizzo in caso di conseghna a domicilio", default="", blank=True, null=True
     )
 
     class Meta:

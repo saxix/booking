@@ -47,6 +47,7 @@ ignore = [
     "D212", # multi-line-summary-first-line
     "D213", # multi-line-summary-second-line
     "DJ008", # Model does not define __str__ method
+    "DJ001", # Avoid using `null=True` on string-based fields
     "E731",  # lambda-assignment: lambdas are substential in maintenance of py2/3 codebase
     "ISC001",  # conflicts with ruff format command
     "RUF005",  # collection-literal-concatenation: syntax not compatible with py2
