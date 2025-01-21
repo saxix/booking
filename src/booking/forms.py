@@ -50,10 +50,14 @@ class CreateBookingForm(forms.ModelForm):
     car_version = forms.IntegerField(widget=forms.HiddenInput())
     start_date = forms.DateField(widget=DateInput())
     end_date = forms.DateField(widget=DateInput())
+    address = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={"placeholder": _("Provide address in case of Driver or Home delivery")}),
+    )
 
     class Meta:
         model = Booking
-        fields = ("start_date", "end_date")
+        fields = ("start_date", "end_date", "modalita", "address")
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         self.car = kwargs.pop("car")
@@ -61,6 +65,9 @@ class CreateBookingForm(forms.ModelForm):
 
     def clean(self) -> None:
         super().clean()
+        if self.cleaned_data.get("modalita") != Booking.ON_SITE and not self.cleaned_data.get("address"):
+            raise forms.ValidationError(_("Please provide address in case of Driver or Home delivery"))
+
         if not is_available(
             self.car,
             self.cleaned_data.get("start_date", None),

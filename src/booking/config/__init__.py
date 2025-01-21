@@ -8,6 +8,7 @@ if TYPE_CHECKING:
 CONFIG: "dict[str, ConfigItem]" = {
     "SUPERUSERS": (list, []),
     "CACHE_URL": (str, "locmemcache://"),
+    "DATABASE_URL": (str, "sqlite:///"),
     "DEBUG": (bool, True),
     "SECRET_KEY": (str, "change-me"),
     "STATIC_ROOT": (str, None),

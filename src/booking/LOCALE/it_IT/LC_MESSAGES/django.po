@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-20 15:15+0000\n"
+"POT-Creation-Date: 2025-01-21 06:12+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,9 +21,31 @@ msgstr ""
 msgid "Selected car details hae been updated. Please check before proceeding."
 msgstr ""
 
-#: booking/forms.py:87
-msgid "Period is not available"
+#: booking/forms.py:55
+msgid "Provide address in case of Driver or Home delivery"
 msgstr ""
+"Si prega di fornire l'indirizzo in caso di autista o consegna a domicilio"
+
+#: booking/forms.py:69
+msgid "Please provide address in case of Driver or Home delivery"
+msgstr ""
+"Si prega di fornire l'indirizzo in caso di autista o consegna a domicilio"
+
+#: booking/forms.py:94
+msgid "Period is not available"
+msgstr "Periodo non disponibile"
+
+#: booking/models.py:107
+msgid "In office retrieval"
+msgstr "Ritiro pressoi nostri uffici"
+
+#: booking/models.py:107
+msgid "Home delivery"
+msgstr "Consegna all'indirizzo fornito"
+
+#: booking/models.py:107
+msgid "With driver"
+msgstr "Con autista"
 
 #: booking/templates/_about.html:9
 msgid ""
@@ -75,7 +97,15 @@ msgstr "Dal"
 msgid "To"
 msgstr "Al"
 
-#: booking/templates/book_add.html:40
+#: booking/templates/book_add.html:35
+msgid "Modality"
+msgstr "Modalità"
+
+#: booking/templates/book_add.html:39
+msgid "Address"
+msgstr "Indirizzo"
+
+#: booking/templates/book_add.html:48
 msgid "Book"
 msgstr "Prenota"
 

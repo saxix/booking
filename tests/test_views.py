@@ -127,8 +127,6 @@ def test_etag(app: "DjangoTestApp", car: "Car"):
 @pytest.mark.django_db(transaction=True)
 def test_concurrency(app, car):
     url = reverse("booking-add", args=[car.id])
-    # mock the parent methods, we need to count the calls but not override the logic
-    # cannot patch object here
     Booking.invalidate_cache()
     Car.invalidate_cache()
     # controllo pre-requisito
@@ -136,7 +134,15 @@ def test_concurrency(app, car):
 
     # chiamata da simulare
     def t1():
-        return app.post(url, {"car_version": car.version, "start_date": "2000-01-01", "end_date": "2000-01-31"})
+        return app.post(
+            url,
+            {
+                "car_version": car.version,
+                "start_date": "2000-01-01",
+                "end_date": "2000-01-31",
+                "modalita": Booking.ON_SITE,
+            },
+        )
 
     # simuliamo 5 chiamate concorrenti
     threads = [threading.Thread(target=t1) for __ in range(5)]
@@ -175,3 +181,44 @@ def test_view_booking(app: "DjangoTestApp", booking: Booking):
         res = app.get(url)
         assert res.status_code == 200
         assert m2.call_count == 0
+
+
+def test_view_validate_modality(app: "DjangoTestApp", car: Car):
+    """Test application cache is triggered."""
+    url = reverse("booking-add", args=[car.id])
+
+    res = app.post(
+        url,
+        {
+            "car_version": car.version,
+            "start_date": "2000-01-01",
+            "end_date": "2000-01-31",
+            "modalita": Booking.DRIVER,
+            "address": "",
+        },
+    )
+    assert res.status_code == 200
+    assert "Please provide address in case of Driver or Home delivery" in res.text
+    res = app.post(
+        url,
+        {
+            "car_version": car.version,
+            "start_date": "2000-01-01",
+            "end_date": "2000-01-31",
+            "modalita": Booking.HOME,
+            "address": "",
+        },
+    )
+    assert res.status_code == 200
+    assert "Please provide address in case of Driver or Home delivery" in res.text
+    res = app.post(
+        url,
+        {
+            "car_version": car.version,
+            "start_date": "2000-01-01",
+            "end_date": "2000-01-31",
+            "modalita": Booking.ON_SITE,
+            "address": "",
+        },
+    )
+    assert res.status_code == 302
