@@ -65,6 +65,12 @@ def test_register(app, mailoutbox):
     res = app.get(reverse("register"), user=None)
     res.forms["register-form"]["username"] = username
     res.forms["register-form"]["password"] = password
+    res.forms["register-form"]["password2"] = ""
+    res = res.forms["register-form"].submit()
+    assert res.status_code == 200
+
+    res.forms["register-form"]["password"] = password
+    res.forms["register-form"]["password2"] = password
     res = res.forms["register-form"].submit()
     assert res.status_code == 302
     assert User.objects.filter(email=username, username=username, is_active=True).exists()
