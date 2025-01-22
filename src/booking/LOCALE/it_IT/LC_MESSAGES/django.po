@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-21 06:12+0000\n"
+"POT-Creation-Date: 2025-01-22 04:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,29 +21,37 @@ msgstr ""
 msgid "Selected car details hae been updated. Please check before proceeding."
 msgstr ""
 
-#: booking/forms.py:55
+#: booking/forms.py:26
+msgid "Repeat password"
+msgstr "Ripeti password"
+
+#: booking/forms.py:35
+msgid "Password doesn't match"
+msgstr "Le password non corrispondono"
+
+#: booking/forms.py:61
 msgid "Provide address in case of Driver or Home delivery"
 msgstr ""
 "Si prega di fornire l'indirizzo in caso di autista o consegna a domicilio"
 
-#: booking/forms.py:69
+#: booking/forms.py:75
 msgid "Please provide address in case of Driver or Home delivery"
 msgstr ""
 "Si prega di fornire l'indirizzo in caso di autista o consegna a domicilio"
 
-#: booking/forms.py:94
+#: booking/forms.py:100
 msgid "Period is not available"
 msgstr "Periodo non disponibile"
 
-#: booking/models.py:107
+#: booking/models.py:108
 msgid "In office retrieval"
 msgstr "Ritiro pressoi nostri uffici"
 
-#: booking/models.py:107
+#: booking/models.py:108
 msgid "Home delivery"
 msgstr "Consegna all'indirizzo fornito"
 
-#: booking/models.py:107
+#: booking/models.py:108
 msgid "With driver"
 msgstr "Con autista"
 
@@ -89,23 +97,23 @@ msgstr "Flotta completa"
 msgid "Book a Rent"
 msgstr "Prenota"
 
-#: booking/templates/book_add.html:27 booking/templates/bookings.html:23
+#: booking/templates/book_add.html:28 booking/templates/bookings.html:23
 msgid "From"
 msgstr "Dal"
 
-#: booking/templates/book_add.html:31 booking/templates/bookings.html:24
+#: booking/templates/book_add.html:32 booking/templates/bookings.html:24
 msgid "To"
 msgstr "Al"
 
-#: booking/templates/book_add.html:35
+#: booking/templates/book_add.html:36
 msgid "Modality"
 msgstr "Modalità"
 
-#: booking/templates/book_add.html:39
+#: booking/templates/book_add.html:40
 msgid "Address"
 msgstr "Indirizzo"
 
-#: booking/templates/book_add.html:48
+#: booking/templates/book_add.html:49
 msgid "Book"
 msgstr "Prenota"
 
@@ -227,11 +235,11 @@ msgstr "sedili riscaldati"
 msgid "ski rack"
 msgstr "portasci"
 
-#: booking/views.py:124
+#: booking/views.py:125
 msgid "Thank you for registering with Booking"
 msgstr "Grazie per esserti registrato a Booking"
 
-#: booking/views.py:125
+#: booking/views.py:126
 #, python-brace-format
 msgid "To login, follow this link <a href='{url}'>{url}</a>"
 msgstr "Per effettuare il login, segui questo link <a href='{url}'>{url}</a>"

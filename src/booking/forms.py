@@ -23,10 +23,16 @@ class RegisterForm(forms.ModelForm):
 
     username = forms.EmailField(required=True)
     password = forms.CharField(widget=forms.PasswordInput)
+    password2 = forms.CharField(widget=forms.PasswordInput, label=_("Repeat password"))
 
     class Meta:
         model = User
         fields = ("username", "password")
+
+    def clean(self) -> None:
+        super().clean()
+        if self.cleaned_data.get("password") != self.cleaned_data.get("password2"):
+            raise forms.ValidationError(_("Password doesn't match"))
 
     def save(self, commit: bool = True) -> Car:
         self.instance.email = self.instance.username
