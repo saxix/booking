@@ -6,7 +6,7 @@ x-env: &env
     - CACHE_URL=redis://valkey/1
     - CSRF_COOKIE_SECURE=False
     - CSRF_TRUSTED_ORIGINS=http://localhost:8000
-    - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/booking
+    - DATABASE_URL=postgres://${POSTGRES_USER:-db}:${POSTGRES_PASSWORD:-password}@db:5432/booking
     - DJANGO_SETTINGS_MODULE=booking.config.settings
     - DEBUG=${DEBUG:-true}
     - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
